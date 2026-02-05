@@ -2330,7 +2330,7 @@ dependencies = [
 [[package]]
 name = "positive_tool_rs"
 version = "0.7.0"
-source = "git+https://github.com/TW0hank0/positive_tool_rs#0b2ac762f275b055b234051ca6f9a7e96187ff23"
+source = "git+https://github.com/TW0hank0/positive_tool_rs#608ac2968d688bc205d2550136c2f01d48eadccf"
 dependencies = [
  "colored",
  "log",

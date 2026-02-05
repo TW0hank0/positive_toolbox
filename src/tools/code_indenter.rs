@@ -11,7 +11,7 @@ pub struct CodeIndenter {
     indented_code: String,
 }
 
-fn main() {
+fn main() -> iced::Result {
     iced::run(CodeIndenter::update, CodeIndenter::view)
 }
 

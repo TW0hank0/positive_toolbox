@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::process;
 
 use iced;
 use iced::widget::{Column, button, column, scrollable, text};
@@ -14,7 +15,10 @@ pub fn main() -> iced::Result {
 }
 
 #[derive(Default)]
-struct Toolbox {project_path: PathBuf, tool_path_code_indenter: PathBuf};
+struct Toolbox {
+    // project_path: PathBuf,
+    tool_path_code_indenter: PathBuf,
+}
 
 #[derive(Debug, Clone)]
 enum ToolboxMsg {
@@ -24,9 +28,9 @@ enum ToolboxMsg {
 impl Toolbox {
     fn new() -> Self {
         let project_path = pt::find_project_path("positive_toolbox", None).unwrap();
-        let tool_path = project_path.clone().join("tools")
+        let tool_path = project_path.clone().join("tools");
         let tool_path_code_indenter: PathBuf;
-        #[cfg(target_os = "Windows")]
+        #[cfg(target_os = "windows")]
         {
             tool_path_code_indenter = tool_path.clone().join("code_indenter.exe")
         }
@@ -35,14 +39,17 @@ impl Toolbox {
             tool_path_code_indenter = tool_path.clone().join("code_indenter")
         }
         Self {
-            project_path: project_path.clone()
-            tool_path_code_indenter: tool_path_code_indenter
+            //project_path: project_path.clone(),
+            tool_path_code_indenter: tool_path_code_indenter,
         }
     }
-    fn update(&mut self, message: ToolboxMsg){
+    fn update(&mut self, message: ToolboxMsg) {
         match message {
-            ToolboxMsg::OpenCodeIndenter => {}
-            _ => iced::task::Task::none(),
+            ToolboxMsg::OpenCodeIndenter => {
+                process::Command::new(self.tool_path_code_indenter.clone())
+                    .spawn()
+                    .unwrap();
+            }
         }
     }
 
@@ -76,8 +83,7 @@ impl Toolbox {
     fn theme(&self) -> Option<iced::Theme> {
         Some(iced::Theme::Dark)
     }
-
- }
+}
 
 /* #[cfg(test)]
 mod tests {
