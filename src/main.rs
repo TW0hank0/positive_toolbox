@@ -1,39 +1,55 @@
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-use iced::Center;
-use iced::widget::{Column, button, column, row, scrollable, text};
+use iced;
+use iced::widget::{Column, button, column, scrollable, text};
+
+use positive_tool_rs::pt;
 
 pub fn main() -> iced::Result {
-    iced::run(Toolbox::update, Toolbox::view)
+    iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
+        .theme(Toolbox::theme)
+        .title(Toolbox::title)
+        .run()
 }
 
 #[derive(Default)]
-struct Toolbox {
-    value: i64,
-}
+struct Toolbox {project_path: PathBuf, tool_path_code_indenter: PathBuf};
 
-#[derive(Debug, Clone, Copy)]
-enum Tools {
-    UnitConversion,
-    CodeIndenter,
+#[derive(Debug, Clone)]
+enum ToolboxMsg {
+    OpenCodeIndenter,
 }
 
 impl Toolbox {
-    fn update(&mut self, message: Tools) {
+    fn new() -> Self {
+        let project_path = pt::find_project_path("positive_toolbox", None).unwrap();
+        let tool_path = project_path.clone().join("tools")
+        let tool_path_code_indenter: PathBuf;
+        #[cfg(target_os = "Windows")]
+        {
+            tool_path_code_indenter = tool_path.clone().join("code_indenter.exe")
+        }
+        #[cfg(target_family = "unix")]
+        {
+            tool_path_code_indenter = tool_path.clone().join("code_indenter")
+        }
+        Self {
+            project_path: project_path.clone()
+            tool_path_code_indenter: tool_path_code_indenter
+        }
+    }
+    fn update(&mut self, message: ToolboxMsg){
         match message {
-            Tools::UnitConversion => {
-                println!("UintConversion");
-            }
-            Tools::CodeIndenter => {
-                println!("CodeIndenter")
-            }
+            ToolboxMsg::OpenCodeIndenter => {}
+            _ => iced::task::Task::none(),
         }
     }
 
-    fn view(&self) -> Column<'_, Tools> {
-        let mut tools = HashMap::new();
-        tools.insert("單位轉換器", Tools::UnitConversion);
-        tools.insert("程式碼縮排", Tools::CodeIndenter);
+    fn view(&self) -> Column<'_, ToolboxMsg> {
+        let mut tools: HashMap<&str, ToolboxMsg> = HashMap::new();
+        tools.insert("單位轉換器", ToolboxMsg::OpenCodeIndenter);
+        tools.insert("程式碼縮排", ToolboxMsg::OpenCodeIndenter);
         //
         let mut layout = column![text("positive toolbox").size(60),].padding(20);
         let mut layout_tool = Column::new().spacing(20).padding(20);
@@ -45,14 +61,23 @@ impl Toolbox {
         layout = layout.push(scrollable_tools);
         return layout;
         /* column![
-            button("加").on_press(Message::Increment),
+            button("加").on_press(ToolboxMsg::Increment),
             text(self.value).size(50),
-            button("減").on_press(Message::Decrement)
+            button("減").on_press(ToolboxMsg::Decrement)
         ]
         .padding(20)
         .align_x(Center) */
     }
-}
+
+    fn title(&self) -> String {
+        return String::from("positive_toolbox");
+    }
+
+    fn theme(&self) -> Option<iced::Theme> {
+        Some(iced::Theme::Dark)
+    }
+
+ }
 
 /* #[cfg(test)]
 mod tests {
