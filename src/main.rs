@@ -11,6 +11,9 @@ pub fn main() -> iced::Result {
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
+        .font(include_bytes!(
+            "../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf"
+        ))
         .run()
 }
 
@@ -28,7 +31,7 @@ enum ToolboxMsg {
 impl Toolbox {
     fn new() -> Self {
         let project_path = pt::find_project_path("positive_toolbox", None).unwrap();
-        let tool_path = project_path.clone().join("tools");
+        let tool_path = project_path.clone(); //.join("tools");
         let tool_path_code_indenter: PathBuf;
         #[cfg(target_os = "windows")]
         {

@@ -2,7 +2,6 @@
 
 //use serde;
 
-// 此模組由頂層應用程式呼叫，不提供獨立的 `main`
 use iced::widget::{Column, text, text_input};
 
 #[derive(Default)]
@@ -15,8 +14,9 @@ fn main() -> iced::Result {
     iced::run(CodeIndenter::update, CodeIndenter::view)
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum CodeIndenterMsg {
+    OrigCodeChange(String),
     UnitConversion,
     CodeIndenter,
 }
@@ -37,13 +37,16 @@ impl CodeIndenter {
             CodeIndenterMsg::CodeIndenter => {
                 println!("CodeIndenter")
             }
+            CodeIndenterMsg::OrigCodeChange(orig_code) => self.orig_code = orig_code,
         }
     }
 
     pub fn view(&self) -> Column<'_, CodeIndenterMsg> {
         let mut layout = Column::new().padding(20);
         layout = layout.push(text("請輸入程式碼"));
-        layout = layout.push(text_input("輸入程式碼...", &self.orig_code));
+        layout = layout.push(
+            text_input("輸入程式碼...", &self.orig_code).on_input(CodeIndenterMsg::OrigCodeChange),
+        );
         return layout;
     }
 }

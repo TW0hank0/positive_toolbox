@@ -8,8 +8,8 @@ name = "positive_toolbox"
 path = "src/main.rs"
 
 [[bin]]
-name = "ptb_code_indenter"
-path = "src/code_indenter.rs"
+name = "code_indenter"
+path = "src/tools/code_indenter.rs"
 
 [dependencies]
 iced = { version = "0.14.0", features = [
