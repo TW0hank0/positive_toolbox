@@ -1,0 +1,38 @@
+name: commit-build
+
+on:
+  push:
+    path-ignores: 
+      - 'README.md'
+      - 'READMEs/**'
+      - '.vscode/**'
+      - 'TODO.md'
+
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: check Install
+        run: |
+          rustc --version
+          cargo --version
+
+      - name: debug build
+        run: cargo build
+
+      - name: release build
+        run: cargo build --release
