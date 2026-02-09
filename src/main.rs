@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::{env, process};
 
-use iced;
+use iced::Window;
 use iced::widget::{Column, button, column, scrollable, text};
 
 //use positive_tool_rs::pt;
@@ -14,6 +14,7 @@ pub fn main() -> iced::Result {
         .font(include_bytes!(
             "../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf"
         ))
+        .window(iced::window::Settings::default())
         .run()
 }
 
@@ -94,27 +95,23 @@ impl Toolbox {
             let (tool_name, tool_msg) = tool;
             layout_tool = layout_tool.push(button(tool_name).on_press(tool_msg));
         } */
-        let mut layout = column![text("positive toolbox").size(60),].padding(50);
+        let mut layout = column![text("positive toolbox").size(70),].padding(50);
         let mut layout_tool = Column::new().spacing(20).padding(30).align_x(iced::Left);
         //
         for count in 0..self.tools_ordered.len() {
             let tool = self.tools_ordered.get(&count).unwrap();
             let tool_name = tool.name;
             let tool_msg = tool.msg.clone();
-            let tool_btn = button(tool_name).on_press(tool_msg).width(200).height(80);
+            let tool_btn = button(text(tool_name).size(40))
+                .on_press(tool_msg)
+                .width(200)
+                .height(80);
             layout_tool = layout_tool.push(tool_btn);
         }
         //
         let scrollable_tools = scrollable(layout_tool);
         layout = layout.push(scrollable_tools);
         return layout;
-        /* column![
-            button("加").on_press(ToolboxMsg::Increment),
-            text(self.value).size(50),
-            button("減").on_press(ToolboxMsg::Decrement)
-        ]
-        .padding(20)
-        .align_x(Center) */
     }
 
     pub fn title(&self) -> String {

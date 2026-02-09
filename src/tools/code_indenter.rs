@@ -2,7 +2,7 @@
 
 //use serde;
 use iced;
-use iced::widget::{Column, button, rich_text, row, text, text_editor};
+use iced::widget::{Column, button, row, text, text_editor};
 use serde_json;
 
 #[derive(Default)]
@@ -52,6 +52,8 @@ impl CodeIndenter {
                 println!("IndentCode -> orig_code:{}", &self.orig_code);
                 self.indented_code = code_indenter(self.orig_code.clone(), ProgramLanguages::Json);
                 println!("IndentCode -> indented_code:{}", &self.indented_code);
+                self.indented_code_text_editor_content =
+                    iced::widget::text_editor::Content::with_text(&self.indented_code)
             }
         }
     }
@@ -59,9 +61,9 @@ impl CodeIndenter {
     pub fn view(&self) -> Column<'_, CodeIndenterMsg> {
         let mut layout = Column::new().padding(30);
         layout = layout.push(
-            row![text("code indenter").size(60),]
+            row![text("code indenter").size(70),]
                 .spacing(50)
-                .push(text("positive toolbox").size(40))
+                .push(text("positive toolbox").size(50))
                 .align_y(iced::Bottom),
         );
         layout = layout.push(text("請輸入程式碼"));
@@ -70,11 +72,13 @@ impl CodeIndenter {
                 .on_input(CodeIndenterMsg::OrigCodeChange)
                 .size(20),
         );
-        let submit_btn = button("縮排")
+        layout = layout.spacing(50);
+        let submit_btn = button(text("縮排").size(40))
             .on_press(CodeIndenterMsg::IndentCodeNow)
             .width(200)
             .height(80);
         layout = layout.push(submit_btn);
+        layout = layout.spacing(50);
         layout = layout.push(text_editor(&self.indented_code_text_editor_content));
         return layout;
     }
