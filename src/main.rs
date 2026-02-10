@@ -2,19 +2,30 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::{env, process};
 
-use iced::Window;
+use iced;
 use iced::widget::{Column, button, column, scrollable, text};
 
-//use positive_tool_rs::pt;
+use image;
+
+use positive_tool_rs::pt;
 
 pub fn main() -> iced::Result {
+    let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
+    let icon_path = project_path.clone().join("icon.png");
+    let img = image::open(icon_path).unwrap().into_rgb8();
+    let (img_width, img_height) = img.dimensions();
+    let mut window_settings = iced::window::Settings::default();
+    window_settings.maximized = true;
+    window_settings.icon =
+        iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
+    //
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
         .font(include_bytes!(
             "../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf"
         ))
-        .window(iced::window::Settings::default())
+        .window(window_settings)
         .run()
 }
 
