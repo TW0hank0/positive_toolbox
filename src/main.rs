@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use std::{env, process};
 
 use iced;
-use iced::widget::{Column, button, column, container, scrollable, text};
+use iced::widget::{Column, button, column, scrollable, text};
 
 use image;
 
@@ -157,7 +157,7 @@ impl Toolbox {
         }
         //
         let scrollable_tools = scrollable(layout_tool);
-        let container_tool = container(scrollable_tools).align_left(20);
+        //let container_tool = container(scrollable_tools).align_left(20).;
         // FIXME: Need Fix
         /* let mut container_tool_palette = iced::theme::Palette::DARK;
         container_tool_palette.background = iced::Color::BLACK;
@@ -166,7 +166,8 @@ impl Toolbox {
             container_tool_palette,
         ));
         container_tool. */
-        layout = layout.push(container_tool);
+        //layout = layout.push(container_tool);
+        layout = layout.push(scrollable_tools);
         return layout;
     }
 
