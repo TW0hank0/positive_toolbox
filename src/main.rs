@@ -3,11 +3,14 @@ use std::path::PathBuf;
 use std::{env, process};
 
 use iced;
-use iced::widget::{Column, button, column, scrollable, text};
+use iced::widget::{Column, button, column, container, scrollable, text};
 
 use image;
 
-//use positive_tool_rs::pt;
+const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
+    include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+
+const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
 pub fn main() -> iced::Result {
     //let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
@@ -22,14 +25,20 @@ pub fn main() -> iced::Result {
     window_settings.icon =
         iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
     //
-    const FONT_NOTO_SANS: &[u8] =
-        include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+    let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
+    let mut app_settings = iced::Settings::default();
+    app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
+    app_settings.default_text_size = iced::Pixels::from(26);
+    app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
+    app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
-        .font(FONT_NOTO_SANS)
+        .font(FONT_NOTO_SANS_REGULAR_BYTES)
         .window(window_settings)
+        .settings(app_settings)
+        .default_font(FONT_NOTO_SANS_REG)
         .run()
 }
 
@@ -128,6 +137,7 @@ impl Toolbox {
             layout_tool = layout_tool.push(button(tool_name).on_press(tool_msg));
         } */
         let mut layout = column![text("positive toolbox").size(70),].padding(50);
+        layout = layout.spacing(30);
         let mut layout_tool = Column::new().spacing(20).padding(30).align_x(iced::Left);
         //
         for count in 0..self.tools_ordered.len() {
@@ -147,7 +157,16 @@ impl Toolbox {
         }
         //
         let scrollable_tools = scrollable(layout_tool);
-        layout = layout.push(scrollable_tools);
+        let container_tool = container(scrollable_tools).align_left(20);
+        // FIXME: Need Fix
+        /* let mut container_tool_palette = iced::theme::Palette::DARK;
+        container_tool_palette.background = iced::Color::BLACK;
+        container_tool.class(iced::theme::Theme::custom(
+            "ptb_main_container_tool",
+            container_tool_palette,
+        ));
+        container_tool. */
+        layout = layout.push(container_tool);
         return layout;
     }
 
