@@ -1,6 +1,3 @@
-//use std::collections::HashMap;
-
-//use serde;
 use iced;
 use iced::widget::{Column, button, row, text, text_editor};
 
@@ -10,7 +7,7 @@ use image;
 
 #[derive(Default)]
 pub struct CodeIndenter {
-    orig_code_text_editor_content: iced::widget::text_editor::Content,
+    orig_code: String,
     indented_code: String,
     indented_code_text_editor_content: iced::widget::text_editor::Content,
 }
@@ -38,7 +35,7 @@ fn main() -> iced::Result {
 
 #[derive(Debug, Clone)]
 pub enum CodeIndenterMsg {
-    OrigCodeChange(iced::widget::text_editor::Action),
+    OrigCodeChange(String),
     UnitConversion,
     CodeIndenter,
     IndentCodeNow,
@@ -48,7 +45,7 @@ pub enum CodeIndenterMsg {
 impl CodeIndenter {
     pub fn new() -> Self {
         return Self {
-            orig_code_text_editor_content: iced::widget::text_editor::Content::new(),
+            orig_code: String::new(),
             indented_code: String::new(),
             indented_code_text_editor_content: iced::widget::text_editor::Content::new(),
         };
@@ -62,29 +59,16 @@ impl CodeIndenter {
             CodeIndenterMsg::CodeIndenter => {
                 println!("CodeIndenter")
             }
-            CodeIndenterMsg::OrigCodeChange(act) => {
-                self.orig_code_text_editor_content.perform(act);
-            }
+            CodeIndenterMsg::OrigCodeChange(orig_code) => self.orig_code = orig_code,
             CodeIndenterMsg::IndentCodeNow => {
-                println!(
-                    "IndentCode -> orig_code:{}",
-                    &self.orig_code_text_editor_content.text()
-                );
-                self.indented_code = code_indenter(
-                    self.orig_code_text_editor_content.text(),
-                    ProgramLanguages::Json,
-                );
+                println!("IndentCode -> orig_code:{}", &self.orig_code);
+                self.indented_code = code_indenter(self.orig_code.clone(), ProgramLanguages::Json);
                 println!("IndentCode -> indented_code:{}", &self.indented_code);
                 self.indented_code_text_editor_content =
                     iced::widget::text_editor::Content::with_text(&self.indented_code);
             }
             CodeIndenterMsg::IndentedCodeChange(act) => {
-                match act {
-                    text_editor::Action::Edit(_) => {}
-                    _ => {
-                        self.indented_code_text_editor_content.perform(act);
-                    }
-                };
+                self.indented_code_text_editor_content.perform(act);
             }
         }
     }
@@ -97,28 +81,22 @@ impl CodeIndenter {
                 .push(text("positive toolbox").size(50))
                 .align_y(iced::Bottom),
         );
-        //layout = layout.push(text("請輸入程式碼"));
+        layout = layout.push(text("請輸入程式碼"));
         layout = layout.push(
-            text_editor(&self.orig_code_text_editor_content)
-                .on_action(CodeIndenterMsg::OrigCodeChange)
-                .placeholder("code here..."),
+            iced::widget::text_input("輸入程式碼...", &self.orig_code)
+                .on_input(CodeIndenterMsg::OrigCodeChange)
+                .size(20),
         );
         layout = layout.spacing(30);
-        let submit_btn = button(
-            text("縮排(json)")
-                .size(24)
-                .align_y(iced::alignment::Vertical::Center)
-                .align_x(iced::alignment::Horizontal::Center),
-        )
-        .on_press(CodeIndenterMsg::IndentCodeNow)
-        .width(160)
-        .height(60);
+        let submit_btn = button(text("縮排").size(24))
+            .on_press(CodeIndenterMsg::IndentCodeNow)
+            .width(160)
+            .height(60);
         layout = layout.push(submit_btn);
         layout = layout.spacing(30);
         layout = layout.push(
             text_editor(&self.indented_code_text_editor_content)
-                .on_action(CodeIndenterMsg::IndentedCodeChange)
-                .placeholder("縮排後的程式碼輸出..."),
+                .on_action(CodeIndenterMsg::IndentedCodeChange),
         );
         return layout;
     }

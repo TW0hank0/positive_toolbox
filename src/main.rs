@@ -7,24 +7,28 @@ use iced::widget::{Column, button, column, scrollable, text};
 
 use image;
 
-use positive_tool_rs::pt;
+//use positive_tool_rs::pt;
 
 pub fn main() -> iced::Result {
-    let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
-    let icon_path = project_path.clone().join("icon.png");
-    let img = image::open(icon_path).unwrap().into_rgb8();
+    //let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
+    //let icon_path = project_path.clone().join("icon.png");
+    const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+    let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
+        .unwrap()
+        .into_rgba8();
     let (img_width, img_height) = img.dimensions();
     let mut window_settings = iced::window::Settings::default();
     window_settings.maximized = true;
     window_settings.icon =
         iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
     //
+    const FONT_NOTO_SANS: &[u8] =
+        include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+    //
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
-        .font(include_bytes!(
-            "../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf"
-        ))
+        .font(FONT_NOTO_SANS)
         .window(window_settings)
         .run()
 }
@@ -33,12 +37,14 @@ pub fn main() -> iced::Result {
 struct Toolbox {
     // project_path: PathBuf,
     tool_path_code_indenter: PathBuf,
+    tool_path_unit_conversion: PathBuf,
     tools_ordered: HashMap<usize, Tool>,
 }
 
 #[derive(Debug, Clone)]
 enum ToolboxMsg {
     OpenCodeIndenter,
+    OpenUnitConversion,
 }
 
 struct Tool {
@@ -50,7 +56,7 @@ impl Toolbox {
     pub fn new() -> Self {
         //
         let mut tools: HashMap<&str, ToolboxMsg> = HashMap::new();
-        tools.insert("單位轉換器", ToolboxMsg::OpenCodeIndenter);
+        tools.insert("單位轉換器(not-finish)", ToolboxMsg::OpenUnitConversion);
         tools.insert("程式碼縮排", ToolboxMsg::OpenCodeIndenter);
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
@@ -78,9 +84,19 @@ impl Toolbox {
         {
             tool_path_code_indenter = tool_path.clone().join("code_indenter")
         }
+        let tool_path_unit_conversion: PathBuf;
+        #[cfg(target_os = "windows")]
+        {
+            tool_path_unit_conversion = tool_path.clone().join("unit_conversion.exe")
+        }
+        #[cfg(target_family = "unix")]
+        {
+            tool_path_unit_conversion = tool_path.clone().join("unit_conversion")
+        }
         Self {
             //project_path: project_path.clone(),
             tool_path_code_indenter: tool_path_code_indenter,
+            tool_path_unit_conversion: tool_path_unit_conversion,
             tools_ordered: tools_ordered,
         }
     }
@@ -89,6 +105,11 @@ impl Toolbox {
         match message {
             ToolboxMsg::OpenCodeIndenter => {
                 process::Command::new(self.tool_path_code_indenter.clone())
+                    .spawn()
+                    .unwrap();
+            }
+            ToolboxMsg::OpenUnitConversion => {
+                process::Command::new(self.tool_path_unit_conversion.clone())
                     .spawn()
                     .unwrap();
             }
@@ -113,10 +134,15 @@ impl Toolbox {
             let tool = self.tools_ordered.get(&count).unwrap();
             let tool_name = tool.name;
             let tool_msg = tool.msg.clone();
-            let tool_btn = button(text(tool_name).size(40))
-                .on_press(tool_msg)
-                .width(200)
-                .height(80);
+            let tool_btn = button(
+                text(tool_name)
+                    .size(30)
+                    .align_y(iced::alignment::Vertical::Center)
+                    .align_x(iced::alignment::Horizontal::Center),
+            )
+            .on_press(tool_msg)
+            .width(190)
+            .height(70);
             layout_tool = layout_tool.push(tool_btn);
         }
         //

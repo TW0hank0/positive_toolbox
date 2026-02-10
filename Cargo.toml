@@ -12,6 +12,10 @@ path = "src/main.rs"
 name = "code_indenter"
 path = "src/tools/code_indenter.rs"
 
+[[bin]]
+name = "unit_conversion"
+path = "src/tools/unit_conversion.rs"
+
 [dependencies]
 iced = { version = "0.14.0", features = [
     "x11",
