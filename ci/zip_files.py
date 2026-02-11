@@ -8,7 +8,7 @@ def main():
     info_file = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "Cargo.toml"
     )
-    with open(info_file, "rb", encoding="utf-8") as f:
+    with open(info_file, "rb") as f:
         project_info = tomllib.load(f)
     version = project_info["package"]["version"]
     #
