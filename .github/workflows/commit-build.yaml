@@ -60,24 +60,26 @@ jobs:
 
       - name: zip files (Linux)
         id: zip_files_linux
+        if: runner.os == 'Linux'
         run: |
           file=$(uv run ci/zip_files.py)
           echo "zip_path=$file" >> $GITHUB_OUTPUT
 
       - name: zip files (Windows)
         id: zip_files_windows
+        if: runner.os == 'Windows'
         run: |
           $file = (uv run ci/zip_files.py)
           echo "zip_path=$file" >> $env:GITHUB_OUTPUT
 
       - name: Upload exe artifact (Linux)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: runner.os == 'Linux'
         with:
           path: ${{ steps.zip_files_linux.outputs.zip_path }}
 
       - name: Upload exe artifact (Windows)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: runner.os == 'Windows'
         with:
           path: ${{ steps.zip_files_windows.outputs.zip_path }}
