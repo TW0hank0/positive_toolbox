@@ -1,21 +1,34 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::{env, process};
+use std::{env, fs, process};
 
 use iced;
 use iced::widget::{Column, button, column, scrollable, text};
 
 use image;
 
+//use positive_tool_rs::pt;
+
+use log::{debug, error, info, trace, warn};
+
+use positive_toolbox::shared;
+
 const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
     include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
 const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
+// 設定 log
+
 pub fn main() -> iced::Result {
+    shared::setup_logger().ok();
+    info!("已設定logger。");
+    //
     //let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
     //let icon_path = project_path.clone().join("icon.png");
+    //let icon_path_str = icon_path.to_str().unwrap();
     const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+    //const ICON_PNG: &[u8] = include_bytes!(icon_path_str);
     let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
         .unwrap()
         .into_rgba8();
@@ -24,6 +37,8 @@ pub fn main() -> iced::Result {
     window_settings.maximized = true;
     window_settings.icon =
         iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
+    window_settings.min_size = Some(iced::Size::new(1080.0, 720.0));
+    window_settings.position = iced::window::Position::Centered;
     //
     let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
     let mut app_settings = iced::Settings::default();
@@ -32,6 +47,7 @@ pub fn main() -> iced::Result {
     app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
+    debug!("執行iced...");
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
@@ -45,8 +61,7 @@ pub fn main() -> iced::Result {
 #[derive(Default)]
 struct Toolbox {
     // project_path: PathBuf,
-    tool_path_code_indenter: PathBuf,
-    tool_path_unit_conversion: PathBuf,
+    tool_paths: HashMap<String, PathBuf>,
     tools_ordered: HashMap<usize, Tool>,
 }
 
@@ -65,7 +80,7 @@ impl Toolbox {
     pub fn new() -> Self {
         //
         let mut tools: HashMap<&str, ToolboxMsg> = HashMap::new();
-        tools.insert("單位轉換器(not-finish)", ToolboxMsg::OpenUnitConversion);
+        tools.insert("單位轉換器 (開發中)", ToolboxMsg::OpenUnitConversion);
         tools.insert("程式碼縮排", ToolboxMsg::OpenCodeIndenter);
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
@@ -83,17 +98,24 @@ impl Toolbox {
         //
         //let project_path = pt::find_project_path("positive_toolbox", None).unwrap();
         let project_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
-        let tool_path = project_path.clone(); //.join("tools");
-        let tool_path_code_indenter: PathBuf;
-        #[cfg(target_os = "windows")]
-        {
-            tool_path_code_indenter = tool_path.clone().join("code_indenter.exe")
+        //let tool_path = project_path.clone(); //.join("tools");
+        //let tool_path_code_indenter: PathBuf;
+        let tool_names: Vec<&str> = vec!["code_indenter", "unit_conversion"];
+        let mut tool_paths = HashMap::new();
+        for tool_name in tool_names {
+            let tool_path: PathBuf;
+            #[cfg(target_os = "windows")]
+            {
+                tool_path = project_path.clone().join(format!("{}.exe", tool_name))
+            }
+            #[cfg(target_family = "unix")]
+            {
+                tool_path = project_path.clone().join(tool_name)
+            }
+            tool_paths.insert(String::from(tool_name), tool_path);
         }
-        #[cfg(target_family = "unix")]
-        {
-            tool_path_code_indenter = tool_path.clone().join("code_indenter")
-        }
-        let tool_path_unit_conversion: PathBuf;
+
+        /* let tool_path_unit_conversion: PathBuf;
         #[cfg(target_os = "windows")]
         {
             tool_path_unit_conversion = tool_path.clone().join("unit_conversion.exe")
@@ -101,11 +123,9 @@ impl Toolbox {
         #[cfg(target_family = "unix")]
         {
             tool_path_unit_conversion = tool_path.clone().join("unit_conversion")
-        }
+        } */
         Self {
-            //project_path: project_path.clone(),
-            tool_path_code_indenter: tool_path_code_indenter,
-            tool_path_unit_conversion: tool_path_unit_conversion,
+            tool_paths: tool_paths,
             tools_ordered: tools_ordered,
         }
     }
@@ -113,12 +133,12 @@ impl Toolbox {
     pub fn update(&mut self, message: ToolboxMsg) {
         match message {
             ToolboxMsg::OpenCodeIndenter => {
-                process::Command::new(self.tool_path_code_indenter.clone())
+                process::Command::new(self.tool_paths.get("code_indenter").unwrap().clone())
                     .spawn()
                     .unwrap();
             }
             ToolboxMsg::OpenUnitConversion => {
-                process::Command::new(self.tool_path_unit_conversion.clone())
+                process::Command::new(self.tool_paths.get("unit_conversion").unwrap().clone())
                     .spawn()
                     .unwrap();
             }

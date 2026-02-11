@@ -1,12 +1,13 @@
-//use std::collections::HashMap;
-
-//use serde;
 use iced;
-use iced::widget::{Column, Row, button, combo_box, text, text_editor};
+use iced::widget::{Column, Row, button, combo_box, scrollable, text, text_editor};
 
 use serde_json;
 
 use image;
+
+use log::{debug, error, info, trace, warn};
+
+use positive_toolbox::shared;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "code_indenter";
@@ -25,6 +26,7 @@ const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
 const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
 fn main() -> iced::Result {
+    shared::setup_logger().ok();
     //
     const ICON_PNG: &[u8] = include_bytes!("../../icon.png");
     let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
@@ -43,6 +45,7 @@ fn main() -> iced::Result {
     app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
+    info!("啟動iced");
     iced::application(CodeIndenter::new, CodeIndenter::update, CodeIndenter::view)
         .theme(CodeIndenter::theme)
         .title(CodeIndenter::title)
@@ -87,20 +90,52 @@ impl CodeIndenter {
                 println!("CodeIndenter")
             }
             CodeIndenterMsg::OrigCodeChange(act) => {
-                self.orig_code_text_editor_content.perform(act);
+                self.orig_code_text_editor_content.perform(act.clone());
+                match act {
+                    iced::widget::text_editor::Action::Edit(_) => {
+                        if self.selected_program_lang.is_some() {
+                            let code_result: bool;
+                            let indented_code: String;
+                            (code_result, indented_code) = code_indenter(
+                                self.orig_code_text_editor_content.text(),
+                                self.selected_program_lang.clone().unwrap(),
+                            );
+                            if code_result {
+                                self.indented_code = indented_code;
+                                println!("IndentCode -> indented_code: {}", &self.indented_code);
+                                self.indented_code_text_editor_content =
+                                    iced::widget::text_editor::Content::with_text(
+                                        &self.indented_code,
+                                    );
+                            }
+                        }
+                    }
+                    _ => {}
+                }
             }
             CodeIndenterMsg::IndentCodeNow => {
                 println!(
-                    "IndentCode -> orig_code:{}",
+                    "IndentCode -> orig_code: {}",
                     &self.orig_code_text_editor_content.text()
                 );
-                self.indented_code = code_indenter(
-                    self.orig_code_text_editor_content.text(),
-                    ProgramLanguages::Json,
-                );
-                println!("IndentCode -> indented_code:{}", &self.indented_code);
-                self.indented_code_text_editor_content =
-                    iced::widget::text_editor::Content::with_text(&self.indented_code);
+                if self.orig_code_text_editor_content.text().trim() == ""
+                    || self.orig_code_text_editor_content.text().is_empty()
+                {
+                    self.indented_code = String::new();
+                } else {
+                    if self.selected_program_lang.is_some() {
+                        let _code_result: bool;
+                        (_code_result, self.indented_code) = code_indenter(
+                            self.orig_code_text_editor_content.text(),
+                            self.selected_program_lang.clone().unwrap(),
+                        );
+                        println!("IndentCode -> indented_code: {}", &self.indented_code);
+                        self.indented_code_text_editor_content =
+                            iced::widget::text_editor::Content::with_text(&self.indented_code);
+                    } else {
+                        self.indented_code = String::from("未選擇語言！");
+                    }
+                }
             }
             CodeIndenterMsg::IndentedCodeChange(act) => {
                 match act {
@@ -116,28 +151,32 @@ impl CodeIndenter {
 
     pub fn view(&self) -> Column<'_, CodeIndenterMsg> {
         let mut layout = Column::new()
-            .padding(30)
-            .align_x(iced::alignment::Horizontal::Left);
-        let mut row_layout = Row::new()
+            .padding(2)
+            .align_x(iced::alignment::Horizontal::Left)
+            .width(iced::Length::Fill);
+        let mut layout_title = Row::new()
             .padding(10)
             .align_y(iced::alignment::Vertical::Bottom)
-            .height(100);
-        row_layout = row_layout.push(
+            .height(90);
+        layout_title = layout_title.push(
             text(TOOL_NAME)
-                .size(70)
-                .align_x(iced::alignment::Horizontal::Left)
-                .align_y(iced::alignment::Vertical::Bottom),
-        );
-        row_layout = row_layout.spacing(50);
-        row_layout = row_layout.push(
-            text(PROJECT_NAME)
                 .size(50)
                 .align_x(iced::alignment::Horizontal::Left)
-                .align_y(iced::alignment::Vertical::Bottom),
+                .align_y(iced::alignment::Vertical::Bottom)
+                .height(90),
         );
-        layout = layout.push(row_layout);
+        layout_title = layout_title.spacing(10);
+        layout_title = layout_title.push(
+            text(format!("from {PROJECT_NAME}"))
+                .size(20)
+                .align_x(iced::alignment::Horizontal::Left)
+                .align_y(iced::alignment::Vertical::Bottom)
+                .height(90),
+        );
+        layout = layout.push(layout_title);
+        layout = layout.spacing(60);
         //
-        layout = layout.push(text("選擇一種語言").size(28));
+        //layout = layout.push(text("選擇一種語言").size(28).height(iced::Length::Shrink));
         layout = layout.push(
             combo_box(
                 &self.combo_box_langs,
@@ -145,34 +184,59 @@ impl CodeIndenter {
                 self.selected_program_lang.as_ref(),
                 CodeIndenterMsg::LangSelected,
             )
-            .width(200),
+            .width(180)
+            .padding(10),
         );
         layout = layout.spacing(50);
-        layout = layout.push(text("請輸入程式碼").size(28));
-        layout = layout.push(
+        let submit_btn = button(
+            text("縮排")
+                .size(24)
+                .align_y(iced::alignment::Vertical::Center)
+                .align_x(iced::alignment::Horizontal::Center),
+        )
+        .on_press(CodeIndenterMsg::IndentCodeNow)
+        .width(150)
+        .height(50);
+        layout = layout.push(submit_btn).spacing(50);
+        //
+        let mut layout_input_tip = Row::new()
+            .width(iced::Length::Fill)
+            .height(iced::Length::Shrink);
+        layout_input_tip = layout_input_tip.push(
+            text("請輸入程式碼")
+                .size(28)
+                .width(iced::Length::Fill)
+                .align_x(iced::alignment::Horizontal::Center)
+                .align_y(iced::alignment::Vertical::Bottom),
+        );
+        layout_input_tip = layout_input_tip.push(
+            text("縮排的程式碼")
+                .size(28)
+                .align_x(iced::alignment::Horizontal::Center)
+                .align_y(iced::alignment::Vertical::Bottom)
+                .width(iced::Length::Fill),
+        );
+        layout = layout.push(layout_input_tip);
+        //
+        let mut layout_code_blocks = Row::new();
+        layout_code_blocks = layout_code_blocks.push(
             text_editor(&self.orig_code_text_editor_content)
                 .on_action(CodeIndenterMsg::OrigCodeChange)
                 .placeholder("code here...")
                 .size(26),
         );
-        layout = layout.spacing(30);
-        let submit_btn = button(
-            text("縮排")
-                .size(20)
-                .align_y(iced::alignment::Vertical::Center)
-                .align_x(iced::alignment::Horizontal::Center),
-        )
-        .on_press(CodeIndenterMsg::IndentCodeNow)
-        .width(160)
-        .height(60);
-        layout = layout.push(submit_btn);
-        layout = layout.spacing(30);
-        layout = layout.push(
+        //layout_code_blocks = layout_code_blocks.spacing(30);
+        //layout_code_blocks = layout_code_blocks.push(submit_btn);
+        layout_code_blocks = layout_code_blocks.spacing(30);
+        layout_code_blocks = layout_code_blocks.push(
             text_editor(&self.indented_code_text_editor_content)
                 .on_action(CodeIndenterMsg::IndentedCodeChange)
                 .placeholder("縮排後的程式碼輸出...")
                 .size(26),
         );
+
+        let scrollable_code_blocks = scrollable(layout_code_blocks).height(iced::Length::Fill);
+        layout = layout.push(scrollable_code_blocks);
         return layout;
     }
 
@@ -198,7 +262,7 @@ impl std::fmt::Display for ProgramLanguages {
     }
 }
 
-fn code_indenter(orig_code: String, lang: ProgramLanguages) -> String {
+fn code_indenter(orig_code: String, lang: ProgramLanguages) -> (bool, String) {
     match lang {
         ProgramLanguages::Json => {
             let result_i: serde_json::Result<serde_json::Value> = serde_json::from_str(&orig_code);
@@ -206,16 +270,16 @@ fn code_indenter(orig_code: String, lang: ProgramLanguages) -> String {
                 Ok(i) => {
                     match serde_json::to_string_pretty(&i) {
                         Ok(i2) => {
-                            return i2;
+                            return (true, i2);
                         }
                         Err(e) => {
-                            return format!("錯誤！err-msg:{}", e);
+                            return (false, format!("錯誤！err-msg:{}", e));
                         }
                     };
                     //return indented_code;
                 }
                 Err(e) => {
-                    return format!("錯誤！err-msg:{}", e);
+                    return (false, format!("錯誤！err-msg:{}", e));
                 }
             }
         }
