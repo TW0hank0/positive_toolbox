@@ -96,10 +96,7 @@ impl Toolbox {
             tool_count += 1;
         }
         //
-        //let project_path = pt::find_project_path("positive_toolbox", None).unwrap();
         let project_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
-        //let tool_path = project_path.clone(); //.join("tools");
-        //let tool_path_code_indenter: PathBuf;
         let tool_names: Vec<&str> = vec!["code_indenter", "unit_conversion"];
         let mut tool_paths = HashMap::new();
         for tool_name in tool_names {
@@ -114,16 +111,6 @@ impl Toolbox {
             }
             tool_paths.insert(String::from(tool_name), tool_path);
         }
-
-        /* let tool_path_unit_conversion: PathBuf;
-        #[cfg(target_os = "windows")]
-        {
-            tool_path_unit_conversion = tool_path.clone().join("unit_conversion.exe")
-        }
-        #[cfg(target_family = "unix")]
-        {
-            tool_path_unit_conversion = tool_path.clone().join("unit_conversion")
-        } */
         Self {
             tool_paths: tool_paths,
             tools_ordered: tools_ordered,
@@ -146,16 +133,6 @@ impl Toolbox {
     }
 
     pub fn view(&self) -> iced::widget::Column<'_, ToolboxMsg> {
-        /* let mut tools: HashMap<&str, ToolboxMsg> = HashMap::new();
-        tools.insert("單位轉換器", ToolboxMsg::OpenCodeIndenter);
-        tools.insert("程式碼縮排", ToolboxMsg::OpenCodeIndenter);
-        //
-        let mut layout = column![text("positive toolbox").size(60),].padding(20);
-        let mut layout_tool = Column::new().spacing(20).padding(20);
-        for tool in tools {
-            let (tool_name, tool_msg) = tool;
-            layout_tool = layout_tool.push(button(tool_name).on_press(tool_msg));
-        } */
         let mut layout = column![text("positive toolbox").size(70),].padding(50);
         layout = layout.spacing(30);
         let mut layout_tool = Column::new().spacing(20).padding(30).align_x(iced::Left);
@@ -199,30 +176,3 @@ impl Toolbox {
         Some(iced::Theme::Dark)
     }
 }
-
-/* #[cfg(test)]
-mod tests {
-    use super::*;
-    use iced_test::{Error, simulator};
-
-    #[test]
-    fn it_counts() -> Result<(), Error> {
-        let mut counter = Counter { value: 0 };
-        let mut ui = simulator(counter.view());
-
-        let _ = ui.click("Increment")?;
-        let _ = ui.click("Increment")?;
-        let _ = ui.click("Decrement")?;
-
-        for message in ui.into_messages() {
-            counter.update(message);
-        }
-
-        assert_eq!(counter.value, 1);
-
-        let mut ui = simulator(counter.view());
-        assert!(ui.find("1").is_ok(), "Counter should display 1!");
-
-        Ok(())
-    }
-} */

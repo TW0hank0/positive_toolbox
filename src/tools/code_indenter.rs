@@ -176,7 +176,6 @@ impl CodeIndenter {
         layout = layout.push(layout_title);
         layout = layout.spacing(60);
         //
-        //layout = layout.push(text("選擇一種語言").size(28).height(iced::Length::Shrink));
         layout = layout.push(
             combo_box(
                 &self.combo_box_langs,
@@ -225,8 +224,6 @@ impl CodeIndenter {
                 .placeholder("code here...")
                 .size(26),
         );
-        //layout_code_blocks = layout_code_blocks.spacing(30);
-        //layout_code_blocks = layout_code_blocks.push(submit_btn);
         layout_code_blocks = layout_code_blocks.spacing(30);
         layout_code_blocks = layout_code_blocks.push(
             text_editor(&self.indented_code_text_editor_content)
@@ -276,7 +273,6 @@ fn code_indenter(orig_code: String, lang: ProgramLanguages) -> (bool, String) {
                             return (false, format!("錯誤！err-msg:{}", e));
                         }
                     };
-                    //return indented_code;
                 }
                 Err(e) => {
                     return (false, format!("錯誤！err-msg:{}", e));
