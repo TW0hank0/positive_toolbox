@@ -2,7 +2,7 @@ name: commit-check
 
 on:
   push:
-    path-ignores: 
+    paths-ignore: 
       - 'README.md'
       - 'READMEs/**'
       - '.vscode/**'
@@ -19,13 +19,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Install Rust Toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+      - name: install rustup (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://win.rustup.rs" -OutFile "rustup-init.exe"
+          ls
+          .\rustup-init.exe -y --profile minimal
+
+      - name: install rustup (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          curl https://sh.rustup.rs -o rust-init.sh
+          sh rust-init.sh -y
 
       - name: check Install
         run: |
