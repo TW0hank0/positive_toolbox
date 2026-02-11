@@ -9,7 +9,7 @@ on:
       - 'TODO.md'
 
 jobs:
-  check:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -81,3 +81,85 @@ jobs:
         if: runner.os == 'Windows'
         with:
           path: ${{ steps.zip_files_windows.outputs.zip_path }}
+
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Prepare CI Venv
+        run: |
+          cd ci
+          uv venv --python cpython-3.13
+          cd ..
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+    
+      - name: Get datetime
+        id: get_datetime
+        run: |
+          cd ci
+          datetime=$(uv run get_datetime.py)
+          echo "datetime=$datetime" >> $GITHUB_OUTPUT
+          cd ..
+
+      - name: Get package get_version
+        id: get_version
+        run: |
+          cd ci
+          version=$(uv run get_version.py)
+          cd ..
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: List Dir (for debug)
+        run: |
+          ls .
+          echo '--------'
+          ls artifacts
+          echo '--------'
+          ls -la artifacts
+
+      - name: Create Prerelease via GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo '----create_release----'
+          gh release create "ci-pre-v${{ steps.get_version.outputs.version }}-${{ github.sha }}" \
+            --title "ci-PTB_pre-release+${{ steps.get_version_linux.outputs.version }}+${{ steps.get_datetime.outputs.datetime }} (${{ github.sha }})" \
+            --notes "**這是使用Github Action製作的測試版**
+            - 版本： ${{ steps.get_version.outputs.version }}
+            - 臺北時間： ${{ steps.get_datetime.outputs.datetime }}
+            > UTC時間：臺北時間-8 
+            - github_sha： ${{ github.sha }}" \
+            --prerelease \
+            --repo="${{ github.repository }}"
+          echo '----Get Upload Url----'
+          upload_url_base=$(gh api \
+            repos/{owner}/{repo}/releases/tags/ci-pre-v${{ steps.get_version.outputs.version }}-${{ github.sha }} \
+            --jq '.upload_url')
+          echo 'upload_url_base=$upload_url_base'
+          echo '----upload----'
+          set -euo pipefail
+          upload_url="${upload_url_base%\{*}"
+          echo "Uploading artifacts to $upload_url"
+          shopt -s globstar || true
+          for f in artifacts/**; do
+            if [ -f "$f" ]; then
+              echo "Uploading $f"
+              curl -X POST \
+                -H "Authorization: token $GITHUB_TOKEN" \
+                -H "Content-Type: application/octet-stream" \
+                --data-binary @"$f" \
+                "$upload_url?name=$(basename "$f")"
+            fi
+          done
