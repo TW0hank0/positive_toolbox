@@ -6,3 +6,5 @@
 - [ ] unit conversion
 - [ ] URL檢查
 - [ ] 系統資料(CPU架構，記憶體)
+- [ ] test & coverage
+- [ ] theme (dark + black)
