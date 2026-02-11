@@ -1,4 +1,4 @@
-name: commit-build
+name: release-build
 
 permissions:
   contents: write
