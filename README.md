@@ -1,3 +1,8 @@
 # positive_toolbox
 
-開發中...
+![icon](./icon.png)
+
+使用rust和iced製作的工具。
+
+### 協議
+[AGPL-3.0](./LICENSE)
