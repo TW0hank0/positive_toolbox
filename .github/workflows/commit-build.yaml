@@ -20,23 +20,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Install Rust Toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+      # - name: Install Rust Toolchain
+      #   uses: actions-rs/toolchain@v1
+      #   with:
+      #     toolchain: stable
+      #     override: true
 
       - name: install rustup (Windows)
         if: runner.os == 'Windows'
+        shell: pwsh
         run: |
-          wget "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
+          Invoke-WebRequest -Uri "https://win.rustup.rs" -OutFile "rustup-init.exe"
           ls
-          ./rustup-init.exe
+          .\rustup-init.exe -y --profile minimal
 
       - name: install rustup (Linux)
         if: runner.os == 'Linux'
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          curl https://sh.rustup.rs -o rust-init.sh
+          sh rust-init.sh -y
 
       - name: check rust Install
         run: |
