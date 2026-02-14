@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
-use std::{env, fs, process};
+use std::{env, process};
 
 use iced;
 use iced::widget::{Column, button, column, scrollable, text};
@@ -9,7 +9,8 @@ use image;
 
 //use positive_tool_rs::pt;
 
-use log::{debug, error, info, trace, warn};
+use log;
+//use log::{debug, error, info, trace, warn};
 
 use positive_toolbox::shared;
 
@@ -22,7 +23,7 @@ const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto S
 
 pub fn main() -> iced::Result {
     shared::setup_logger().ok();
-    info!("已設定logger。");
+    log::info!("已設定logger。");
     //
     //let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
     //let icon_path = project_path.clone().join("icon.png");
@@ -47,7 +48,7 @@ pub fn main() -> iced::Result {
     app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
-    debug!("執行iced...");
+    log::debug!("執行iced...");
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)

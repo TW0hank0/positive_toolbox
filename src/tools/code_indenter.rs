@@ -5,21 +5,13 @@ use serde_json;
 
 use image;
 
-use log::{debug, error, info, trace, warn};
+use log;
+//use log::{debug, error, info, trace, warn};
 
 use positive_toolbox::shared;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "code_indenter";
-
-#[derive(Default)]
-pub struct CodeIndenter {
-    orig_code_text_editor_content: iced::widget::text_editor::Content,
-    indented_code: String,
-    indented_code_text_editor_content: iced::widget::text_editor::Content,
-    selected_program_lang: Option<ProgramLanguages>,
-    combo_box_langs: combo_box::State<ProgramLanguages>,
-}
 
 const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
     include_bytes!("../../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
@@ -45,7 +37,7 @@ fn main() -> iced::Result {
     app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
-    info!("啟動iced");
+    log::info!("啟動iced");
     iced::application(CodeIndenter::new, CodeIndenter::update, CodeIndenter::view)
         .theme(CodeIndenter::theme)
         .title(CodeIndenter::title)
@@ -56,6 +48,17 @@ fn main() -> iced::Result {
         .run()
 }
 
+#[derive(Default)]
+pub struct CodeIndenter {
+    orig_code_text_editor_content: iced::widget::text_editor::Content,
+    indented_code: String,
+    indented_code_text_editor_content: iced::widget::text_editor::Content,
+    selected_program_lang: Option<ProgramLanguages>,
+    combo_box_langs: combo_box::State<ProgramLanguages>,
+    window_width: u32,
+    window_height: u32,
+}
+
 #[derive(Debug, Clone)]
 pub enum CodeIndenterMsg {
     OrigCodeChange(iced::widget::text_editor::Action),
@@ -64,6 +67,7 @@ pub enum CodeIndenterMsg {
     IndentCodeNow,
     IndentedCodeChange(iced::widget::text_editor::Action),
     LangSelected(ProgramLanguages),
+    WindowResized { width: u32, height: u32 },
 }
 
 impl CodeIndenter {
@@ -78,6 +82,8 @@ impl CodeIndenter {
             orig_code_text_editor_content: iced::widget::text_editor::Content::new(),
             indented_code: String::new(),
             indented_code_text_editor_content: iced::widget::text_editor::Content::new(),
+            window_width: 1080,
+            window_height: 720,
         };
     }
 
@@ -118,9 +124,7 @@ impl CodeIndenter {
                     "IndentCode -> orig_code: {}",
                     &self.orig_code_text_editor_content.text()
                 );
-                if self.orig_code_text_editor_content.text().trim() == ""
-                    || self.orig_code_text_editor_content.text().is_empty()
-                {
+                if self.orig_code_text_editor_content.text().trim() == "" {
                     self.indented_code = String::new();
                 } else {
                     if self.selected_program_lang.is_some() {
@@ -130,12 +134,12 @@ impl CodeIndenter {
                             self.selected_program_lang.clone().unwrap(),
                         );
                         println!("IndentCode -> indented_code: {}", &self.indented_code);
-                        self.indented_code_text_editor_content =
-                            iced::widget::text_editor::Content::with_text(&self.indented_code);
                     } else {
                         self.indented_code = String::from("未選擇語言！");
                     }
                 }
+                self.indented_code_text_editor_content =
+                    iced::widget::text_editor::Content::with_text(&self.indented_code);
             }
             CodeIndenterMsg::IndentedCodeChange(act) => {
                 match act {
@@ -146,12 +150,16 @@ impl CodeIndenter {
                 };
             }
             CodeIndenterMsg::LangSelected(lang) => self.selected_program_lang = Some(lang),
+            CodeIndenterMsg::WindowResized { width, height } => {
+                self.window_width = width;
+                self.window_height = height;
+            }
         }
     }
 
     pub fn view(&self) -> Column<'_, CodeIndenterMsg> {
         let mut layout = Column::new()
-            .padding(2)
+            .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
         let mut layout_title = Row::new()
@@ -176,7 +184,9 @@ impl CodeIndenter {
         layout = layout.push(layout_title);
         layout = layout.spacing(60);
         //
-        layout = layout.push(
+        let mut layout_lang = Row::new().padding(5);
+        layout_lang = layout_lang.push(text("選擇一種語言：").size(28));
+        layout_lang = layout_lang.push(
             combo_box(
                 &self.combo_box_langs,
                 "選擇一種語言",
@@ -184,19 +194,15 @@ impl CodeIndenter {
                 CodeIndenterMsg::LangSelected,
             )
             .width(180)
+            .line_height(iced::widget::text::LineHeight::Absolute(
+                iced::Pixels::from(30),
+            ))
+            .size(iced::Pixels::from(24))
             .padding(10),
         );
-        layout = layout.spacing(50);
-        let submit_btn = button(
-            text("縮排")
-                .size(24)
-                .align_y(iced::alignment::Vertical::Center)
-                .align_x(iced::alignment::Horizontal::Center),
-        )
-        .on_press(CodeIndenterMsg::IndentCodeNow)
-        .width(150)
-        .height(50);
-        layout = layout.push(submit_btn).spacing(50);
+        layout = layout.push(layout_lang);
+        //
+        layout = layout.spacing(10);
         //
         let mut layout_input_tip = Row::new()
             .width(iced::Length::Fill)
@@ -232,8 +238,20 @@ impl CodeIndenter {
                 .size(26),
         );
 
-        let scrollable_code_blocks = scrollable(layout_code_blocks).height(iced::Length::Fill);
-        layout = layout.push(scrollable_code_blocks);
+        let scrollable_code_blocks = scrollable(layout_code_blocks).height(iced::Length::from(
+            (self.window_height / 2) + (self.window_height / 7),
+        ));
+        layout = layout.push(scrollable_code_blocks).spacing(10);
+        let submit_btn = button(
+            text("縮排")
+                .size(24)
+                .align_y(iced::alignment::Vertical::Center)
+                .align_x(iced::alignment::Horizontal::Center),
+        )
+        .on_press(CodeIndenterMsg::IndentCodeNow)
+        .width(150)
+        .height(50);
+        layout = layout.push(submit_btn).spacing(10);
         return layout;
     }
 
@@ -243,6 +261,23 @@ impl CodeIndenter {
 
     pub fn theme(&self) -> Option<iced::Theme> {
         Some(iced::Theme::Dark)
+    }
+
+    pub fn subscription(&self) -> iced::Subscription<CodeIndenterMsg> {
+        return iced::event::listen_with(|event, _status, _id| match event {
+            iced::Event::Window(wevent) => match wevent {
+                iced::window::Event::Resized(size) => Some(CodeIndenterMsg::WindowResized {
+                    width: size.width as u32,
+                    height: size.height as u32,
+                }),
+                _ => {
+                    return None;
+                }
+            },
+            _ => {
+                return None;
+            }
+        });
     }
 }
 
