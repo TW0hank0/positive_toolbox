@@ -59,11 +59,13 @@ jobs:
 
       - name: zip files (Linux)
         id: zip_files_linux
+        if: runner.os == 'Linux'
         run: |
           file=$(uv run ci/zip_files.py)
           echo "zip_path=$file" >> $GITHUB_OUTPUT
 
       - name: zip files (Windows)
+        if: runner.os == 'Windows'
         id: zip_files_windows
         run: |
           $file = (uv run ci/zip_files.py)
