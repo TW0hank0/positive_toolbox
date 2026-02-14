@@ -133,20 +133,25 @@ jobs:
           echo '--------'
           ls -la artifacts
 
-      - name: Create Prerelease via GitHub CLI
+      - name: Prerelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo '----create_release----'
           gh release create "ci-pre-v${{ steps.get_version.outputs.version }}-${{ github.sha }}" \
-            --title "ci-PTB_pre-release+${{ steps.get_version_linux.outputs.version }}+${{ steps.get_datetime.outputs.datetime }} (${{ github.sha }})" \
+            --title "PTB_ci_pre-release+${{ steps.get_version_linux.outputs.version }}+${{ steps.get_datetime.outputs.datetime }} (${{ github.sha }})" \
             --notes "**這是使用Github Action製作的測試版**
             - 版本： ${{ steps.get_version.outputs.version }}
             - 臺北時間： ${{ steps.get_datetime.outputs.datetime }}
             > UTC時間：臺北時間-8 
             - github_sha： ${{ github.sha }}" \
             --prerelease \
-            --repo="${{ github.repository }}"
+            --repo="${{ github.repository }}" \
+            \
+            commit msg \
+            ``` \
+            github.event.commits[*].message \
+            ```
           echo '----Get Upload Url----'
           upload_url_base=$(gh api \
             repos/{owner}/{repo}/releases/tags/ci-pre-v${{ steps.get_version.outputs.version }}-${{ github.sha }} \
