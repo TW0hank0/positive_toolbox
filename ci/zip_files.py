@@ -33,13 +33,16 @@ def main():
         case _:
             pf = "unknown"
     with zipfile.ZipFile(
-        f"positive_toolbox_{version}_{pf}",
+        os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            f"positive_toolbox_{version}_{pf}.zip",
+        ),
         mode="w",
         compression=zipfile.ZIP_DEFLATED,
     ) as zipf:
         for file in include_files:
             zipf.write(file, arcname=os.path.basename(file))
-    print(f"positive_toolbox_{version}_{pf}")
+    print(f"positive_toolbox_{version}_{pf}.zip")
 
 
 if __name__ == "__main__":
