@@ -19,11 +19,23 @@ def main():
         "release",
     )
     for file in os.listdir(target_path):
-        if (
-            os.path.splitext(file)[1] == "exe"
-            or os.path.splitext(file)[1] == ""
-        ):
-            include_files.append(os.path.join(target_path, file))
+        full_file_path = os.path.join(target_path, file)
+        if os.path.isfile(full_file_path) is True:
+            match platform.system():
+                case "Linux":
+                    if (
+                        os.path.splitext(full_file_path)[1] == ""
+                    ) and (
+                        len(os.path.splitext(full_file_path)[1]) > 1
+                    ):
+                        include_files.append(full_file_path)
+                case "Windows":
+                    if (
+                        os.path.splitext(full_file_path)[1] == "exe"
+                    ) and (
+                        len(os.path.splitext(full_file_path)[1]) > 1
+                    ):
+                        include_files.append(full_file_path)
     #
     match platform.system():
         case "Linux":
