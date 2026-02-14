@@ -77,6 +77,12 @@ impl About {
         layout = layout.push(layout_title);
         layout = layout.spacing(60);
         //
+        layout = layout.push(text(format!(
+            "{} v{}",
+            shared::PROJECT_NAME,
+            shared::PROJECT_VERSION
+        )));
+        //
         let license_text = text(LICENSE).size(20);
         //
         let scrollable_license_text = scrollable(license_text)

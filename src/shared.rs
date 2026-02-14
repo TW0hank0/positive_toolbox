@@ -15,6 +15,9 @@ const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
 
 pub const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
+pub const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
+pub const PROJECT_VERSION: &str = env!("CARGO_PKG_VERSION");
+
 pub fn init() -> (Option<iced::window::Icon>,) {
     let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
     //
