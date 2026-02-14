@@ -3,46 +3,45 @@ use iced::widget::{Column, Row, button, combo_box, scrollable, text, text_editor
 
 use serde_json;
 
-use image;
+//use image;
 
 use log;
 //use log::{debug, error, info, trace, warn};
 
 use positive_toolbox::shared;
+use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "code_indenter";
 
-const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
-    include_bytes!("../../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
-const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
+//const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] = include_bytes!("../../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+//const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
 fn main() -> iced::Result {
-    shared::setup_logger().ok();
+    let (icon,) = shared::init();
     //
-    const ICON_PNG: &[u8] = include_bytes!("../../icon.png");
+    /* const ICON_PNG: &[u8] = include_bytes!("../../icon.png");
     let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
         .unwrap()
         .into_rgba8();
-    let (img_width, img_height) = img.dimensions();
+    let (img_width, img_height) = img.dimensions(); */
     let mut window_settings = iced::window::Settings::default();
     window_settings.maximized = true;
-    window_settings.icon =
-        iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
+    window_settings.icon = icon;
     window_settings.min_size = Some(iced::Size::new(540.0, 360.0));
     //
-    let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
+    //let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
     let mut app_settings = iced::Settings::default();
     app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
     app_settings.default_text_size = iced::Pixels::from(26);
-    app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
+    //app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     log::info!("啟動iced");
     iced::application(CodeIndenter::new, CodeIndenter::update, CodeIndenter::view)
         .theme(CodeIndenter::theme)
         .title(CodeIndenter::title)
-        .font(FONT_NOTO_SANS_REGULAR_BYTES)
+        //.font(FONT_NOTO_SANS_REGULAR_BYTES)
         .window(window_settings)
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)

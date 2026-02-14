@@ -5,7 +5,7 @@ use std::{env, process};
 use iced;
 use iced::widget::{Column, button, column, scrollable, text};
 
-use image;
+//use image;
 
 //use positive_tool_rs::pt;
 
@@ -13,46 +13,43 @@ use log;
 //use log::{debug, error, info, trace, warn};
 
 use positive_toolbox::shared;
+use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
-const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
-    include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+//const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] = include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
-const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
-
-// 設定 log
+//const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
 pub fn main() -> iced::Result {
-    shared::setup_logger().ok();
+    let (icon,) = shared::init();
     log::info!("已設定logger。");
     //
     //let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
     //let icon_path = project_path.clone().join("icon.png");
     //let icon_path_str = icon_path.to_str().unwrap();
-    const ICON_PNG: &[u8] = include_bytes!("../icon.png");
-    //const ICON_PNG: &[u8] = include_bytes!(icon_path_str);
+    //const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+    /*
     let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
         .unwrap()
         .into_rgba8();
-    let (img_width, img_height) = img.dimensions();
+    let (img_width, img_height) = img.dimensions(); */
     let mut window_settings = iced::window::Settings::default();
     window_settings.maximized = true;
-    window_settings.icon =
-        iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
+    window_settings.icon = icon;
     window_settings.min_size = Some(iced::Size::new(1080.0, 720.0));
     window_settings.position = iced::window::Position::Centered;
     //
-    let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
+    //let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
     let mut app_settings = iced::Settings::default();
     app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
     app_settings.default_text_size = iced::Pixels::from(26);
-    app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
+    //app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     log::debug!("執行iced...");
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
-        .font(FONT_NOTO_SANS_REGULAR_BYTES)
+        //font(FONT_NOTO_SANS_REGULAR_BYTES)
         .window(window_settings)
         .settings(app_settings)
         .default_font(FONT_NOTO_SANS_REG)
