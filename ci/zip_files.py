@@ -25,7 +25,7 @@ def main():
         ):
             include_files.append(os.path.join(target_path, file))
     #
-    match platform.platform():
+    match platform.system():
         case "Linux":
             pf = "linux"
         case "Windows":
