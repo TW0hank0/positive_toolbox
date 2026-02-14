@@ -10,3 +10,4 @@
 - [ ] 系統資料(CPU架構，記憶體)
 - [ ] test & coverage
 - [ ] theme (dark + black)
+- [ ] 訊息通知UI (log紀錄UI)
