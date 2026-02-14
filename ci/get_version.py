@@ -8,7 +8,7 @@ def main():
         "rb",
     ) as f:
         d = tomllib.load(f)
-    v = d["project"]["version"]
+    v = d["package"]["version"]
     print(v)
 
 
