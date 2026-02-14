@@ -23,17 +23,11 @@ def main():
         if os.path.isfile(full_file_path) is True:
             match platform.system():
                 case "Linux":
-                    if (
-                        os.path.splitext(full_file_path)[1] == ""
-                    ) and (
-                        len(os.path.splitext(full_file_path)[1]) > 1
-                    ):
+                    if len(file.split(".")) == 1:
                         include_files.append(full_file_path)
                 case "Windows":
-                    if (
-                        os.path.splitext(full_file_path)[1] == "exe"
-                    ) and (
-                        len(os.path.splitext(full_file_path)[1]) > 1
+                    if (file.split(".")[1] == "exe") and (
+                        len(file.split(".")) > 1
                     ):
                         include_files.append(full_file_path)
     #
