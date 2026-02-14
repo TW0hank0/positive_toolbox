@@ -29,6 +29,7 @@ fn main() -> iced::Result {
     window_settings.maximized = true;
     window_settings.icon =
         iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
+    window_settings.min_size = Some(iced::Size::new(540.0, 360.0));
     //
     let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
     let mut app_settings = iced::Settings::default();
@@ -237,7 +238,6 @@ impl CodeIndenter {
                 .placeholder("縮排後的程式碼輸出...")
                 .size(26),
         );
-
         let scrollable_code_blocks = scrollable(layout_code_blocks).height(iced::Length::from(
             (self.window_height / 2) + (self.window_height / 7),
         ));
@@ -256,7 +256,7 @@ impl CodeIndenter {
     }
 
     pub fn title(&self) -> String {
-        return String::from("code_indenter — positive_toolbox");
+        return String::from(format!("{} — {}", TOOL_NAME, PROJECT_NAME));
     }
 
     pub fn theme(&self) -> Option<iced::Theme> {

@@ -1,0 +1,107 @@
+use iced;
+use iced::widget::{Column, Row, scrollable, text};
+
+use image;
+
+use log;
+//use log::{debug, error, info, trace, warn};
+
+use positive_toolbox::shared;
+
+const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
+const TOOL_NAME: &str = "code_indenter";
+
+const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
+    include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
+const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+const LICENSE: &str = include_str!("../LICENSE");
+
+fn main() -> iced::Result {
+    shared::setup_logger().ok();
+    //
+    let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
+        .unwrap()
+        .into_rgba8();
+    let (img_width, img_height) = img.dimensions();
+    let mut window_settings = iced::window::Settings::default();
+    window_settings.maximized = true;
+    window_settings.icon =
+        iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
+    window_settings.min_size = Some(iced::Size::new(540.0, 360.0));
+    //
+    let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
+    let mut app_settings = iced::Settings::default();
+    app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
+    app_settings.default_text_size = iced::Pixels::from(26);
+    app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
+    app_settings.default_font = FONT_NOTO_SANS_REG;
+    //
+    log::info!("啟動iced");
+    iced::application(About::new, About::update, About::view)
+        .theme(About::theme)
+        .title(About::title)
+        .font(FONT_NOTO_SANS_REGULAR_BYTES)
+        .window(window_settings)
+        .default_font(FONT_NOTO_SANS_REG)
+        .settings(app_settings)
+        .run()
+}
+
+#[derive(Default)]
+pub struct About {}
+
+#[derive(Debug, Clone)]
+pub enum AboutMsg {}
+
+impl About {
+    pub fn new() -> Self {
+        return Self {};
+    }
+
+    pub fn update(&mut self, _message: AboutMsg) {}
+
+    pub fn view(&self) -> Column<'_, AboutMsg> {
+        let mut layout = Column::new()
+            .padding(5)
+            .align_x(iced::alignment::Horizontal::Left)
+            .width(iced::Length::Fill);
+        let mut layout_title = Row::new()
+            .padding(10)
+            .align_y(iced::alignment::Vertical::Bottom)
+            .height(90);
+        layout_title = layout_title.push(
+            text(TOOL_NAME)
+                .size(50)
+                .align_x(iced::alignment::Horizontal::Left)
+                .align_y(iced::alignment::Vertical::Bottom)
+                .height(90),
+        );
+        layout_title = layout_title.spacing(10);
+        layout_title = layout_title.push(
+            text(format!("from {PROJECT_NAME}"))
+                .size(20)
+                .align_x(iced::alignment::Horizontal::Left)
+                .align_y(iced::alignment::Vertical::Bottom)
+                .height(90),
+        );
+        layout = layout.push(layout_title);
+        layout = layout.spacing(60);
+        //
+        let license_text = text(LICENSE).size(20);
+        //
+        let scrollable_license_text = scrollable(license_text)
+            .height(iced::Length::Fill)
+            .width(iced::Length::Fill);
+        layout = layout.push(scrollable_license_text).spacing(10);
+        return layout;
+    }
+
+    pub fn title(&self) -> String {
+        return String::from(format!("{} — {}", TOOL_NAME, PROJECT_NAME));
+    }
+
+    pub fn theme(&self) -> Option<iced::Theme> {
+        Some(iced::Theme::Dark)
+    }
+}

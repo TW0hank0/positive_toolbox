@@ -5,6 +5,8 @@ use time::{OffsetDateTime, UtcOffset};
 
 use positive_tool_rs::pt;
 
+pub const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+
 pub fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
     // 取得本地時區偏移（需啟用 time crate 的 local-offset feature）
     let time_offset: UtcOffset =

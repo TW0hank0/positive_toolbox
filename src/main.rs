@@ -70,6 +70,7 @@ struct Toolbox {
 enum ToolboxMsg {
     OpenCodeIndenter,
     OpenUnitConversion,
+    OpenAbout,
 }
 
 struct Tool {
@@ -83,6 +84,7 @@ impl Toolbox {
         let mut tools: HashMap<&str, ToolboxMsg> = HashMap::new();
         tools.insert("單位轉換器 (開發中)", ToolboxMsg::OpenUnitConversion);
         tools.insert("程式碼縮排", ToolboxMsg::OpenCodeIndenter);
+        tools.insert("關於", ToolboxMsg::OpenAbout);
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
         for tool in tools {
@@ -98,20 +100,18 @@ impl Toolbox {
         }
         //
         let project_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
-        let tool_names: Vec<&str> = vec!["code_indenter", "unit_conversion"];
+        let tool_names: Vec<&str> = vec!["code_indenter", "unit_conversion", "about"];
         let mut tool_paths = HashMap::new();
         for tool_name in tool_names {
-            let tool_path: PathBuf;
+            let mut tool_path: PathBuf;
+            tool_path = project_path.clone().join(tool_name);
             #[cfg(target_os = "windows")]
             {
-                tool_path = project_path.clone().join(format!("{}.exe", tool_name))
-            }
-            #[cfg(target_family = "unix")]
-            {
-                tool_path = project_path.clone().join(tool_name)
+                tool_path = PathBuf::from(format!("{}.exe", tool_path.to_str().unwrap()));
             }
             tool_paths.insert(String::from(tool_name), tool_path);
         }
+        //
         Self {
             tool_paths: tool_paths,
             tools_ordered: tools_ordered,
@@ -129,6 +129,11 @@ impl Toolbox {
                 process::Command::new(self.tool_paths.get("unit_conversion").unwrap().clone())
                     .spawn()
                     .unwrap();
+            }
+            ToolboxMsg::OpenAbout => {
+                process::Command::new(self.tool_paths.get("about").unwrap().clone())
+                    .spawn()
+                    .ok();
             }
         }
     }
@@ -155,16 +160,6 @@ impl Toolbox {
         }
         //
         let scrollable_tools = scrollable(layout_tool);
-        //let container_tool = container(scrollable_tools).align_left(20).;
-        // FIXME: Need Fix
-        /* let mut container_tool_palette = iced::theme::Palette::DARK;
-        container_tool_palette.background = iced::Color::BLACK;
-        container_tool.class(iced::theme::Theme::custom(
-            "ptb_main_container_tool",
-            container_tool_palette,
-        ));
-        container_tool. */
-        //layout = layout.push(container_tool);
         layout = layout.push(scrollable_tools);
         return layout;
     }
