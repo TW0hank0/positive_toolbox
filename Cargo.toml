@@ -3,6 +3,7 @@ name = "positive_toolbox"
 version = "0.1.0"
 edition = "2024"
 default-run = "positive_toolbox"
+license = "AGPL-3.0-only"
 
 [[bin]]
 name = "positive_toolbox"
@@ -18,7 +19,11 @@ path = "src/tools/unit_conversion.rs"
 
 [[bin]]
 name = "about"
-path = "src/about.rs"
+path = "src/about/about_main.rs"
+
+[[bin]]
+name = "about_show_agpl3"
+path = "src/about/about_show_agpl3.rs"
 
 [dependencies]
 iced = { version = "0.14.0", features = [
@@ -34,3 +39,9 @@ image = "0.25.9"
 log = "0.4.28"
 time = { version = "0.3.47", features = ["local-offset", "formatting"] }
 time-macros = { version = "0.2.27" }
+
+[build-dependencies]
+cargo_metadata = "0.19"
+serde = { version = "1.0", features = ["derive"] }
+heck = "0.5"
+positive_tool_rs = { git = "https://github.com/TW0hank0/positive_tool_rs" }

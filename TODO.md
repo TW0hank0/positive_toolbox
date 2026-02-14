@@ -3,6 +3,7 @@
 ### v0.1.0
 - [ ] github workflow
 - [ ] unit conversion
+- [ ] about page
 
 ### 未來計劃
 

@@ -1,18 +1,15 @@
 use iced;
-use iced::widget::{Column, Row, scrollable, text};
-
-//use image;
+use iced::widget::{Column, scrollable, text};
 
 use log;
-//use log::{debug, error, info, trace, warn};
 
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
-const TOOL_NAME: &str = "about";
+const TOOL_NAME: &str = "about_show_agpl3";
 
-const LICENSE: &str = include_str!("../LICENSE");
+const LICENSE: &str = include_str!("../../LICENSE");
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();
@@ -55,36 +52,7 @@ impl About {
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
-        let mut layout_title = Row::new()
-            .padding(10)
-            .align_y(iced::alignment::Vertical::Bottom)
-            .height(90);
-        layout_title = layout_title.push(
-            text(TOOL_NAME)
-                .size(50)
-                .align_x(iced::alignment::Horizontal::Left)
-                .align_y(iced::alignment::Vertical::Bottom)
-                .height(90),
-        );
-        layout_title = layout_title.spacing(10);
-        layout_title = layout_title.push(
-            text(format!("from {PROJECT_NAME}"))
-                .size(20)
-                .align_x(iced::alignment::Horizontal::Left)
-                .align_y(iced::alignment::Vertical::Bottom)
-                .height(90),
-        );
-        layout = layout.push(layout_title);
-        layout = layout.spacing(60);
-        //
-        layout = layout.push(text(format!(
-            "{} v{}",
-            shared::PROJECT_NAME,
-            shared::PROJECT_VERSION
-        )));
-        //
-        let license_text = text(LICENSE).size(20);
-        //
+        let license_text = text(LICENSE).size(18).color(iced::Color::BLACK);
         let scrollable_license_text = scrollable(license_text)
             .height(iced::Length::Fill)
             .width(iced::Length::Fill);

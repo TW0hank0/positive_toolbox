@@ -5,3 +5,6 @@ target/
 
 # workflow make
 positive_toolbox_0.1.0_*.zip
+
+# build.rs make temp licenses file
+src/licenses.rs
