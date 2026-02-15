@@ -67,7 +67,7 @@ struct Toolbox {
 #[derive(Debug, Clone)]
 enum ToolboxMsg {
     OpenCodeIndenter,
-    OpenUnitConversion,
+    OpenSystemInfo,
     OpenAbout,
 }
 
@@ -76,7 +76,7 @@ impl std::fmt::Display for ToolboxMsg {
         f.write_str(match self {
             Self::OpenAbout => "about",
             Self::OpenCodeIndenter => "code_indenter",
-            Self::OpenUnitConversion => "unit_conversion",
+            Self::OpenSystemInfo => "system_info",
         })
     }
 }
@@ -90,25 +90,6 @@ struct Tool {
 
 impl Toolbox {
     pub fn new() -> Self {
-        //
-        /* let mut tools: HashMap<&str, ToolboxMsg> = HashMap::new();
-        tools.insert("單位轉換器 (開發中)", ToolboxMsg::OpenUnitConversion);
-        tools.insert("程式碼縮排", ToolboxMsg::OpenCodeIndenter);
-        tools.insert("關於", ToolboxMsg::OpenAbout);
-        let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
-        let mut tool_count: usize = 0;
-        for tool in tools {
-            let (tool_name, tool_msg) = tool;
-            tools_ordered.insert(
-                tool_count,
-                Tool {
-                    name: tool_name,
-                    msg: tool_msg,
-                },
-            );
-            tool_count += 1;
-        } */
-        //
         let mut all_tool: Vec<Tool> = Vec::new();
         all_tool.push(Tool {
             name: "程式碼縮排",
@@ -121,9 +102,9 @@ impl Toolbox {
             msg: ToolboxMsg::OpenAbout,
         });
         all_tool.push(Tool {
-            name: "單位轉換器 (開發中)",
-            file_name: "unit_conversion",
-            msg: ToolboxMsg::OpenUnitConversion,
+            name: "系統資訊 (開發中)",
+            file_name: "system_info",
+            msg: ToolboxMsg::OpenSystemInfo,
         });
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
@@ -132,18 +113,6 @@ impl Toolbox {
             tool_count += 1;
         }
         //
-        /* let project_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
-        let tool_names: Vec<&str> = vec!["code_indenter", "unit_conversion", "about"];
-        let mut tool_paths = HashMap::new();
-        for tool_name in tool_names {
-            let mut tool_path: PathBuf;
-            tool_path = project_path.clone().join(tool_name);
-            #[cfg(target_os = "windows")]
-            {
-                tool_path = PathBuf::from(format!("{}.exe", tool_path.to_str().unwrap()));
-            }
-            tool_paths.insert(String::from(tool_name), tool_path);
-        } */
         let exec_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
         let mut tool_paths = HashMap::new();
         for tool in all_tool.clone() {
@@ -163,23 +132,6 @@ impl Toolbox {
     }
 
     pub fn update(&mut self, message: ToolboxMsg) {
-        /* match message {
-            ToolboxMsg::OpenCodeIndenter => {
-                process::Command::new(self.tool_paths.get("code_indenter").unwrap().clone())
-                    .spawn()
-                    .unwrap();
-            }
-            ToolboxMsg::OpenUnitConversion => {
-                process::Command::new(self.tool_paths.get("unit_conversion").unwrap().clone())
-                    .spawn()
-                    .unwrap();
-            }
-            ToolboxMsg::OpenAbout => {
-                process::Command::new(self.tool_paths.get("about").unwrap().clone())
-                    .spawn()
-                    .ok();
-            }
-        } */
         let file_name = format!("{}", message);
         process::Command::new(self.tool_paths.get(&file_name).unwrap().clone())
             .spawn()

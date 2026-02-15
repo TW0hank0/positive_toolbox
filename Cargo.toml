@@ -15,8 +15,8 @@ name = "code_indenter"
 path = "src/tools/code_indenter.rs"
 
 [[bin]]
-name = "unit_conversion"
-path = "src/tools/unit_conversion.rs"
+name = "system_info"
+path = "src/tools/system_info.rs"
 
 [[bin]]
 name = "about"
@@ -42,6 +42,7 @@ time = { version = "0.3.47", features = ["local-offset", "formatting"] }
 time-macros = { version = "0.2.27" }
 open = "5.3.3"
 quick-xml = { version = "0.39.0", features = ["serialize"] }
+sysinfo = "0.38.1"
 
 [build-dependencies]
 cargo_metadata = "0.19"

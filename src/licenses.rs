@@ -452,6 +452,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["The Servo Project Developers"] 
     },
     LicenseInfo {
+        name: "core-graphics",
+        version: "0.24.0",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["The Servo Project Developers"] 
+    },
+    LicenseInfo {
         name: "core-graphics-types",
         version: "0.1.3",
         license: "MIT OR Apache-2.0",
@@ -1293,7 +1299,7 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "mundy",
-        version: "0.2.2",
+        version: "0.2.0",
         license: "Apache-2.0",
         authors: vec![] 
     },
@@ -1338,6 +1344,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.3.0",
         license: "MIT",
         authors: vec!["Luca Barbato <lu_zero@gentoo.org>"] 
+    },
+    LicenseInfo {
+        name: "ntapi",
+        version: "0.4.3",
+        license: "Apache-2.0 OR MIT",
+        authors: vec!["MSxDOS <melcodos@gmail.com>"] 
     },
     LicenseInfo {
         name: "num-bigint",
@@ -1431,7 +1443,7 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "objc2-app-kit",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
@@ -1443,7 +1455,7 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "objc2-cloud-kit",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
@@ -1461,19 +1473,19 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "objc2-core-data",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
     LicenseInfo {
         name: "objc2-core-foundation",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
     LicenseInfo {
         name: "objc2-core-graphics",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
@@ -1485,7 +1497,7 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "objc2-core-image",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
@@ -1493,18 +1505,6 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         name: "objc2-core-location",
         version: "0.2.2",
         license: "MIT",
-        authors: vec![] 
-    },
-    LicenseInfo {
-        name: "objc2-core-text",
-        version: "0.3.2",
-        license: "Zlib OR Apache-2.0 OR MIT",
-        authors: vec![] 
-    },
-    LicenseInfo {
-        name: "objc2-core-video",
-        version: "0.3.2",
-        license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
     LicenseInfo {
@@ -1521,13 +1521,19 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "objc2-foundation",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "MIT",
         authors: vec![] 
     },
     LicenseInfo {
+        name: "objc2-io-kit",
+        version: "0.3.1",
+        license: "Zlib OR Apache-2.0 OR MIT",
+        authors: vec![] 
+    },
+    LicenseInfo {
         name: "objc2-io-surface",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
@@ -1551,7 +1557,7 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "objc2-quartz-core",
-        version: "0.3.2",
+        version: "0.3.1",
         license: "Zlib OR Apache-2.0 OR MIT",
         authors: vec![] 
     },
@@ -2109,7 +2115,7 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "softbuffer",
-        version: "0.4.8",
+        version: "0.4.6",
         license: "MIT OR Apache-2.0",
         authors: vec![] 
     },
@@ -2160,6 +2166,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.3.2",
         license: "MIT OR Apache-2.0",
         authors: vec!["1Password"] 
+    },
+    LicenseInfo {
+        name: "sysinfo",
+        version: "0.38.1",
+        license: "MIT",
+        authors: vec!["Guillaume Gomez <guillaume1.gomez@gmail.com>"] 
     },
     LicenseInfo {
         name: "tempfile",
@@ -2595,7 +2607,19 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "windows",
+        version: "0.61.3",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows",
         version: "0.62.2",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
+        name: "windows-collections",
+        version: "0.2.0",
         license: "MIT OR Apache-2.0",
         authors: vec![] 
     },
@@ -2613,7 +2637,19 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "windows-core",
+        version: "0.61.2",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-core",
         version: "0.62.2",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
+        name: "windows-future",
+        version: "0.2.1",
         license: "MIT OR Apache-2.0",
         authors: vec![] 
     },
@@ -2649,7 +2685,19 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "windows-link",
+        version: "0.1.3",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-link",
         version: "0.2.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
+        name: "windows-numerics",
+        version: "0.2.0",
         license: "MIT OR Apache-2.0",
         authors: vec![] 
     },
@@ -2667,6 +2715,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "windows-result",
+        version: "0.3.4",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-result",
         version: "0.4.1",
         license: "MIT OR Apache-2.0",
         authors: vec![] 
@@ -2674,6 +2728,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     LicenseInfo {
         name: "windows-strings",
         version: "0.1.0",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-strings",
+        version: "0.4.2",
         license: "MIT OR Apache-2.0",
         authors: vec!["Microsoft"] 
     },
@@ -2716,6 +2776,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     LicenseInfo {
         name: "windows-targets",
         version: "0.52.6",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-threading",
+        version: "0.1.0",
         license: "MIT OR Apache-2.0",
         authors: vec!["Microsoft"] 
     },
