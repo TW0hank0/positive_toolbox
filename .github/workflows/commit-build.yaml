@@ -146,12 +146,7 @@ jobs:
             > UTC時間：臺北時間-8 
             - github_sha： ${{ github.sha }}" \
             --prerelease \
-            --repo="${{ github.repository }}" \
-            \
-            commit msg \
-            ``` \
-            github.event.commits[*].message \
-            ```
+            --repo="${{ github.repository }}"
           echo '----Get Upload Url----'
           upload_url_base=$(gh api \
             repos/{owner}/{repo}/releases/tags/ci-pre-v${{ steps.get_version.outputs.version }}-${{ github.sha }} \
