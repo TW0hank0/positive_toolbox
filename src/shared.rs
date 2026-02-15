@@ -64,3 +64,26 @@ pub fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+pub fn view_title<Message>(tool_name: String) -> iced::widget::Row<'static, Message> {
+    let mut layout_title = iced::widget::Row::new()
+        .padding(10)
+        .align_y(iced::alignment::Vertical::Bottom)
+        .height(90);
+    layout_title = layout_title.push(
+        iced::widget::text(tool_name)
+            .size(50)
+            .align_x(iced::alignment::Horizontal::Left)
+            .align_y(iced::alignment::Vertical::Bottom)
+            .height(90),
+    );
+    layout_title = layout_title.spacing(10);
+    layout_title = layout_title.push(
+        iced::widget::text(format!("from {PROJECT_NAME}"))
+            .size(20)
+            .align_x(iced::alignment::Horizontal::Left)
+            .align_y(iced::alignment::Vertical::Bottom)
+            .height(90),
+    );
+    return layout_title;
+}

@@ -78,7 +78,7 @@ impl About {
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
         layout = layout.push(button("以預設開啟檔案").on_press(AboutMsg::OpenFile));
-        let license_text = text(LICENSE).size(22);
+        let license_text = text(LICENSE).size(18);
         let scrollable_license_text = scrollable(license_text)
             .height(iced::Length::Fill)
             .width(iced::Length::Fill);

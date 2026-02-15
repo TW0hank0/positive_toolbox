@@ -3,7 +3,7 @@ use iced::widget::{Column, Row, button, combo_box, scrollable, text, text_editor
 
 use serde_json;
 
-//use image;
+use quick_xml;
 
 use log;
 //use log::{debug, error, info, trace, warn};
@@ -72,10 +72,7 @@ pub enum CodeIndenterMsg {
 
 impl CodeIndenter {
     pub fn new() -> Self {
-        let combo_box_langs = combo_box::State::with_selection(
-            vec![ProgramLanguages::Json],
-            Some(&ProgramLanguages::Json),
-        );
+        let combo_box_langs = combo_box::State::with_selection(ProgramLanguages::all(), None);
         return Self {
             selected_program_lang: None,
             combo_box_langs: combo_box_langs,
@@ -283,12 +280,20 @@ impl CodeIndenter {
 #[derive(Clone, Debug)]
 pub enum ProgramLanguages {
     Json,
+    Xml,
+}
+
+impl ProgramLanguages {
+    pub fn all() -> Vec<ProgramLanguages> {
+        vec![ProgramLanguages::Json, ProgramLanguages::Xml]
+    }
 }
 
 impl std::fmt::Display for ProgramLanguages {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(match self {
             Self::Json => "json",
+            Self::Xml => "xml (開發中)",
         })
     }
 }
@@ -304,12 +309,31 @@ fn code_indenter(orig_code: String, lang: ProgramLanguages) -> (bool, String) {
                             return (true, i2);
                         }
                         Err(e) => {
-                            return (false, format!("錯誤！err-msg:{}", e));
+                            return (false, format!("錯誤！錯誤訊息：{}", e));
                         }
                     };
                 }
                 Err(e) => {
-                    return (false, format!("錯誤！err-msg:{}", e));
+                    return (false, format!("錯誤！錯誤訊息：{}", e));
+                }
+            }
+        }
+        ProgramLanguages::Xml => {
+            let result_i: Result<serde_json::Value, quick_xml::DeError> =
+                quick_xml::de::from_str(&orig_code);
+            match result_i {
+                Ok(i) => {
+                    match quick_xml::se::to_string_with_root("root", &i) {
+                        Ok(i2) => {
+                            return (true, i2);
+                        }
+                        Err(e) => {
+                            return (false, format!("錯誤！錯誤訊息：{}", e));
+                        }
+                    };
+                }
+                Err(e) => {
+                    return (false, format!("錯誤！錯誤訊息：{}", e));
                 }
             }
         }
