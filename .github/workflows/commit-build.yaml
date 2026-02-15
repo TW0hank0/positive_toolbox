@@ -52,10 +52,10 @@ jobs:
         run: |
           uv self version
 
-      - name: debug build
-        run: cargo build
+      #- name: debug build
+        #run: cargo build
 
-      - name: release build
+      - name: build
         run: cargo build --release
 
       - name: zip files (Linux)
