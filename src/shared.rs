@@ -14,6 +14,12 @@ const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
     include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
 pub const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
+pub const FONT_NOTO_SANS_BOLD: iced::font::Font = iced::font::Font {
+    family: iced::font::Family::Name("Noto Sans TC"),
+    weight: iced::font::Weight::Bold,
+    stretch: iced::font::Stretch::Normal,
+    style: iced::font::Style::Normal,
+};
 
 pub const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 pub const PROJECT_VERSION: &str = env!("CARGO_PKG_VERSION");

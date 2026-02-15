@@ -9,7 +9,7 @@ use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about_show_agpl3";
 
-const LICENSE: &str = include_str!("../../LICENSE");
+const LICENSE: &str = include_str!("../../assets/licenses/LICENSE_AGPL");
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();
@@ -52,7 +52,7 @@ impl About {
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
-        let license_text = text(LICENSE).size(18).color(iced::Color::BLACK);
+        let license_text = text(LICENSE).size(22);
         let scrollable_license_text = scrollable(license_text)
             .height(iced::Length::Fill)
             .width(iced::Length::Fill);

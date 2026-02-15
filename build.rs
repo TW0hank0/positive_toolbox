@@ -48,6 +48,21 @@ fn main() {
 
     let content = generate_rust_code(&licenses);
     fs::write(dest_path, content).expect("Failed to write licenses.rs");
+    //
+    let status = std::process::Command::new("cargo")
+        .args(vec![
+            "about",
+            "generate",
+            "--output-file",
+            "ThirdPartyLicense.html",
+            ".\\about.hbs",
+            "--threshold 1.0",
+        ])
+        .status()
+        .unwrap();
+    if !status.success() {
+        println!("error: cargo-about")
+    }
 }
 
 #[derive(Debug)]

@@ -2,7 +2,7 @@
 
 ![icon](./icon.png)
 
-使用rust和iced製作。
+使用rust和iced製作，面向使用者的工具。
 
 ### 協議
 [AGPL-3.0](./LICENSE)

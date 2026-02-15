@@ -12,3 +12,4 @@
 - [ ] test & coverage
 - [ ] theme (dark + black)
 - [ ] 訊息通知UI (log紀錄UI)
+- [ ] about_show_license (用CLI控制LICENSE內容，合併成一個可執行檔)

@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 default-run = "positive_toolbox"
 license = "AGPL-3.0-only"
+description = "面向使用者的工具"
 
 [[bin]]
 name = "positive_toolbox"
@@ -21,9 +22,9 @@ path = "src/tools/unit_conversion.rs"
 name = "about"
 path = "src/about/about_main.rs"
 
-[[bin]]
-name = "about_show_agpl3"
-path = "src/about/about_show_agpl3.rs"
+# [[bin]]
+# name = "about_show_AGPL-3"
+# path = "src/about/about_show_AGPL-3.rs"
 
 [dependencies]
 iced = { version = "0.14.0", features = [
