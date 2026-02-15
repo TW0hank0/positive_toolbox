@@ -1,15 +1,17 @@
 use iced;
-use iced::widget::{Column, scrollable, text};
+use iced::widget::{Column, button, scrollable, text};
 
 use log;
+
+use open;
 
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
-const TOOL_NAME: &str = "about_show_agpl3";
+const TOOL_NAME: &str = "about_show_full_license";
 
-const LICENSE: &str = include_str!("../../assets/licenses/LICENSE_AGPL");
+const LICENSE: &str = include_str!("../../ThirdPartyLicense.html");
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();
@@ -38,20 +40,44 @@ fn main() -> iced::Result {
 pub struct About {}
 
 #[derive(Debug, Clone)]
-pub enum AboutMsg {}
+pub enum AboutMsg {
+    OpenFile,
+}
 
 impl About {
     pub fn new() -> Self {
+        std::fs::write(
+            std::env::current_exe()
+                .unwrap()
+                .parent()
+                .unwrap()
+                .join("ThirdPartyLicense.html"),
+            LICENSE,
+        )
+        .ok();
         return Self {};
     }
 
-    pub fn update(&mut self, _message: AboutMsg) {}
+    pub fn update(&mut self, message: AboutMsg) {
+        match message {
+            AboutMsg::OpenFile => {
+                open::that_in_background(
+                    std::env::current_exe()
+                        .unwrap()
+                        .parent()
+                        .unwrap()
+                        .join("ThirdPartyLicense.html"),
+                );
+            }
+        }
+    }
 
     pub fn view(&self) -> Column<'_, AboutMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
+        layout = layout.push(button("以預設開啟檔案").on_press(AboutMsg::OpenFile));
         let license_text = text(LICENSE).size(22);
         let scrollable_license_text = scrollable(license_text)
             .height(iced::Length::Fill)

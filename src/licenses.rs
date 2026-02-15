@@ -1070,6 +1070,18 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Luca Barbato <lu_zero@gentoo.org>"] 
     },
     LicenseInfo {
+        name: "is-docker",
+        version: "0.2.0",
+        license: "MIT",
+        authors: vec!["Sean Larkin <TheLarkInn@users.noreply.github.com>"] 
+    },
+    LicenseInfo {
+        name: "is-wsl",
+        version: "0.4.0",
+        license: "MIT",
+        authors: vec!["Sean Larkin <TheLarkInn@users.noreply.github.com>"] 
+    },
+    LicenseInfo {
         name: "itertools",
         version: "0.14.0",
         license: "MIT OR Apache-2.0",
@@ -1574,6 +1586,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Aleksey Kladov <aleksey.kladov@gmail.com>"] 
     },
     LicenseInfo {
+        name: "open",
+        version: "5.3.3",
+        license: "MIT",
+        authors: vec!["Sebastian Thiel <byronimo@gmail.com>"] 
+    },
+    LicenseInfo {
         name: "orbclient",
         version: "0.3.50",
         license: "MIT",
@@ -1632,6 +1650,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.1.1",
         license: "MIT OR Apache-2.0",
         authors: vec!["Aditya Kumar <git@adityais.dev>", "David Tolnay <dtolnay@gmail.com>"] 
+    },
+    LicenseInfo {
+        name: "pathdiff",
+        version: "0.2.3",
+        license: "MIT/Apache-2.0",
+        authors: vec!["Manish Goregaokar <manishsmail@gmail.com>"] 
     },
     LicenseInfo {
         name: "percent-encoding",
@@ -1768,6 +1792,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     LicenseInfo {
         name: "quick-xml",
         version: "0.38.4",
+        license: "MIT",
+        authors: vec![] 
+    },
+    LicenseInfo {
+        name: "quick-xml",
+        version: "0.39.0",
         license: "MIT",
         authors: vec![] 
     },
