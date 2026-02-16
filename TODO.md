@@ -9,7 +9,10 @@
 
 - [ ] tool:URL檢查
 - [ ] system_info: sort search process
+- [ ] system_info: 自訂單位
 - [ ] project:test & coverage
 - [ ] UI:theme (dark + black)
 - [ ] UI:訊息通知UI (+log紀錄UI)
 - [ ] tool: 更新工具 (apt, dnf)
+- [ ] project: 使用者設定
+- [ ] tool:json表格

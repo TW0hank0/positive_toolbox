@@ -3,6 +3,7 @@ use iced::widget::{Column, button, scrollable, text};
 
 use log;
 
+#[cfg(not(target_arch = "wasm32"))]
 use open;
 
 use positive_toolbox::shared;
@@ -61,13 +62,18 @@ impl About {
     pub fn update(&mut self, message: AboutMsg) {
         match message {
             AboutMsg::OpenFile => {
-                open::that_in_background(
-                    std::env::current_exe()
-                        .unwrap()
-                        .parent()
-                        .unwrap()
-                        .join("ThirdPartyLicense.html"),
-                );
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    open::that_in_background(
+                        std::env::current_exe()
+                            .unwrap()
+                            .parent()
+                            .unwrap()
+                            .join("ThirdPartyLicense.html"),
+                    );
+                }
+                #[cfg(target_arch = "wasm32")]
+                eprintln!("不支援WASM！");
             }
         }
     }
@@ -77,7 +83,10 @@ impl About {
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
-        layout = layout.push(button("以預設開啟檔案").on_press(AboutMsg::OpenFile));
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            layout = layout.push(button("以預設開啟檔案").on_press(AboutMsg::OpenFile));
+        }
         let license_text = text(LICENSE).size(18);
         let scrollable_license_text = scrollable(license_text)
             .height(iced::Length::Fill)

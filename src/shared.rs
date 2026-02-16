@@ -7,7 +7,11 @@ use iced;
 
 use image;
 
+#[cfg(not(target_arch = "wasm32"))]
 use positive_tool_rs::pt;
+
+#[cfg(target_arch = "wasm32")]
+use console_log;
 
 const ICON_PNG: &[u8] = include_bytes!("../icon.png");
 const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
@@ -33,12 +37,18 @@ pub fn init() -> (Option<iced::window::Icon>,) {
     let (img_width, img_height) = img.dimensions();
     let icon = iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
     //
-    setup_logger().ok();
+    setup_logger();
     //
     return (icon,);
 }
 
-pub fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
+#[cfg(target_arch = "wasm32")]
+pub fn setup_logger() {
+    console_log::init_with_level(log::Level::Trace).ok(); //.expect("初始化日誌失敗");
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub fn setup_logger() {
     // 取得本地時區
     let time_offset: UtcOffset =
         UtcOffset::local_offset_at(OffsetDateTime::UNIX_EPOCH).unwrap_or(UtcOffset::UTC);
@@ -61,8 +71,6 @@ pub fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
     let log_file_path = log_dir_path.join(format!("ptb_{}.log", time_now_formatted));
     // 初始化 logger
     pt::build_logger(log_file_path, Some(log::LevelFilter::Info)).ok();
-
-    Ok(())
 }
 
 pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'static, Message> {

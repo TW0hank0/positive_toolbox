@@ -3,8 +3,6 @@
 use iced;
 use iced::widget::{Column, button, scrollable, text};
 
-//use image;
-
 use log;
 
 use sysinfo;

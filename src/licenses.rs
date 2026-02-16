@@ -206,6 +206,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Kornel Lesiński <kornel@geekhood.net>"] 
     },
     LicenseInfo {
+        name: "bincode",
+        version: "1.3.3",
+        license: "MIT",
+        authors: vec!["Ty Overby <ty@pre-alpha.com>", "Francesco Mazzoli <f@mazzo.li>", "David Tolnay <dtolnay@gmail.com>", "Zoey Riordan <zoey@dos.cafe>"] 
+    },
+    LicenseInfo {
         name: "bit-set",
         version: "0.8.0",
         license: "Apache-2.0 OR MIT",
@@ -426,6 +432,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "2.5.0",
         license: "Apache-2.0 OR MIT",
         authors: vec!["Stjepan Glavina <stjepang@gmail.com>", "Taiki Endo <te316e89@gmail.com>", "John Nunley <dev@notgull.net>"] 
+    },
+    LicenseInfo {
+        name: "console_log",
+        version: "1.0.0",
+        license: "MIT/Apache-2.0",
+        authors: vec!["Matthew Nicholson <matt@matt-land.com>"] 
     },
     LicenseInfo {
         name: "core-foundation",
@@ -980,6 +992,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Héctor Ramón Jiménez <hector@hecrj.dev>"] 
     },
     LicenseInfo {
+        name: "iced_beacon",
+        version: "0.14.0",
+        license: "MIT",
+        authors: vec!["Héctor Ramón Jiménez <hector@hecrj.dev>"] 
+    },
+    LicenseInfo {
         name: "iced_core",
         version: "0.14.0",
         license: "MIT",
@@ -987,6 +1005,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "iced_debug",
+        version: "0.14.0",
+        license: "MIT",
+        authors: vec!["Héctor Ramón Jiménez <hector@hecrj.dev>"] 
+    },
+    LicenseInfo {
+        name: "iced_devtools",
         version: "0.14.0",
         license: "MIT",
         authors: vec!["Héctor Ramón Jiménez <hector@hecrj.dev>"] 
@@ -1284,6 +1308,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.8.9",
         license: "MIT OR Zlib OR Apache-2.0",
         authors: vec!["Frommi <daniil.liferenko@gmail.com>", "oyvindln <oyvindln@users.noreply.github.com>", "Rich Geldreich richgel99@gmail.com"] 
+    },
+    LicenseInfo {
+        name: "mio",
+        version: "1.1.1",
+        license: "MIT",
+        authors: vec!["Carl Lerche <me@carllerche.com>", "Thomas de Zeeuw <thomasdezeeuw@gmail.com>", "Tokio Contributors <team@tokio.rs>"] 
     },
     LicenseInfo {
         name: "mock_instant",
@@ -2114,6 +2144,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Aleksey Kladov <aleksey.kladov@gmail.com>"] 
     },
     LicenseInfo {
+        name: "socket2",
+        version: "0.6.2",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Alex Crichton <alex@alexcrichton.com>", "Thomas de Zeeuw <thomasdezeeuw@gmail.com>"] 
+    },
+    LicenseInfo {
         name: "softbuffer",
         version: "0.4.6",
         license: "MIT OR Apache-2.0",
@@ -2270,6 +2306,18 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Soveu <marx.tomasz@gmail.com>"] 
     },
     LicenseInfo {
+        name: "tokio",
+        version: "1.49.0",
+        license: "MIT",
+        authors: vec!["Tokio Contributors <team@tokio.rs>"] 
+    },
+    LicenseInfo {
+        name: "tokio-macros",
+        version: "2.6.0",
+        license: "MIT",
+        authors: vec!["Tokio Contributors <team@tokio.rs>"] 
+    },
+    LicenseInfo {
         name: "toml_datetime",
         version: "0.7.5+spec-1.1.0",
         license: "MIT OR Apache-2.0",
@@ -2400,6 +2448,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "2.5.0",
         license: "Unlicense/MIT",
         authors: vec!["Andrew Gallant <jamslam@gmail.com>"] 
+    },
+    LicenseInfo {
+        name: "wasi",
+        version: "0.11.1+wasi-snapshot-preview1",
+        license: "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+        authors: vec!["The Cranelift Project Developers"] 
     },
     LicenseInfo {
         name: "wasip2",
@@ -2547,6 +2601,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "wgpu-core-deps-emscripten",
+        version: "27.0.0",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["gfx-rs developers"] 
+    },
+    LicenseInfo {
+        name: "wgpu-core-deps-wasm",
         version: "27.0.0",
         license: "MIT OR Apache-2.0",
         authors: vec!["gfx-rs developers"] 
@@ -2763,6 +2823,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
     },
     LicenseInfo {
         name: "windows-sys",
+        version: "0.60.2",
+        license: "MIT OR Apache-2.0",
+        authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-sys",
         version: "0.61.2",
         license: "MIT OR Apache-2.0",
         authors: vec![] 
@@ -2778,6 +2844,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.52.6",
         license: "MIT OR Apache-2.0",
         authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows-targets",
+        version: "0.53.5",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
     },
     LicenseInfo {
         name: "windows-threading",
@@ -2804,6 +2876,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Microsoft"] 
     },
     LicenseInfo {
+        name: "windows_aarch64_gnullvm",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
         name: "windows_aarch64_msvc",
         version: "0.42.2",
         license: "MIT OR Apache-2.0",
@@ -2816,6 +2894,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Microsoft"] 
     },
     LicenseInfo {
+        name: "windows_aarch64_msvc",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
         name: "windows_i686_gnu",
         version: "0.42.2",
         license: "MIT OR Apache-2.0",
@@ -2826,6 +2910,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.52.6",
         license: "MIT OR Apache-2.0",
         authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows_i686_gnu",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
     },
     LicenseInfo {
         name: "windows_i686_gnullvm",
@@ -2834,6 +2924,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Microsoft"] 
     },
     LicenseInfo {
+        name: "windows_i686_gnullvm",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
         name: "windows_i686_msvc",
         version: "0.42.2",
         license: "MIT OR Apache-2.0",
@@ -2844,6 +2940,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.52.6",
         license: "MIT OR Apache-2.0",
         authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows_i686_msvc",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
     },
     LicenseInfo {
         name: "windows_x86_64_gnu",
@@ -2858,6 +2960,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Microsoft"] 
     },
     LicenseInfo {
+        name: "windows_x86_64_gnu",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
         name: "windows_x86_64_gnullvm",
         version: "0.42.2",
         license: "MIT OR Apache-2.0",
@@ -2870,6 +2978,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Microsoft"] 
     },
     LicenseInfo {
+        name: "windows_x86_64_gnullvm",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
+    },
+    LicenseInfo {
         name: "windows_x86_64_msvc",
         version: "0.42.2",
         license: "MIT OR Apache-2.0",
@@ -2880,6 +2994,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.52.6",
         license: "MIT OR Apache-2.0",
         authors: vec!["Microsoft"] 
+    },
+    LicenseInfo {
+        name: "windows_x86_64_msvc",
+        version: "0.53.1",
+        license: "MIT OR Apache-2.0",
+        authors: vec![] 
     },
     LicenseInfo {
         name: "winit",
