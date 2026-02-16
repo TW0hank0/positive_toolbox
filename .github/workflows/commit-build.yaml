@@ -45,6 +45,10 @@ jobs:
           rustc --version
           cargo --version
 
+      - name: install cargo-about
+        run: |
+          cargo install cargo-about
+
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
