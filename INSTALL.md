@@ -14,7 +14,7 @@
 1. 從release下載.zip壓縮檔
 2. 解壓縮。
 3. 進入資料夾
-4. 執行 `positive_toolbox_main`
+4. 執行 `positive_toolbox`
 
 優點：方便、簡單
 

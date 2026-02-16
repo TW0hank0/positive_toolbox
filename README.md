@@ -18,7 +18,7 @@
 cargo build --release
 ```
 
-#### WASM (實驗性功能) (未完成)
+#### WASM (實驗性功能) (開發中)
 
 ```
 wasm-pack build --target web --out-dir ./pkg
@@ -32,7 +32,7 @@ wasm-pack build --target web --out-dir ./pkg
 cargo run --release
 ```
 
-#### WASM (實驗性功能) (未完成)
+#### WASM (實驗性功能) (開發中)
 
 使用Python
 

@@ -2,14 +2,14 @@
 name = "positive_toolbox"
 version = "0.1.0"
 edition = "2024"
-default-run = "positive_toolbox_main"
+default-run = "positive_toolbox"
 license = "AGPL-3.0-only"
 description = "面向使用者的工具"
 authors = ["TW0hank0"]
 repository = "https://github.com/TW0hank0/positive_toolbox"
 
 [[bin]]
-name = "positive_toolbox_main"
+name = "positive_toolbox"
 path = "src/main.rs"
 
 [[bin]]
@@ -28,8 +28,8 @@ path = "src/about/about_main.rs"
 name = "about_show_full_license"
 path = "src/about/about_show_full_license.rs"
 
-[lib]
-crate-type = ["cdylib"]
+#[lib]
+#crate-type = ["cdylib", "bin"]
 
 [dependencies]
 serde = "1.0.228"
