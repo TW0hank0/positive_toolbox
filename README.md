@@ -6,3 +6,5 @@
 
 ### 協議
 [AGPL-3.0](./LICENSE)
+
+[第三方授權：ThirdPartyLicense.html](./ThirdPartyLicense.html)
