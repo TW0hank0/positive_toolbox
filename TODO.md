@@ -11,8 +11,11 @@
 - [ ] system_info: sort search process
 - [ ] system_info: 自訂單位
 - [ ] project:test & coverage
-- [ ] UI:theme (dark + black)
+- [ ] UI:theme
 - [ ] UI:訊息通知UI (+log紀錄UI)
 - [ ] tool: 更新工具 (apt, dnf)
 - [ ] project: 使用者設定
 - [ ] tool:json表格
+- [ ] project:WASM支援
+- [ ] project:安裝方法
+- [ ] project:安裝程式
