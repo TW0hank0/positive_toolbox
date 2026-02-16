@@ -18,19 +18,15 @@ use iced::widget::{Column, button, scrollable, text};
 
 use log;
 
-#[cfg(not(target_arch = "wasm32"))]
-use open;
-
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
-const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
-const TOOL_NAME: &str = "about_show_full_license";
-
-const LICENSE: &str = include_str!("../../ThirdPartyLicense.html");
+//const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
+const TOOL_NAME: &str = "更新工具";
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();
+    log::info!("準備啟動「{}」...", TOOL_NAME);
     //
     let mut window_settings = iced::window::Settings::default();
     window_settings.maximized = true;
@@ -43,9 +39,9 @@ fn main() -> iced::Result {
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     log::info!("啟動iced");
-    iced::application(About::new, About::update, About::view)
-        .theme(About::theme)
-        .title(About::title)
+    iced::application(SystemInfo::new, SystemInfo::update, SystemInfo::view)
+        .theme(SystemInfo::theme)
+        .title(SystemInfo::title)
         .window(window_settings)
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
@@ -53,65 +49,31 @@ fn main() -> iced::Result {
 }
 
 #[derive(Default)]
-pub struct About {}
+pub struct SystemInfo {}
 
 #[derive(Debug, Clone)]
-pub enum AboutMsg {
-    OpenFile,
-}
+pub enum SystemInfoMsg {}
 
-impl About {
+impl SystemInfo {
     pub fn new() -> Self {
-        std::fs::write(
-            std::env::current_exe()
-                .unwrap()
-                .parent()
-                .unwrap()
-                .join("ThirdPartyLicense.html"),
-            LICENSE,
-        )
-        .ok();
         return Self {};
     }
 
-    pub fn update(&mut self, message: AboutMsg) {
-        match message {
-            AboutMsg::OpenFile => {
-                #[cfg(not(target_arch = "wasm32"))]
-                {
-                    open::that_in_background(
-                        std::env::current_exe()
-                            .unwrap()
-                            .parent()
-                            .unwrap()
-                            .join("ThirdPartyLicense.html"),
-                    );
-                }
-                #[cfg(target_arch = "wasm32")]
-                eprintln!("不支援WASM！");
-            }
-        }
-    }
+    pub fn update(&mut self, message: SystemInfoMsg) {}
 
-    pub fn view(&self) -> Column<'_, AboutMsg> {
+    pub fn view(&self) -> Column<'_, SystemInfoMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            layout = layout.push(button("以預設開啟檔案").on_press(AboutMsg::OpenFile));
-        }
-        let license_text = text(LICENSE).size(18);
-        let scrollable_license_text = scrollable(license_text)
-            .height(iced::Length::Fill)
-            .width(iced::Length::Fill);
-        layout = layout.push(scrollable_license_text).spacing(10);
+        //
+        layout = layout.push(shared::view_title(TOOL_NAME));
+        //
         return layout;
     }
 
     pub fn title(&self) -> String {
-        return String::from(format!("{} — {}", TOOL_NAME, PROJECT_NAME));
+        return String::from(format!("{} ——— {}", TOOL_NAME, shared::PROJECT_NAME));
     }
 
     pub fn theme(&self) -> Option<iced::Theme> {

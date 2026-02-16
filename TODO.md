@@ -17,12 +17,13 @@
 - [ ] project:WASM支援
 - [ ] project:安裝程式
 - [ ] UI:首頁的工具排列
-- [ ] update_tool(更新工具): 支援winget
+- [ ] eazy_update(更新工具): 支援winget
 - [ ] tool: markdown 宣染
 - [ ] tool: 四則運算計算機
+- [ ] project: 增加除錯用log
 
 
-#### 已完成
+## 已完成
 
 ### v0.1.0
 - [x] project:github workflow

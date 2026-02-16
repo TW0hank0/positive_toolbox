@@ -73,6 +73,7 @@ enum ToolboxMsg {
     OpenCodeIndenter,
     OpenSystemInfo,
     OpenAbout,
+    OpenEazyUpdater,
 }
 
 impl std::fmt::Display for ToolboxMsg {
@@ -81,6 +82,7 @@ impl std::fmt::Display for ToolboxMsg {
             Self::OpenAbout => "about",
             Self::OpenCodeIndenter => "code_indenter",
             Self::OpenSystemInfo => "system_info",
+            Self::OpenEazyUpdater => "eazy_updater",
         })
     }
 }
@@ -112,6 +114,12 @@ impl Toolbox {
             name: "系統資訊",
             file_name: "system_info",
             msg: ToolboxMsg::OpenSystemInfo,
+            describe: None,
+        });
+        all_tool.push(Tool {
+            name: "更新工具",
+            file_name: "eazy_updater",
+            msg: ToolboxMsg::OpenEazyUpdater,
             describe: None,
         });
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
@@ -163,7 +171,7 @@ impl Toolbox {
         let mut layout_tools = Column::new().spacing(20).padding(40).align_x(iced::Left);
         //
         for count in 0..self.tools_ordered.len() {
-            let mut layout_tool = Row::new().spacing(30);
+            let mut layout_tool = Row::new().spacing(100);
             let tool = self.tools_ordered.get(&count).unwrap();
             let tool_name = tool.name;
             let tool_msg = tool.msg.clone();
@@ -191,8 +199,8 @@ impl Toolbox {
                 })
                 .align_x(iced::alignment::Horizontal::Left)
                 .align_y(iced::alignment::Vertical::Center)
-                .padding(10);
-            layout_tools = layout_tools.push(container_tool);
+                .padding(30);
+            layout_tools = layout_tools.push(container_tool).spacing(10);
         }
         //
         let container_tools = container(layout_tools)

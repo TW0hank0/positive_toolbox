@@ -28,6 +28,10 @@ path = "src/about/about_main.rs"
 name = "about_show_full_license"
 path = "src/about/about_show_full_license.rs"
 
+[[bin]]
+name = "eazy_updater"
+path = "src/tools/eazy_updater.rs"
+
 #[lib]
 #crate-type = ["cdylib", "bin"]
 
