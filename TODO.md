@@ -9,7 +9,7 @@
 
 - [ ] tool:URL檢查
 - [ ] system_info: sort search process
-- [ ] test & coverage
-- [ ] theme (dark + black)
-- [ ] 訊息通知UI (+log紀錄UI)
+- [ ] project:test & coverage
+- [ ] UI:theme (dark + black)
+- [ ] UI:訊息通知UI (+log紀錄UI)
 - [ ] tool: 更新工具 (apt, dnf)

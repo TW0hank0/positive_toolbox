@@ -49,9 +49,8 @@ fn main() {
     let content = generate_rust_code(&licenses);
     fs::write(dest_path, content).expect("Failed to write licenses.rs");
     //
-    let status = std::process::Command::new("cargo")
+    let status = std::process::Command::new("cargo-about")
         .args(vec![
-            "about",
             "generate",
             "--output-file",
             "ThirdPartyLicense.html",

@@ -2,11 +2,11 @@ name: commit-check
 
 on:
   push:
-    paths-ignore: 
-      - 'README.md'
-      - 'READMEs/**'
-      - '.vscode/**'
-      - 'TODO.md'
+    paths-ignore:
+      - "README.md"
+      - "READMEs/**"
+      - ".vscode/**"
+      - "TODO.md"
 
 jobs:
   check:
@@ -43,6 +43,10 @@ jobs:
       - name: install cargo-about
         run: |
           cargo install cargo-about
+
+      - name: check cargo-about install
+        run: |
+          cargo-about --version
 
       - name: debug check
         run: cargo check

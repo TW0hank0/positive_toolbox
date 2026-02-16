@@ -255,8 +255,14 @@ impl SystemInfo {
                 layout_system_info.push(text(format!("唯讀：{}", disk.is_read_only())));
             layout_system_info =
                 layout_system_info.push(text(format!("可移除：{}", disk.is_removable())));
-            layout_system_info =
-                layout_system_info.push(text(format!("使用狀態：{:?}", disk.usage())));
+            layout_system_info = layout_system_info.push(text(format!(
+                "寫入統計：{:?}",
+                disk.usage().total_written_bytes
+            )));
+            layout_system_info = layout_system_info.push(text(format!(
+                "讀取統計：{:?}",
+                disk.usage().total_read_bytes
+            )));
         }
         layout_system_info = layout_system_info.push(
             text("網路")
@@ -277,7 +283,8 @@ impl SystemInfo {
                 .size(iced::Pixels::from(40)),
         );
         let mut layout_system_info_process = Column::new().padding(10);
-        for (pid, process) in sys.processes() {
+        let processes = sys.processes();
+        for (pid, process) in processes.iter() {
             layout_system_info_process = layout_system_info_process.push(text(format!(
                 "[{pid}] {:?} {:?}",
                 process.name(),
