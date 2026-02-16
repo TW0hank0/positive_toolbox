@@ -109,7 +109,7 @@ impl Toolbox {
             describe: Some("關於 positive_toolbox 及第三方專案"),
         });
         all_tool.push(Tool {
-            name: "系統資訊 (開發中)",
+            name: "系統資訊",
             file_name: "system_info",
             msg: ToolboxMsg::OpenSystemInfo,
             describe: None,
@@ -124,11 +124,17 @@ impl Toolbox {
         let exec_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
         let mut tool_paths = HashMap::new();
         for tool in all_tool.clone() {
-            let mut tool_path;
-            tool_path = exec_path.clone().join(tool.file_name);
+            let tool_path: PathBuf;
+            #[cfg(target_os = "linux")]
+            {
+                tool_path = exec_path.clone().join(tool.file_name);
+            }
             #[cfg(target_os = "windows")]
             {
-                tool_path = PathBuf::from(format!("{}.exe", tool_path.to_str().unwrap()));
+                tool_path = PathBuf::from(format!(
+                    "{}.exe",
+                    exec_path.clone().join(tool.file_name).to_str().unwrap()
+                ));
             }
             tool_paths.insert(String::from(tool.file_name), tool_path);
         }

@@ -17,6 +17,9 @@
 - [ ] project:WASM支援
 - [ ] project:安裝程式
 - [ ] UI:首頁的工具排列
+- [ ] update_tool(更新工具): 支援winget
+- [ ] tool: markdown 宣染
+- [ ] tool: 四則運算計算機
 
 
 #### 已完成

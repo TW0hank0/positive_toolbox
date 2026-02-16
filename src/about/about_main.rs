@@ -116,7 +116,11 @@ impl About {
         //
         let mut layout_license = Column::new().padding(15);
         layout_license = layout_license.push(create_license_info(
-            String::from(shared::PROJECT_NAME),
+            String::from(format!(
+                "{} v{}",
+                shared::PROJECT_NAME,
+                shared::PROJECT_VERSION
+            )),
             vec![String::from("TW0hank0")],
             String::from("AGPL-3.0"),
         ));
