@@ -54,7 +54,7 @@ fn main() {
             "generate",
             "--output-file",
             "ThirdPartyLicense.html",
-            ".\\about.hbs",
+            "about.hbs",
             "--threshold",
             "1.0",
         ])
