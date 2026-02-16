@@ -5,6 +5,7 @@ edition = "2024"
 default-run = "positive_toolbox"
 license = "AGPL-3.0-only"
 description = "面向使用者的工具"
+authors = ["TW0hank0"]
 
 [[bin]]
 name = "positive_toolbox"
