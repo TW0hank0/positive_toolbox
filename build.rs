@@ -61,7 +61,7 @@ fn main() {
         .status()
         .unwrap();
     if !status.success() {
-        println!("error: cargo-about")
+        panic!("error: cargo-about")
     }
 }
 
