@@ -65,13 +65,13 @@ pub fn setup_logger() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub fn view_title<Message>(tool_name: String) -> iced::widget::Row<'static, Message> {
+pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'static, Message> {
     let mut layout_title = iced::widget::Row::new()
         .padding(10)
         .align_y(iced::alignment::Vertical::Bottom)
         .height(90);
     layout_title = layout_title.push(
-        iced::widget::text(tool_name)
+        iced::widget::text(tool_name.into())
             .size(50)
             .align_x(iced::alignment::Horizontal::Left)
             .align_y(iced::alignment::Vertical::Bottom)
