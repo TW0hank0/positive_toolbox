@@ -8,7 +8,7 @@
 ### 未來計劃
 
 - [ ] tool:URL檢查
-- [ ] tool:系統資訊(CPU架構，記憶體)
+- [ ] system_info: sort search process
 - [ ] test & coverage
 - [ ] theme (dark + black)
 - [ ] 訊息通知UI (+log紀錄UI)
