@@ -434,6 +434,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["Stjepan Glavina <stjepang@gmail.com>", "Taiki Endo <te316e89@gmail.com>", "John Nunley <dev@notgull.net>"] 
     },
     LicenseInfo {
+        name: "console_error_panic_hook",
+        version: "0.1.7",
+        license: "Apache-2.0/MIT",
+        authors: vec!["Nick Fitzgerald <fitzgen@gmail.com>"] 
+    },
+    LicenseInfo {
         name: "console_log",
         version: "1.0.0",
         license: "MIT/Apache-2.0",

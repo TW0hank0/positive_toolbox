@@ -7,7 +7,6 @@ use log;
 
 use sysinfo;
 
-use positive_toolbox;
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 

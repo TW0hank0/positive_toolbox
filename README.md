@@ -10,7 +10,46 @@
 
 使用rust和iced製作，面向使用者的工具。
 
+### 編譯
+
+#### 電腦
+
+```
+cargo build --release
+```
+
+#### WASM (實驗性功能) (未完成)
+
+```
+wasm-pack build --target web --out-dir ./pkg
+```
+
+### 執行
+
+#### 電腦
+
+```
+cargo run --release
+```
+
+#### WASM (實驗性功能) (未完成)
+
+使用Python
+
+```
+python -m http.server 10000
+```
+
+瀏覽器開啟：
+
+```
+http://localhost:10000
+```
+
 ### 協議
-[AGPL-3.0](./LICENSE)
+
+版權所有 (C) 2026 TW0hank0
+
+本程式基於 GNU Affero General Public License v3 授權
 
 [第三方授權：ThirdPartyLicense.html](./ThirdPartyLicense.html)

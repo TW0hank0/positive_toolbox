@@ -1,3 +1,18 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// 著作權所有 (C) 2026 TW0hank0
+//
+// 本檔案屬於 positive_toolbox 專案的一部分。
+// 專案儲存庫：https://github.com/TW0hank0/positive_toolbox
+//
+// 本程式為自由軟體：您可以根據自由軟體基金會發佈的 GNU Affero 通用公共授權條款
+// 第 3 版（僅此版本）重新發佈及/或修改本程式。
+//
+// 本程式的發佈是希望它能發揮功用，但不提供任何擔保；
+// 甚至沒有隱含的適銷性或特定目的適用性擔保。詳見 GNU Affero 通用公共授權條款。
+//
+// 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
+// 如果沒有，請參見 <https://www.gnu.org/licenses/>。
+
 use std;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -11,15 +26,47 @@ use iced::widget::{Column, button, column, scrollable, text};
 //use positive_tool_rs::pt;
 
 use log;
-//use log::{debug, error, info, trace, warn};
 
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::*;
 
 //const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] = include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
 //const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen(start)]
+pub fn main() -> iced::Result {
+    console_error_panic_hook::set_once();
+    //
+    let (icon,) = shared::init();
+    log::info!("已設定logger。");
+    //
+    let mut window_settings = iced::window::Settings::default();
+    window_settings.maximized = true;
+    window_settings.icon = icon;
+    window_settings.min_size = Some(iced::Size::new(1080.0, 720.0));
+    window_settings.position = iced::window::Position::Centered;
+    //
+    let mut app_settings = iced::Settings::default();
+    app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
+    app_settings.default_text_size = iced::Pixels::from(26);
+    app_settings.default_font = FONT_NOTO_SANS_REG;
+    //
+    log::debug!("執行iced...");
+    iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
+        .theme(Toolbox::theme)
+        .title(Toolbox::title)
+        .window(window_settings)
+        .settings(app_settings)
+        .default_font(FONT_NOTO_SANS_REG)
+        .run()
+}
+
+#[cfg(not(target_arch = "wasm32"))]
 pub fn main() -> iced::Result {
     let (icon,) = shared::init();
     log::info!("已設定logger。");
