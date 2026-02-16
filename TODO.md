@@ -1,9 +1,9 @@
 # 計劃
 
 ### v0.1.0
-- [x] github workflow
-- [ ] system_info
-- [x] about page
+- [x] project:github workflow
+- [ ] tool:system_info
+- [x] tool:about page
 
 ### 未來計劃
 
@@ -17,5 +17,7 @@
 - [ ] project: 使用者設定
 - [ ] tool:json表格
 - [ ] project:WASM支援
-- [ ] project:安裝方法
 - [ ] project:安裝程式
+
+#### 已完成
+- [x] project:安裝方法
