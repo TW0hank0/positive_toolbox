@@ -19,11 +19,7 @@ use std::path::PathBuf;
 use std::{env, process};
 
 use iced;
-use iced::widget::{Column, button, column, scrollable, text};
-
-//use image;
-
-//use positive_tool_rs::pt;
+use iced::widget::{Column, Row, button, container, scrollable, text};
 
 use log;
 
@@ -33,71 +29,33 @@ use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 
-//const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] = include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
-
-//const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
-
 #[cfg(target_arch = "wasm32")]
 #[wasm_bindgen(start)]
-pub fn main() -> iced::Result {
+pub fn wasm_start() -> iced::Result {
     console_error_panic_hook::set_once();
     //
-    let (icon,) = shared::init();
-    log::info!("已設定logger。");
-    //
-    let mut window_settings = iced::window::Settings::default();
-    window_settings.maximized = true;
-    window_settings.icon = icon;
-    window_settings.min_size = Some(iced::Size::new(1080.0, 720.0));
-    window_settings.position = iced::window::Position::Centered;
-    //
-    let mut app_settings = iced::Settings::default();
-    app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
-    app_settings.default_text_size = iced::Pixels::from(26);
-    app_settings.default_font = FONT_NOTO_SANS_REG;
-    //
-    log::debug!("執行iced...");
-    iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
-        .theme(Toolbox::theme)
-        .title(Toolbox::title)
-        .window(window_settings)
-        .settings(app_settings)
-        .default_font(FONT_NOTO_SANS_REG)
-        .run()
+    main()
 }
 
-#[cfg(not(target_arch = "wasm32"))]
 pub fn main() -> iced::Result {
     let (icon,) = shared::init();
     log::info!("已設定logger。");
     //
-    //let project_path = pt::find_project_path(env!("CARGO_PKG_NAME"), None).unwrap();
-    //let icon_path = project_path.clone().join("icon.png");
-    //let icon_path_str = icon_path.to_str().unwrap();
-    //const ICON_PNG: &[u8] = include_bytes!("../icon.png");
-    /*
-    let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
-        .unwrap()
-        .into_rgba8();
-    let (img_width, img_height) = img.dimensions(); */
     let mut window_settings = iced::window::Settings::default();
     window_settings.maximized = true;
     window_settings.icon = icon;
     window_settings.min_size = Some(iced::Size::new(1080.0, 720.0));
     window_settings.position = iced::window::Position::Centered;
     //
-    //let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
     let mut app_settings = iced::Settings::default();
     app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
     app_settings.default_text_size = iced::Pixels::from(26);
-    //app_settings.fonts = vec![FONT_NOTO_SANS_REGULAR_BYTES.into()];
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     log::debug!("執行iced...");
     iced::application(Toolbox::new, Toolbox::update, Toolbox::view)
         .theme(Toolbox::theme)
         .title(Toolbox::title)
-        //font(FONT_NOTO_SANS_REGULAR_BYTES)
         .window(window_settings)
         .settings(app_settings)
         .default_font(FONT_NOTO_SANS_REG)
@@ -106,7 +64,6 @@ pub fn main() -> iced::Result {
 
 #[derive(Default)]
 struct Toolbox {
-    // project_path: PathBuf,
     tool_paths: HashMap<String, PathBuf>,
     tools_ordered: HashMap<usize, Tool>,
 }
@@ -133,6 +90,7 @@ struct Tool {
     name: &'static str,
     file_name: &'static str,
     msg: ToolboxMsg,
+    describe: Option<&'static str>,
 }
 
 impl Toolbox {
@@ -142,16 +100,19 @@ impl Toolbox {
             name: "程式碼縮排",
             file_name: "code_indenter",
             msg: ToolboxMsg::OpenCodeIndenter,
+            describe: None,
         });
         all_tool.push(Tool {
             name: "關於",
             file_name: "about",
             msg: ToolboxMsg::OpenAbout,
+            describe: Some("關於 positive_toolbox 及第三方專案"),
         });
         all_tool.push(Tool {
             name: "系統資訊 (開發中)",
             file_name: "system_info",
             msg: ToolboxMsg::OpenSystemInfo,
+            describe: None,
         });
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
@@ -186,27 +147,55 @@ impl Toolbox {
     }
 
     pub fn view(&self) -> iced::widget::Column<'_, ToolboxMsg> {
-        let mut layout = column![text("positive toolbox").size(70),].padding(50);
-        layout = layout.spacing(30);
-        let mut layout_tool = Column::new().spacing(20).padding(30).align_x(iced::Left);
+        let mut layout = Column::new().padding(30);
+        layout = layout.push(
+            text(shared::PROJECT_NAME)
+                .size(iced::Pixels::from(50))
+                .font(shared::FONT_NOTO_SANS_BOLD),
+        );
+        layout = layout.spacing(40);
+        let mut layout_tools = Column::new().spacing(20).padding(40).align_x(iced::Left);
         //
         for count in 0..self.tools_ordered.len() {
+            let mut layout_tool = Row::new().spacing(30);
             let tool = self.tools_ordered.get(&count).unwrap();
             let tool_name = tool.name;
             let tool_msg = tool.msg.clone();
             let tool_btn = button(
                 text(tool_name)
-                    .size(30)
+                    .size(32)
                     .align_y(iced::alignment::Vertical::Center)
                     .align_x(iced::alignment::Horizontal::Center),
             )
             .on_press(tool_msg)
-            .width(190)
-            .height(70);
-            layout_tool = layout_tool.push(tool_btn);
+            .width(180)
+            .height(65);
+            layout_tool = layout_tool.push(tool_btn).spacing(30);
+            let describe_text =
+                text(tool.describe.unwrap_or("暫無簡介 @_@")).size(iced::Pixels::from(20));
+            layout_tool = layout_tool.push(describe_text);
+            let container_tool = container(layout_tool)
+                .height(150)
+                .width(iced::Length::Fill)
+                .style(|_theme| {
+                    return container::background(iced::Background::Color(iced::Color::from_rgb8(
+                        58, 58, 58,
+                    )))
+                    .border(iced::border::rounded(iced::border::Radius::from(10)));
+                })
+                .align_x(iced::alignment::Horizontal::Left)
+                .align_y(iced::alignment::Vertical::Center)
+                .padding(10);
+            layout_tools = layout_tools.push(container_tool);
         }
         //
-        let scrollable_tools = scrollable(layout_tool);
+        let container_tools = container(layout_tools)
+            .style(|_theme| {
+                return container::background(iced::Background::Color(iced::Color::BLACK))
+                    .border(iced::border::rounded(iced::border::Radius::from(10)));
+            })
+            .width(iced::Length::Fill);
+        let scrollable_tools = scrollable(container_tools);
         layout = layout.push(scrollable_tools);
         return layout;
     }

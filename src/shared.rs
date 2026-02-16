@@ -98,7 +98,8 @@ pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'
             .size(50)
             .align_x(iced::alignment::Horizontal::Left)
             .align_y(iced::alignment::Vertical::Bottom)
-            .height(90),
+            .height(90)
+            .font(FONT_NOTO_SANS_BOLD),
     );
     layout_title = layout_title.spacing(10);
     layout_title = layout_title.push(
