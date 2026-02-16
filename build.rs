@@ -56,7 +56,8 @@ fn main() {
             "--output-file",
             "ThirdPartyLicense.html",
             ".\\about.hbs",
-            "--threshold 1.0",
+            "--threshold",
+            "1.0",
         ])
         .status()
         .unwrap();
