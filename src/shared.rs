@@ -107,9 +107,9 @@ pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'
             .height(90)
             .font(FONT_NOTO_SANS_BOLD),
     );
-    layout_title = layout_title.spacing(10);
+    layout_title = layout_title.spacing(30);
     layout_title = layout_title.push(
-        iced::widget::text(format!("from {PROJECT_NAME}"))
+        iced::widget::text(format!("這是{PROJECT_NAME}專案的一部分"))
             .size(20)
             .align_x(iced::alignment::Horizontal::Left)
             .align_y(iced::alignment::Vertical::Bottom)

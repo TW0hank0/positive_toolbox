@@ -24,20 +24,45 @@ def main():
         and getattr(sys, "frozen") is True
     ) and (hasattr(sys, "_MEIPASS") is True):
         main_exec_path = os.path.join(
-            sys.executable, "positive_toolbox"
+            os.path.dirname(sys.executable), "positive_toolbox"
         )
-        if os.name == "nt":
-            main_exec_path = main_exec_path + ".exe"
-        #
-        subprocess.run(
-            [main_exec_path],
-            check=True,
-            stdout=sys.stdout,
-            stdin=sys.stdin,
-            stderr=sys.stderr,
-        )
+        file_base_path = os.path.dirname(sys.executable)
     else:
         print("這是為打包後檔案結構設計的", file=sys.stderr)
+        main_exec_path = os.path.join(
+            os.path.dirname(__file__), "positive_toolbox"
+        )
+        file_base_path = os.path.dirname(__file__)
+    if os.name == "nt":
+        main_exec_path = main_exec_path + ".exe"
+        #
+    print(main_exec_path)
+    file_err = open(
+        os.path.join(file_base_path, ".stderr.txt"),
+        "a",
+        encoding="utf-8",
+    )
+    file_out = open(
+        os.path.join(file_base_path, ".stdout.txt"),
+        "a",
+        encoding="utf-8",
+    )
+    file_in = open(
+        os.path.join(file_base_path, ".stdin.txt"),
+        "a",
+        encoding="utf-8",
+    )
+    process = subprocess.Popen(
+        [main_exec_path],
+        stdout=file_out,
+        stdin=file_in,
+        stderr=file_err,
+        creationflags=0x08000000,
+    )
+    if process.wait() != 0:
+        print("發生錯誤", file=sys.stderr)
+    #
+    file_err.close()
 
 
 if __name__ == "__main__":

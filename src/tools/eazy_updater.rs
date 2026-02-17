@@ -21,7 +21,6 @@ use log;
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
-//const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "輕鬆更新";
 
 fn main() -> iced::Result {
@@ -39,9 +38,9 @@ fn main() -> iced::Result {
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     log::info!("啟動iced");
-    iced::application(SystemInfo::new, SystemInfo::update, SystemInfo::view)
-        .theme(SystemInfo::theme)
-        .title(SystemInfo::title)
+    iced::application(EazyUpdater::new, EazyUpdater::update, EazyUpdater::view)
+        .theme(EazyUpdater::theme)
+        .title(EazyUpdater::title)
         .window(window_settings)
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
@@ -49,19 +48,19 @@ fn main() -> iced::Result {
 }
 
 #[derive(Default)]
-pub struct SystemInfo {}
+pub struct EazyUpdater {}
 
 #[derive(Debug, Clone)]
-pub enum SystemInfoMsg {}
+pub enum EazyUpdaterMsg {}
 
-impl SystemInfo {
+impl EazyUpdater {
     pub fn new() -> Self {
         return Self {};
     }
 
-    pub fn update(&mut self, message: SystemInfoMsg) {}
+    pub fn update(&mut self, message: EazyUpdaterMsg) {}
 
-    pub fn view(&self) -> Column<'_, SystemInfoMsg> {
+    pub fn view(&self) -> Column<'_, EazyUpdaterMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
