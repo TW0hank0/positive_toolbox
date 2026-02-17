@@ -1,7 +1,7 @@
 # 計劃
 
 ### v0.2.0
-- [ ] UI:工具簡介
+- [x] UI:工具簡介
 - [ ] tool: 更新工具 (apt, dnf)
 
 ### v0.3.0
@@ -26,6 +26,7 @@
 - [ ] eazy_update(更新工具): 支援winget
 - [ ] tool: 四則運算計算機
 - [ ] project: 增加除錯用log
+- [ ] workflow -> add: mapping(所有檔案列表)、checksum(雜湊值)
 
 
 ## 已完成
