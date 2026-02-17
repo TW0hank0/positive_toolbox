@@ -114,13 +114,13 @@ impl Toolbox {
             name: "系統資訊",
             file_name: "system_info",
             msg: ToolboxMsg::OpenSystemInfo,
-            describe: None,
+            describe: Some("查看系統版本、記憶體等..."),
         });
         all_tool.push(Tool {
-            name: "更新工具",
+            name: "輕鬆更新",
             file_name: "eazy_updater",
             msg: ToolboxMsg::OpenEazyUpdater,
-            describe: None,
+            describe: Some("系統更新工具的GUI包裝(wrap)"),
         });
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
@@ -186,7 +186,7 @@ impl Toolbox {
             .height(65);
             layout_tool = layout_tool.push(tool_btn).spacing(30);
             let describe_text =
-                text(tool.describe.unwrap_or("暫無簡介 @_@")).size(iced::Pixels::from(20));
+                text(tool.describe.unwrap_or("沒有簡介 @_@")).size(iced::Pixels::from(20));
             layout_tool = layout_tool.push(describe_text);
             let container_tool = container(layout_tool)
                 .height(150)

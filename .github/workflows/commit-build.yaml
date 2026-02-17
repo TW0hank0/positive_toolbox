@@ -59,11 +59,11 @@ jobs:
         run: |
           uv self version
 
-      #- name: debug build
-      #run: cargo build
+      # - name: build
+      #   run: cargo build --release
 
-      - name: build
-        run: cargo build --release
+      - name: use build script
+        run: uv run build_script.py
 
       - name: zip files (Linux)
         id: zip_files_linux

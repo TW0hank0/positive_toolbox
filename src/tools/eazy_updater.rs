@@ -22,7 +22,7 @@ use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
 //const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
-const TOOL_NAME: &str = "更新工具";
+const TOOL_NAME: &str = "輕鬆更新";
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();

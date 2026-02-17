@@ -12,6 +12,7 @@
 
 - [ ] system_info: sort search process
 - [ ] system_info: 自訂單位 (Bytes, MB, MIB)
+- [ ] system_info: 卡片式資料
 - [ ] project:test & coverage
 - [ ] UI:theme
 - [ ] UI:訊息通知UI (+log紀錄UI)
