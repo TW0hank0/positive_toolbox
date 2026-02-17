@@ -182,12 +182,19 @@ impl Toolbox {
 
     pub fn view(&self) -> iced::widget::Column<'_, ToolboxMsg> {
         let mut layout = Column::new().padding(30);
-        layout = layout.push(
+        let mut layout_title = Row::new();
+        layout_title = layout_title.push(
+            iced::widget::image(iced::widget::image::Handle::from_bytes(shared::ICON_PNG))
+                .width(70)
+                .height(70)
+                .filter_method(iced::widget::image::FilterMethod::Linear),
+        );
+        layout_title = layout_title.push(
             text(shared::PROJECT_NAME)
                 .size(iced::Pixels::from(50))
                 .font(shared::FONT_NOTO_SANS_BOLD),
         );
-        layout = layout.spacing(40);
+        layout = layout.push(layout_title).spacing(40);
         let mut layout_tools = Column::new().spacing(20).padding(40).align_x(iced::Left);
         //
         for count in 0..self.tools_ordered.len() {

@@ -70,6 +70,7 @@ iced = { version = "0.14.0", features = [
     "wayland",
     "debug",
     "advanced",
+    "image",
 ] }
 positive_tool_rs = { git = "https://github.com/TW0hank0/positive_tool_rs" }
 open = "5.3.3"
@@ -83,6 +84,7 @@ iced = { version = "0.14.0", default-features = false, features = [
     "wgpu",
     "web-colors",
     "crisp",
+    "image",
 ] }
 getrandom = { version = "0.3.4", features = ["wasm_js"] }
 console_log = { version = "1.0.0", features = ["wasm-bindgen"] }

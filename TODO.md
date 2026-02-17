@@ -31,6 +31,7 @@
 - [ ] UI: 固定工具順序 (設用者設定)
 - [ ] launcher: carsh handler
 - [ ] UI:語言
+- [ ] UI:標題Icon
 
 
 ## 已完成

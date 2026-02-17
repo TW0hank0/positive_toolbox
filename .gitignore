@@ -2,6 +2,7 @@ target/
 
 # krita temp
 *.kra~
+*~
 
 # workflow make
 positive_toolbox_*.zip

@@ -1154,6 +1154,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         authors: vec!["The wasm-bindgen Developers"] 
     },
     LicenseInfo {
+        name: "kamadak-exif",
+        version: "0.6.1",
+        license: "BSD-2-Clause",
+        authors: vec!["KAMADA Ken'ichi <kamada@nanohz.org>"] 
+    },
+    LicenseInfo {
         name: "khronos-egl",
         version: "6.0.0",
         license: "MIT/Apache-2.0",
@@ -1338,6 +1344,12 @@ pub fn get_licenses() -> Vec<LicenseInfo> {
         version: "0.2.0",
         license: "Apache-2.0",
         authors: vec![] 
+    },
+    LicenseInfo {
+        name: "mutate_once",
+        version: "0.1.2",
+        license: "BSD-2-Clause",
+        authors: vec!["KAMADA Ken'ichi <kamada@nanohz.org>"] 
     },
     LicenseInfo {
         name: "naga",

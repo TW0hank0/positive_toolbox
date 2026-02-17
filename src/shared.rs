@@ -28,7 +28,7 @@ use positive_tool_rs::pt;
 #[cfg(target_arch = "wasm32")]
 use console_log;
 
-const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+pub const ICON_PNG: &[u8] = include_bytes!("../icon.png");
 const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
     include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
@@ -93,6 +93,12 @@ pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'
         .padding(10)
         .align_y(iced::alignment::Vertical::Bottom)
         .height(90);
+    layout_title = layout_title.push(
+        iced::widget::image(iced::widget::image::Handle::from_bytes(ICON_PNG))
+            .width(70)
+            .height(70)
+            .filter_method(iced::widget::image::FilterMethod::Linear),
+    );
     layout_title = layout_title.push(
         iced::widget::text(tool_name.into())
             .size(50)
