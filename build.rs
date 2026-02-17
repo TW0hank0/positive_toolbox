@@ -53,7 +53,7 @@ fn main() {
         .args(vec![
             "generate",
             "--output-file",
-            "ThirdPartyLicense.html",
+            "ThirdPartyLicense-Rust.html",
             "about.hbs",
             "--threshold",
             "1.0",

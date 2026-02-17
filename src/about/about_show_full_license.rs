@@ -27,7 +27,8 @@ use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about_show_full_license";
 
-const LICENSE: &str = include_str!("../../ThirdPartyLicense.html");
+const LICENSE_RUST: &str = include_str!("../../ThirdPartyLicense-Rust.html");
+const LICENSE_PYTHON: &str = include_str!("../../ThirdPartyLicense-Python.html");
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();
@@ -57,7 +58,8 @@ pub struct About {}
 
 #[derive(Debug, Clone)]
 pub enum AboutMsg {
-    OpenFile,
+    OpenRustFile,
+    OpenPythonFile,
 }
 
 impl About {
@@ -67,8 +69,17 @@ impl About {
                 .unwrap()
                 .parent()
                 .unwrap()
-                .join("ThirdPartyLicense.html"),
-            LICENSE,
+                .join("ThirdPartyLicense-Rust.html"),
+            LICENSE_RUST,
+        )
+        .ok();
+        std::fs::write(
+            std::env::current_exe()
+                .unwrap()
+                .parent()
+                .unwrap()
+                .join("ThirdPartyLicense-Python.html"),
+            LICENSE_PYTHON,
         )
         .ok();
         return Self {};
@@ -76,7 +87,7 @@ impl About {
 
     pub fn update(&mut self, message: AboutMsg) {
         match message {
-            AboutMsg::OpenFile => {
+            AboutMsg::OpenRustFile => {
                 #[cfg(not(target_arch = "wasm32"))]
                 {
                     open::that_in_background(
@@ -84,7 +95,21 @@ impl About {
                             .unwrap()
                             .parent()
                             .unwrap()
-                            .join("ThirdPartyLicense.html"),
+                            .join("ThirdPartyLicense-Rust.html"),
+                    );
+                }
+                #[cfg(target_arch = "wasm32")]
+                eprintln!("不支援WASM！");
+            }
+            AboutMsg::OpenPythonFile => {
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    open::that_in_background(
+                        std::env::current_exe()
+                            .unwrap()
+                            .parent()
+                            .unwrap()
+                            .join("ThirdPartyLicense-Python.html"),
                     );
                 }
                 #[cfg(target_arch = "wasm32")]
@@ -100,13 +125,34 @@ impl About {
             .width(iced::Length::Fill);
         #[cfg(not(target_arch = "wasm32"))]
         {
-            layout = layout.push(button("以預設開啟檔案").on_press(AboutMsg::OpenFile));
+            layout = layout
+                .push(button("開啟ThirdPartyLicense-Rust.html").on_press(AboutMsg::OpenRustFile))
+                .push(
+                    button("開啟ThirdPartyLicense-Python.html").on_press(AboutMsg::OpenPythonFile),
+                );
         }
-        let license_text = text(LICENSE).size(18);
-        let scrollable_license_text = scrollable(license_text)
+        layout = layout.push(
+            text("ThirdPartyLicense-Rust")
+                .size(iced::Pixels::from(35))
+                .font(shared::FONT_NOTO_SANS_BOLD),
+        );
+        let license_text_rust = text(LICENSE_RUST).size(18);
+        let scrollable_license_text_rust = scrollable(license_text_rust)
             .height(iced::Length::Fill)
             .width(iced::Length::Fill);
-        layout = layout.push(scrollable_license_text).spacing(10);
+        layout = layout.push(scrollable_license_text_rust).spacing(10);
+        //
+        layout = layout.push(
+            text("ThirdPartyLicense-Python")
+                .size(iced::Pixels::from(35))
+                .font(shared::FONT_NOTO_SANS_BOLD),
+        );
+        let license_text_python = text(LICENSE_PYTHON).size(18);
+        let scrollable_license_text_python = scrollable(license_text_python)
+            .height(iced::Length::Fill)
+            .width(iced::Length::Fill);
+        layout = layout.push(scrollable_license_text_python).spacing(10);
+        //
         return layout;
     }
 

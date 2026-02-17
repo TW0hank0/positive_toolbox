@@ -59,6 +59,9 @@ jobs:
         run: |
           uv self version
 
+      - name: sync dep
+        run: uv sync --all-extras
+
       # - name: build
       #   run: cargo build --release
 

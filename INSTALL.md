@@ -22,17 +22,19 @@
 
 ### 原始碼編譯
 
-需要安裝rust工具鏈及`cargo-about`工具
+需要安裝rust工具鏈及`cargo-about`工具、uv (python工具)
 
 依序執行：
 
 ```
 git clone https://github.com/TW0hank0/positive_toolbox.git
 cd positive_toolbox
-cargo build --release
+uv venv
+uv sync --all-extras
+uv run build_script.py
 cargo run --release
 ```
 
 優點：可立即體驗最新功能
 
-缺點：需安裝rust工具鏈
+缺點：需安裝工具鏈
