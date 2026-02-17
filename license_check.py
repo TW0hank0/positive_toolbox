@@ -56,7 +56,11 @@ def main():
         "-ignore",
         "ThirdPartyLicense-Python.html",
         "-ignore",
-        "src/licenses.rs",
+        "src/licenses_rust.rs",
+        "-ignore",
+        "src/licenses_python.rs",
+        "-ignore",
+        "**/*.icon",
         ".",
     ]
     print(" ".join(command))
@@ -67,6 +71,7 @@ def main():
         stdout=sys.stdout,
         stdin=sys.stdin,
         stderr=sys.stderr,
+        timeout=180,
     )
 
 

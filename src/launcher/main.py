@@ -19,19 +19,25 @@ import sys
 
 
 def main():
-    main_exec_path = os.path.join(
-        os.path.dirname(__file__), "positive_toolbox"
-    )
-    if os.name == "nt":
-        main_exec_path = main_exec_path + ".exe"
-    #
-    subprocess.run(
-        [main_exec_path],
-        check=True,
-        stdout=sys.stdout,
-        stdin=sys.stdin,
-        stderr=sys.stderr,
-    )
+    if (
+        hasattr(sys, "frozen") is True
+        and getattr(sys, "frozen") is True
+    ) and (hasattr(sys, "_MEIPASS") is True):
+        main_exec_path = os.path.join(
+            sys.executable, "positive_toolbox"
+        )
+        if os.name == "nt":
+            main_exec_path = main_exec_path + ".exe"
+        #
+        subprocess.run(
+            [main_exec_path],
+            check=True,
+            stdout=sys.stdout,
+            stdin=sys.stdin,
+            stderr=sys.stderr,
+        )
+    else:
+        print("這是為打包後檔案結構設計的", file=sys.stderr)
 
 
 if __name__ == "__main__":
