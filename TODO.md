@@ -29,6 +29,8 @@
 - [ ] project: 增加除錯用log
 - [ ] workflow -> add: mapping(所有檔案列表)、checksum(雜湊值)
 - [ ] UI: 固定工具順序 (設用者設定)
+- [ ] launcher: carsh handler
+- [ ] UI:語言
 
 
 ## 已完成

@@ -65,18 +65,22 @@ pub enum AboutMsg {
 
 #[derive(Debug, Clone)]
 pub enum Licenses {
-    Agpl3,
+    AGPL3,
     Apache2,
     MIT,
+    BSD2Clause,
+    BSD3Clause,
     Other(String),
 }
 
 impl std::fmt::Display for Licenses {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(match self {
-            Self::Agpl3 => "AGPL-3",
+            Self::AGPL3 => "AGPL-3",
             Self::Apache2 => "Apache-2",
             Self::MIT => "MIT",
+            Self::BSD2Clause => "BSD-2-Clause",
+            Self::BSD3Clause => "BSD-3-Clause",
             Self::Other(string) => string,
         })
     }
@@ -196,7 +200,7 @@ pub fn create_license_info(
     let mut layout = Column::new().padding(10);
     layout = layout
         .push(
-            text(format!("{}, v{}", project_name, version))
+            text(format!("{} v{}", project_name, version))
                 .size(24)
                 .font(shared::FONT_NOTO_SANS_BOLD),
         )
@@ -207,33 +211,35 @@ pub fn create_license_info(
     //
     let binding = license_string.replace(" ", "");
     let mut license_vec: Vec<&str> = binding.split("OR").collect();
+    let binding2 = license_vec.join("");
+    license_vec = binding2.split("/").collect();
     license_vec.sort();
     let mut licenses: Vec<Licenses> = Vec::new();
     for license in license_vec {
         if license.starts_with("AGPL") {
-            licenses.push(Licenses::Agpl3);
+            licenses.push(Licenses::AGPL3);
         } else if license.starts_with("Apache") {
             licenses.push(Licenses::Apache2);
         } else if license.starts_with("MIT") {
             licenses.push(Licenses::MIT);
+        } else if license.starts_with("BSD-3-Clause") {
+            licenses.push(Licenses::BSD3Clause);
+        } else if license.starts_with("BSD-2-Clause") {
+            licenses.push(Licenses::BSD2Clause);
         } else {
             licenses.push(Licenses::Other(String::from(license)));
         }
     }
-    layout = layout.push(text(format!("license: {:?}", licenses)).size(20));
-    /* let mut license_btn_layout = Row::new().padding(5);
+    //
+    let mut layout_license = Row::new().padding(5);
+    layout_license = layout_license.push(text("license: "));
+    let mut licenses_texts = Vec::new();
     for license in licenses {
-        match license {
-            Licenses::Agpl3 => {
-                let btn = button(text(format!("{}", license)).size(18))
-                    .on_press(AboutMsg::OpenLicense(license))
-                    .width(100)
-                    .height(60);
-                license_btn_layout = license_btn_layout.push(btn);
-            }
-        }
+        licenses_texts.push(format!("{}", license));
     }
-    layout = layout.push(license_btn_layout); */
+    layout_license = layout_license.push(text(licenses_texts.join("、")));
+    //layout = layout.push(text(format!("license: {:?}", licenses)).size(20));
+    layout = layout.push(layout_license);
     //
     return layout;
 }

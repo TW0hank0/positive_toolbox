@@ -23,6 +23,7 @@ use iced::widget::{Column, Row, button, container, scrollable, text};
 
 use log;
 
+use positive_toolbox;
 use positive_toolbox::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
@@ -33,7 +34,6 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen(start)]
 pub fn wasm_start() -> iced::Result {
     console_error_panic_hook::set_once();
-    //
     main()
 }
 
@@ -66,6 +66,7 @@ pub fn main() -> iced::Result {
 struct Toolbox {
     tool_paths: HashMap<String, PathBuf>,
     tools_ordered: HashMap<usize, Tool>,
+    language: positive_toolbox::languages::base_struct::LangStruct,
 }
 
 #[derive(Debug, Clone)]
@@ -97,21 +98,35 @@ struct Tool {
 
 impl Toolbox {
     pub fn new() -> Self {
+        let language = Toolbox::language_system();
+        //
         let mut all_tool: Vec<Tool> = Vec::new();
         all_tool.push(Tool {
-            name: "程式碼縮排",
+            name: if language.tool_name_code_indenter == "" {
+                "程式碼縮排"
+            } else {
+                language.tool_name_code_indenter
+            },
             file_name: "code_indenter",
             msg: ToolboxMsg::OpenCodeIndenter,
             describe: Some("功能如其名"),
         });
         all_tool.push(Tool {
-            name: "關於",
+            name: if language.tool_name_about == "" {
+                "關於"
+            } else {
+                language.tool_name_about
+            },
             file_name: "about",
             msg: ToolboxMsg::OpenAbout,
             describe: Some("關於 positive_toolbox 及第三方專案"),
         });
         all_tool.push(Tool {
-            name: "系統資訊",
+            name: if language.tool_name_system_info == "" {
+                "系統資訊"
+            } else {
+                language.tool_name_system_info
+            },
             file_name: "system_info",
             msg: ToolboxMsg::OpenSystemInfo,
             describe: Some("查看系統版本、記憶體等..."),
@@ -120,7 +135,7 @@ impl Toolbox {
             name: "輕鬆更新",
             file_name: "eazy_updater",
             msg: ToolboxMsg::OpenEazyUpdater,
-            describe: Some("系統更新工具的GUI包裝(wrap)"),
+            describe: Some("(開發中) 系統更新工具的GUI包裝(wrap)"),
         });
         let mut tools_ordered: HashMap<usize, Tool> = HashMap::new();
         let mut tool_count: usize = 0;
@@ -150,7 +165,12 @@ impl Toolbox {
         Self {
             tool_paths: tool_paths,
             tools_ordered: tools_ordered,
+            language: language,
         }
+    }
+
+    pub fn language_system() -> positive_toolbox::languages::base_struct::LangStruct {
+        positive_toolbox::languages::chinese::get_lang()
     }
 
     pub fn update(&mut self, message: ToolboxMsg) {
@@ -185,8 +205,14 @@ impl Toolbox {
             .width(180)
             .height(65);
             layout_tool = layout_tool.push(tool_btn).spacing(30);
-            let describe_text =
-                text(tool.describe.unwrap_or("沒有簡介 @_@")).size(iced::Pixels::from(20));
+            let describe_text = text(tool.describe.unwrap_or(
+                if self.language.main_ui_no_describe == "" {
+                    "沒有簡介 @_@"
+                } else {
+                    self.language.main_ui_no_describe
+                },
+            ))
+            .size(iced::Pixels::from(20));
             layout_tool = layout_tool.push(describe_text);
             let container_tool = container(layout_tool)
                 .height(150)

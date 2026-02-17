@@ -17,9 +17,12 @@ import subprocess
 import sys
 import json
 import os
+import time
 
 
 def main():
+    start_time = time.time()
+    print("-" * 10, "cargo-about", "-" * 10)
     subprocess.run(
         [
             "cargo-about",
@@ -35,6 +38,7 @@ def main():
         stdin=sys.stdin,
         stderr=sys.stderr,
     )
+    print("-" * 10, "pip-licenses", "-" * 10)
     subprocess.run(
         [
             "uv",
@@ -51,6 +55,7 @@ def main():
         stdin=sys.stdin,
         stderr=sys.stderr,
     )
+    print("-" * 10, "licenses_python.rs", "-" * 10)
     piplicense_output = subprocess.run(
         [
             "uv",
@@ -93,6 +98,7 @@ LicenseInfo {{
     )
     with open(license_file_path, "w", encoding="utf-8") as f:
         f.write(piplicense_conversioned_data)
+    print("-" * 10, "ptb_launcher", "-" * 10)
     subprocess.run(
         ["uv", "run", "pyinstaller", "ptb_launcher.spec"],
         check=True,
@@ -100,6 +106,7 @@ LicenseInfo {{
         stdin=sys.stdin,
         stderr=sys.stderr,
     )
+    print("-" * 10, "cargo build", "-" * 10)
     subprocess.run(
         ["cargo", "build", "--release"],
         check=True,
@@ -107,6 +114,7 @@ LicenseInfo {{
         stdin=sys.stdin,
         stderr=sys.stderr,
     )
+    print("-" * 10, "zip file", "-" * 10)
     subprocess.run(
         ["uv", "run", os.path.join("ci", "zip_files.py")],
         check=True,
@@ -114,6 +122,8 @@ LicenseInfo {{
         stdin=sys.stdin,
         stderr=sys.stderr,
     )
+    print("-" * 20)
+    print("finish in", time.time() - start_time)
 
 
 if __name__ == "__main__":

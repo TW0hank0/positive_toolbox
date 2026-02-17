@@ -261,10 +261,14 @@ impl SystemInfo {
                 "位子：{}",
                 disk.mount_point().to_str().unwrap_or("未知")
             )));
-            layout_system_info =
-                layout_system_info.push(text(format!("唯讀：{}", disk.is_read_only())));
-            layout_system_info =
-                layout_system_info.push(text(format!("可移除：{}", disk.is_removable())));
+            layout_system_info = layout_system_info.push(text(format!(
+                "唯讀：{}",
+                if disk.is_read_only() { "是" } else { "否" }
+            )));
+            layout_system_info = layout_system_info.push(text(format!(
+                "可移除：{}",
+                if disk.is_removable() { "是" } else { "否" }
+            )));
             layout_system_info = layout_system_info.push(text(format!(
                 "寫入統計：{:?}",
                 disk.usage().total_written_bytes
