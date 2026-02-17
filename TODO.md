@@ -4,9 +4,12 @@
 - [ ] UI:工具簡介
 - [ ] tool: 更新工具 (apt, dnf)
 
+### v0.3.0
+- [ ] tool:URL檢查
+- [ ] tool: markdown 宣染
+
 ### 未來計劃
 
-- [ ] tool:URL檢查
 - [ ] system_info: sort search process
 - [ ] system_info: 自訂單位 (Bytes, MB, MIB)
 - [ ] project:test & coverage
@@ -15,10 +18,11 @@
 - [ ] project: 使用者設定
 - [ ] tool:json表格
 - [ ] project:WASM支援
-- [ ] project:安裝程式
+- [ ] project:安裝程式 + 解除安裝程式 (python + pyinstaller)
+- [ ] project:啟動器 & 捷徑 (python + pyinstaller)
+- [ ] project:更新器(updater)
 - [ ] UI:首頁的工具排列
 - [ ] eazy_update(更新工具): 支援winget
-- [ ] tool: markdown 宣染
 - [ ] tool: 四則運算計算機
 - [ ] project: 增加除錯用log
 
