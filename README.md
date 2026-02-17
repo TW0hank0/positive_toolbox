@@ -52,4 +52,8 @@ http://localhost:10000
 
 本程式基於 GNU Affero General Public License v3 授權
 
-[第三方授權：ThirdPartyLicense.html](./ThirdPartyLicense.html)
+第三方專案見：
+
+[ThirdPartyLicense-Rust.html](./ThirdPartyLicense-Rust.html)
+
+[ThirdPartyLicense-Python.html](./ThirdPartyLicense-Python.html)
