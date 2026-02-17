@@ -2,17 +2,19 @@
 
 ### v0.2.0
 - [x] UI:工具簡介
-- [ ] tool: 更新工具 (apt, dnf)
+- [ ] tool: 輕鬆更新 (dnf支援)
 
 ### v0.3.0
 - [ ] tool:URL檢查
-- [ ] tool: markdown 宣染
+- [ ] tool:markdown 宣染
+
+### v0.4.0
+- [ ] system_info: sort search process
+- [ ] system_info: 自訂單位 (Bytes, MB, MIB)
+- [ ] system_info -> ui: 卡片式資料
 
 ### 未來計劃
 
-- [ ] system_info: sort search process
-- [ ] system_info: 自訂單位 (Bytes, MB, MIB)
-- [ ] system_info: 卡片式資料
 - [ ] project:test & coverage
 - [ ] UI:theme
 - [ ] UI:訊息通知UI (+log紀錄UI)
@@ -20,13 +22,13 @@
 - [ ] tool:json表格
 - [ ] project:WASM支援
 - [ ] project:安裝程式 + 解除安裝程式 (python + pyinstaller)
-- [ ] project:啟動器 & 捷徑 (python + pyinstaller)
+- [ ] project:啟動器 (python + pyinstaller)
 - [ ] project:更新器(updater)
-- [ ] UI:首頁的工具排列
-- [ ] eazy_update(更新工具): 支援winget
+- [ ] eazy_update(更新工具): 支援winget、apt、pacman
 - [ ] tool: 四則運算計算機
 - [ ] project: 增加除錯用log
 - [ ] workflow -> add: mapping(所有檔案列表)、checksum(雜湊值)
+- [ ] UI: 固定工具順序 (設用者設定)
 
 
 ## 已完成
