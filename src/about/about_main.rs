@@ -133,20 +133,17 @@ impl About {
         //
         let mut layout_license = Column::new().padding(15);
         layout_license = layout_license.push(create_license_info(
-            String::from(format!(
-                "{} v{}",
-                shared::PROJECT_NAME,
-                shared::PROJECT_VERSION
-            )),
+            String::from(shared::PROJECT_NAME),
             vec![String::from("TW0hank0")],
             String::from("AGPL-3.0"),
+            shared::PROJECT_VERSION,
         ));
         //
         let mut layout_third_party = Column::new().padding(15);
         layout_third_party =
             layout_third_party.push(button("開啟完整內容").on_press(AboutMsg::OpenLicense));
-        let third_party_license_infos = positive_toolbox::licenses::get_licenses();
-        for license_info in third_party_license_infos {
+        let third_party_license_infos_rust = positive_toolbox::licenses_rust::get_licenses();
+        for license_info in third_party_license_infos_rust {
             let mut authors = Vec::new();
             for author in license_info.authors {
                 authors.push(String::from(author));
@@ -155,6 +152,20 @@ impl About {
                 String::from(license_info.name),
                 authors,
                 String::from(license_info.license),
+                license_info.version,
+            ));
+        }
+        let third_party_license_infos_python = positive_toolbox::licenses_python::get_licenses();
+        for license_info in third_party_license_infos_python {
+            let mut authors = Vec::new();
+            for author in license_info.authors {
+                authors.push(String::from(author));
+            }
+            layout_third_party = layout_third_party.push(create_license_info(
+                String::from(license_info.name),
+                authors,
+                String::from(license_info.license),
+                license_info.version,
             ));
         }
         layout_license = layout_license.push(layout_third_party);
@@ -180,11 +191,12 @@ pub fn create_license_info(
     project_name: String,
     authors: Vec<String>,
     license_string: String,
+    version: &str,
 ) -> Column<'static, AboutMsg> {
     let mut layout = Column::new().padding(10);
     layout = layout
         .push(
-            text(project_name)
+            text(format!("{}, v{}", project_name, version))
                 .size(24)
                 .font(shared::FONT_NOTO_SANS_BOLD),
         )

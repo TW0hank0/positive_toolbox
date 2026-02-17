@@ -30,7 +30,7 @@ fn main() {
         .unwrap()
         .join("src");
     //let out_dir = std::env::var("OUT_DIR").unwrap();
-    let dest_path = Path::new(&out_dir).join("licenses.rs");
+    let dest_path = Path::new(&out_dir).join("licenses_rust.rs");
 
     let metadata = MetadataCommand::new()
         .exec()

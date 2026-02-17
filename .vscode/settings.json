@@ -1,0 +1,20 @@
+{
+    "basedpyright.analysis.exclude": [
+        "**/__pycache__",
+        ".git/",
+        "target/",
+        "dist/",
+        "pkg/",
+        "build/",
+        ".venv"
+    ],
+    "rust-analyzer.files.exclude": [
+        "**/__pycache__",
+        ".git/",
+        "target/",
+        "dist/",
+        "pkg/",
+        "build/",
+        ".venv"
+    ]
+}

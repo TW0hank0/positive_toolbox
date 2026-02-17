@@ -102,7 +102,7 @@ impl Toolbox {
             name: "程式碼縮排",
             file_name: "code_indenter",
             msg: ToolboxMsg::OpenCodeIndenter,
-            describe: None,
+            describe: Some("功能如其名"),
         });
         all_tool.push(Tool {
             name: "關於",
