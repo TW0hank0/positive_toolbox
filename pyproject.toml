@@ -22,5 +22,11 @@ requires-python = ">=3.12"
 license = { text = "AGPL-3.0-only" }
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/TW0hank0/positive_toolbox/"
+"Source Code" = "https://github.com/TW0hank0/positive_toolbox/"
+"Bug Tracker" = "https://github.com/TW0hank0/positive_toolbox/issues/"
+Changelog = "https://github.com/TW0hank0/positive_toolbox/change_logs/"
+
 [project.optional-dependencies]
 build = ["pyinstaller>=6.19.0", "pip-licenses"]
