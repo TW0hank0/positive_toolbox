@@ -62,17 +62,18 @@ def main():
         case _:
             pf = "unknown"
     include_files.append(launcher_path)
+    zip_file_name = f"positive_toolbox_v{version}_{pf}.zip"
     with zipfile.ZipFile(
         os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
-            f"positive_toolbox_v{version}_{pf}.zip",
+            zip_file_name,
         ),
         mode="w",
         compression=zipfile.ZIP_DEFLATED,
     ) as zipf:
         for file in include_files:
             zipf.write(file, arcname=os.path.basename(file))
-    print(f"positive_toolbox_{version}_{pf}.zip")
+    print(zip_file_name)
 
 
 if __name__ == "__main__":
