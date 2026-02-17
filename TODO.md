@@ -6,6 +6,7 @@
 
 #### v0.2.0 - extra
 - [x] UI:標題Icon
+- [x] project:啟動器 (python + pyinstaller)
 
 ### v0.3.0
 - [ ] tool:URL檢查
@@ -25,7 +26,6 @@
 - [ ] tool:json表格
 - [ ] project:WASM支援
 - [ ] project:安裝程式 + 解除安裝程式 (python + pyinstaller)
-- [ ] project:啟動器 (python + pyinstaller)
 - [ ] project:更新器(updater)
 - [ ] eazy_update(更新工具): 支援winget、apt、pacman
 - [ ] tool: 四則運算計算機
