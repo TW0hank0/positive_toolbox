@@ -15,12 +15,14 @@
 
 import subprocess
 import sys
+import json
+import os
 
 
 def main():
     subprocess.run(
         [
-            "cargo",
+            "cargo-about",
             "generate",
             "--output-file",
             "ThirdPartyLicense.html",
@@ -49,6 +51,52 @@ def main():
         stdin=sys.stdin,
         stderr=sys.stderr,
     )
+    subprocess.run(
+        ["cargo", "build", "--release"],
+        check=True,
+        stdout=sys.stdout,
+        stdin=sys.stdin,
+        stderr=sys.stderr,
+    )
+    piplicense_output = subprocess.run(
+        [
+            "uv",
+            "run",
+            "pip-licenses",
+            "--format=json",
+            "--from=mixed",
+            "--with-urls",
+        ],
+        check=True,
+        capture_output=True,
+    )
+    piplicense_data = json.loads(piplicense_output.stdout)
+    license_file_path = os.path.join(
+        os.path.dirname(__file__), "src", "licenses.rs"
+    )
+    with open(license_file_path, "r") as f:
+        orig_license_data = f.read()
+    count = 1
+    split_orig_license_data = orig_license_data.split("\n")
+    for i in split_orig_license_data:
+        if i == "#[derive(Debug)]":
+            break
+        else:
+            count += 1
+    count -= 3
+    split_orig_license_data.insert(count, "\n")
+    count += 1
+    piplicense_conversioned_data = ""
+    for license_data in piplicense_data:
+        tmp_str = f"""LicenseInfo {{
+        name: {license_data["Name"]},
+        version: {license_data["Version"]},
+        license: {license_data["License"]},
+        authors: vec![],
+        }},"""
+        piplicense_conversioned_data = (
+            piplicense_conversioned_data + "\n" + tmp_str + "\n"
+        )
     subprocess.run(
         ["uv", "run", "pyinstaller", "ptb_launcher.spec"],
         check=True,

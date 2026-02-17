@@ -68,6 +68,7 @@ pub enum Licenses {
     Agpl3,
     Apache2,
     MIT,
+    Other(String),
 }
 
 impl std::fmt::Display for Licenses {
@@ -76,6 +77,7 @@ impl std::fmt::Display for Licenses {
             Self::Agpl3 => "AGPL-3",
             Self::Apache2 => "Apache-2",
             Self::MIT => "MIT",
+            Self::Other(string) => string,
         })
     }
 }
@@ -202,6 +204,8 @@ pub fn create_license_info(
             licenses.push(Licenses::Apache2);
         } else if license.starts_with("MIT") {
             licenses.push(Licenses::MIT);
+        } else {
+            licenses.push(Licenses::Other(String::from(license)));
         }
     }
     layout = layout.push(text(format!("license: {:?}", licenses)).size(20));
