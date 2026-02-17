@@ -211,7 +211,7 @@ impl Toolbox {
             .on_press(tool_msg)
             .width(180)
             .height(65);
-            layout_tool = layout_tool.push(tool_btn).spacing(30);
+            layout_tool = layout_tool.push(tool_btn).spacing(50);
             let describe_text = text(tool.describe.unwrap_or(
                 if self.language.main_ui_no_describe == "" {
                     "沒有簡介 @_@"

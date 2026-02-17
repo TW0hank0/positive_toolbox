@@ -61,6 +61,8 @@ def main():
         "src/licenses_python.rs",
         "-ignore",
         "**/*.icon",
+        "-ignore",
+        "**/*.sh",
         ".",
     ]
     print(" ".join(command))
