@@ -1,8 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import os
 
 a = Analysis(
-    ['src\\launcher\\main.py'],
+    [os.path.join('src', 'launcher', 'main.py')],
     pathex=[],
     binaries=[],
     datas=[],
