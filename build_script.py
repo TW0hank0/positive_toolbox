@@ -52,7 +52,7 @@ def main():
         stderr=sys.stderr,
     )
     subprocess.run(
-        ["cargo", "build", "--release"],
+        ["cargo", "build"],
         check=True,
         stdout=sys.stdout,
         stdin=sys.stdin,
