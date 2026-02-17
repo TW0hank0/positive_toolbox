@@ -65,7 +65,7 @@ def main():
     with zipfile.ZipFile(
         os.path.join(
             os.path.dirname(os.path.dirname(__file__)),
-            f"positive_toolbox_{version}_{pf}.zip",
+            f"positive_toolbox_v{version}_{pf}.zip",
         ),
         mode="w",
         compression=zipfile.ZIP_DEFLATED,
