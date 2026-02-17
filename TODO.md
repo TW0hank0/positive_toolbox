@@ -4,6 +4,9 @@
 - [x] UI:工具簡介
 - [ ] tool: 輕鬆更新 (dnf支援)
 
+#### v0.2.0 - extra
+- [x] UI:標題Icon
+
 ### v0.3.0
 - [ ] tool:URL檢查
 - [ ] tool:markdown 宣染
@@ -31,7 +34,6 @@
 - [ ] UI: 固定工具順序 (設用者設定)
 - [ ] launcher: carsh handler
 - [ ] UI:語言
-- [ ] UI:標題Icon
 
 
 ## 已完成
