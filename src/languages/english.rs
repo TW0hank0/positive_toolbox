@@ -13,9 +13,14 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-//! positive_toolbox 的語言包
+use crate::languages::base_struct;
 
-pub mod base_struct;
-
-pub mod chinese;
-pub mod english;
+pub fn get_lang() -> base_struct::LangStruct {
+    base_struct::LangStruct {
+        tool_name_code_indenter: Some("code_indenter"),
+        tool_name_system_info: Some("system_info"),
+        tool_name_about: Some("about"),
+        main_ui_no_describe: Some("No describe @_@"),
+        ..Default::default()
+    }
+}

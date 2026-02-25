@@ -102,34 +102,30 @@ impl Toolbox {
         //
         let mut all_tool: Vec<Tool> = Vec::new();
         all_tool.push(Tool {
-            name: if language.tool_name_code_indenter == "" {
-                "程式碼縮排"
-            } else {
-                language.tool_name_code_indenter
-            },
+            name: language.tool_name_code_indenter.unwrap_or("程式碼縮排"),
             file_name: "code_indenter",
             msg: ToolboxMsg::OpenCodeIndenter,
-            describe: Some("功能如其名"),
+            describe: Some(language.tool_describe_code_indenter.unwrap_or("功能如其名")),
         });
         all_tool.push(Tool {
-            name: if language.tool_name_about == "" {
-                "關於"
-            } else {
-                language.tool_name_about
-            },
+            name: language.tool_name_about.unwrap_or("關於"),
             file_name: "about",
             msg: ToolboxMsg::OpenAbout,
-            describe: Some("關於 positive_toolbox 及第三方專案"),
+            describe: Some(
+                language
+                    .tool_describe_about
+                    .unwrap_or("關於 positive_toolbox 及第三方專案"),
+            ),
         });
         all_tool.push(Tool {
-            name: if language.tool_name_system_info == "" {
-                "系統資訊"
-            } else {
-                language.tool_name_system_info
-            },
+            name: language.tool_name_system_info.unwrap_or("系統資訊"),
             file_name: "system_info",
             msg: ToolboxMsg::OpenSystemInfo,
-            describe: Some("查看系統版本、記憶體等..."),
+            describe: Some(
+                language
+                    .tool_describe_system_info
+                    .unwrap_or("查看系統版本、記憶體等..."),
+            ),
         });
         all_tool.push(Tool {
             name: "輕鬆更新",
@@ -170,6 +166,7 @@ impl Toolbox {
     }
 
     pub fn language_system() -> positive_toolbox::languages::base_struct::LangStruct {
+        //TODO:等待使用者設定
         positive_toolbox::languages::chinese::get_lang()
     }
 
@@ -211,14 +208,11 @@ impl Toolbox {
             .on_press(tool_msg)
             .width(180)
             .height(65);
-            layout_tool = layout_tool.push(tool_btn).spacing(50);
-            let describe_text = text(tool.describe.unwrap_or(
-                if self.language.main_ui_no_describe == "" {
-                    "沒有簡介 @_@"
-                } else {
-                    self.language.main_ui_no_describe
-                },
-            ))
+            layout_tool = layout_tool.push(tool_btn).spacing(40);
+            let describe_text = text(
+                tool.describe
+                    .unwrap_or(self.language.main_ui_no_describe.unwrap_or("沒有簡介 @_@")),
+            )
             .size(iced::Pixels::from(20));
             layout_tool = layout_tool.push(describe_text);
             let container_tool = container(layout_tool)
@@ -233,7 +227,7 @@ impl Toolbox {
                 .align_x(iced::alignment::Horizontal::Left)
                 .align_y(iced::alignment::Vertical::Center)
                 .padding(30);
-            layout_tools = layout_tools.push(container_tool).spacing(10);
+            layout_tools = layout_tools.push(container_tool).spacing(30);
         }
         //
         let container_tools = container(layout_tools)

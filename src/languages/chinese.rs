@@ -17,9 +17,13 @@ use crate::languages::base_struct;
 
 pub fn get_lang() -> base_struct::LangStruct {
     base_struct::LangStruct {
-        tool_name_code_indenter: "程式碼縮排",
-        tool_name_system_info: "系統資訊",
-        tool_name_about: "關於",
-        main_ui_no_describe: "沒有簡介 @_@",
+        tool_name_code_indenter: Some("程式碼縮排"),
+        tool_describe_code_indenter: Some("功能如其名"),
+        tool_name_system_info: Some("系統資訊"),
+        tool_describe_system_info: Some("查看系統版本、記憶體等..."),
+        tool_name_about: Some("關於"),
+        tool_describe_about: Some("關於 positive_toolbox 及第三方專案"),
+        main_ui_no_describe: Some("沒有簡介 @_@"),
+        ..Default::default()
     }
 }

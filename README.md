@@ -10,41 +10,11 @@
 
 使用rust和iced製作，面向使用者的工具。
 
-### 編譯
+### 編譯與執行
 
-#### 電腦
+見[INSTALL.md](./INSTALL.md)
 
-```
-cargo build --release
-```
 
-#### WASM (實驗性功能) (開發中)
-
-```
-wasm-pack build --target web --out-dir ./pkg
-```
-
-### 執行
-
-#### 電腦
-
-```
-cargo run --release
-```
-
-#### WASM (實驗性功能) (開發中)
-
-使用Python
-
-```
-python -m http.server 10000
-```
-
-瀏覽器開啟：
-
-```
-http://localhost:10000
-```
 
 ### 協議
 
@@ -52,8 +22,8 @@ http://localhost:10000
 
 本程式基於 GNU Affero General Public License v3 授權
 
-第三方專案見：
+第三方專案授權見：
 
-[ThirdPartyLicense-Rust.html](./ThirdPartyLicense-Rust.html)
+- [ThirdPartyLicense-Rust.html](./ThirdPartyLicense-Rust.html)
 
-[ThirdPartyLicense-Python.html](./ThirdPartyLicense-Python.html)
+- [ThirdPartyLicense-Python.html](./ThirdPartyLicense-Python.html)

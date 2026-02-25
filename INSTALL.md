@@ -24,6 +24,8 @@
 
 需要安裝rust工具鏈及`cargo-about`工具、uv (python工具)
 
+#### 電腦
+
 依序執行：
 
 ```
@@ -32,9 +34,36 @@ cd positive_toolbox
 uv venv
 uv sync --all-extras
 uv run build_script.py
-cargo run --release
 ```
 
 優點：可立即體驗最新功能
 
 缺點：需安裝工具鏈
+
+#### WASM (實驗性功能) (開發中)
+
+```
+wasm-pack build --target web --out-dir ./pkg
+```
+
+### 執行
+
+#### 電腦
+
+```
+cargo run --release
+```
+
+#### WASM (實驗性功能) (開發中)
+
+使用Python
+
+```
+python -m http.server 10000
+```
+
+瀏覽器開啟：
+
+```
+http://localhost:10000
+```
