@@ -95,3 +95,9 @@ cargo_metadata = "0.19"
 serde = { version = "1.0", features = ["derive"] }
 heck = "0.5"
 positive_tool_rs = { git = "https://github.com/TW0hank0/positive_tool_rs" }
+
+[profile.release]
+opt-level = 3
+
+[profile.dev]
+debug = 2

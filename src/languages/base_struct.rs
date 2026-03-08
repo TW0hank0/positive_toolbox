@@ -15,7 +15,9 @@
 
 use std;
 
-#[derive(Debug)]
+use serde;
+
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct LangStruct {
     ///工具名 -> 程式碼縮排
     pub tool_name_code_indenter: Option<&'static str>,
