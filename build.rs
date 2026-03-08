@@ -64,7 +64,7 @@ fn main() {
     let content = generate_rust_code(&licenses);
     fs::write(dest_path, content).expect("Failed to write licenses.rs");
     //
-    let status = std::process::Command::new("cargo-about")
+    /* let status = std::process::Command::new("cargo-about")
         .args(vec![
             "generate",
             "--output-file",
@@ -77,7 +77,7 @@ fn main() {
         .unwrap();
     if !status.success() {
         panic!("error: cargo-about")
-    }
+    } */
 }
 
 #[derive(Debug)]
