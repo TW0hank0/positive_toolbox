@@ -30,13 +30,18 @@ def main():
     for command in commands:
         print(f"Run Command:{' '.join(command)} ...", end="")
         sys.stdout.flush()
-        subprocess.run(
+        process = subprocess.run(
             command,
-            check=True,
-            stdout=sys.stdout,
-            stdin=sys.stdin,
+            stdout=subprocess.PIPE,
+            stdin=subprocess.PIPE,
             stderr=sys.stderr,
         )
+        if process.returncode != 0:
+            print("Error!")
+            print("--- stdout ---")
+            print(process.stdout)
+            print("--- stderr ---")
+            print(process.stderr)
         print("Ok!")
     #
     print("zip-files ...", end="")
