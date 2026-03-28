@@ -23,9 +23,8 @@ use iced::widget::{Column, Row, button, container, scrollable, text};
 
 use log;
 
-//use positive_toolbox;
-use pmj_shared::shared;
-use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared;
+use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
@@ -66,7 +65,7 @@ pub fn main() -> iced::Result {
 struct Toolbox {
     tool_paths: HashMap<String, PathBuf>,
     tools_ordered: HashMap<usize, Tool>,
-    language: positive_toolbox::languages::base_struct::LangStruct,
+    language: ptb_shared::languages::base_struct::LangStruct,
 }
 
 #[derive(Debug, Clone)]
@@ -165,9 +164,9 @@ impl Toolbox {
         }
     }
 
-    pub fn language_system() -> positive_toolbox::languages::base_struct::LangStruct {
-        //TODO:等待使用者設定
-        positive_toolbox::languages::chinese::get_lang()
+    pub fn language_system() -> ptb_shared::languages::base_struct::LangStruct {
+        //TODO:等待製作使用者設定
+        ptb_shared::languages::chinese::get_lang()
     }
 
     pub fn update(&mut self, message: ToolboxMsg) {

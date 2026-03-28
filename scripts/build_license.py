@@ -17,10 +17,11 @@ import os
 import subprocess
 import sys
 import json
+import time
 
 
 def main():
-    print("-" * 10, "cargo-about", "-" * 10)
+    start_time = time.time()
     #
     all_commands = [
         [
@@ -51,10 +52,20 @@ def main():
             "1.0",
             "templates/about_markdown.hbs",
         ],
+        [
+            "uv",
+            "run",
+            "pip-licenses",
+            "--format=html",
+            "--output-file",
+            "auto_generated/ThirdPartyLicense-Python.html",
+            "--from=mixed",
+            "--with-urls",
+        ],
     ]
     #
     for command in all_commands:
-        print(f"Run Command: {' '.join(command)}")
+        print(f"Run Command: {' '.join(command)} ...", end="")
         subprocess.run(
             command,
             check=True,
@@ -62,6 +73,7 @@ def main():
             stdin=sys.stdin,
             stderr=sys.stderr,
         )
+        print("Ok!")
     #
     print("Indenting json file...", end="")
     json_file_path = os.path.abspath(
@@ -77,26 +89,9 @@ def main():
         json_data = json.load(f)
     with open(json_file_path, "w", encoding="utf-8") as f:
         json.dump(json_data, f, ensure_ascii=False, sort_keys=True, indent=4)
-    print("Finish!")
+    print("Ok!")
     #
-    print("-" * 10, "pip-licenses", "-" * 10)
-    subprocess.run(
-        [
-            "uv",
-            "run",
-            "pip-licenses",
-            "--format=html",
-            "--output-file",
-            "auto_generated/ThirdPartyLicense-Python.html",
-            "--from=mixed",
-            "--with-urls",
-        ],
-        check=True,
-        stdout=sys.stdout,
-        stdin=sys.stdin,
-        stderr=sys.stderr,
-    )
-    print("-" * 10, "licenses_python.rs", "-" * 10)
+    print("Making licenses_python.rs ...", end="")
     piplicense_output = subprocess.run(
         [
             "uv",
@@ -140,6 +135,10 @@ LicenseInfo {{
     piplicense_conversioned_data = piplicense_conversioned_data + "];}"
     with open(license_file_path, "w", encoding="utf-8") as f:
         f.write(piplicense_conversioned_data)
+    print("Ok!")
+    #
+    end_time = time.time()
+    print(f"Finish: {str(end_time - start_time)}secs")
 
 
 if __name__ == "__main__":

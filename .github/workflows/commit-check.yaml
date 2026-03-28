@@ -76,7 +76,7 @@ jobs:
           uv self version
 
       - name: Install Go (Required for addlicense)
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "stable"
 
@@ -84,7 +84,6 @@ jobs:
         run: go install github.com/google/addlicense@latest
 
       - name: Run License Check
-        # -check 模式若發現缺失會回傳非零退出碼，導致失敗
         run: |
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-          uv run license_check.py
+          uv run scripts/license_check.py
