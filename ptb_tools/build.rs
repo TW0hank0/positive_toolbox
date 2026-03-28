@@ -13,23 +13,26 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-// build.rs
-//use std::collections::HashMap;
+//! build.rs
+
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use cargo_metadata::MetadataCommand;
-
-use positive_tool_rs;
 
 fn main() {
     // 告訴 Cargo 重新執行 build.rs 當 Cargo.lock 變動
     println!("cargo:rerun-if-changed=Cargo.lock");
 
-    let out_dir = positive_tool_rs::pt::find_project_path(env!("CARGO_PKG_NAME"), None)
-        .unwrap()
-        .join("src");
-    //let out_dir = std::env::var("OUT_DIR").unwrap();
+    /* let out_dir = positive_tool_rs::pt::find_project_path(env!("CARGO_PKG_NAME"), None)
+    .unwrap()
+    .join("src"); */
+    let mut out_dir = PathBuf::from(std::env::var("OUT_DIR").unwrap())
+        .join("..")
+        .join("..");
+    if !(out_dir.file_name().unwrap().to_str().unwrap() == "positive_toolbox") {
+        out_dir = out_dir.join("..");
+    }
     let dest_path = Path::new(&out_dir).join("licenses_rust.rs");
 
     let metadata = MetadataCommand::new()

@@ -20,8 +20,8 @@ use log;
 
 use sysinfo;
 
-use positive_toolbox::shared;
-use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared;
+use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "系統資訊";

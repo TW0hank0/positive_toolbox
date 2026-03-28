@@ -18,8 +18,8 @@ use iced::widget::{Column, button, scrollable, text};
 
 use log;
 
-use positive_toolbox::shared;
-use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared;
+use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 const TOOL_NAME: &str = "輕鬆更新";
 
