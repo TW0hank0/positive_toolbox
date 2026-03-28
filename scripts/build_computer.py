@@ -29,6 +29,7 @@ def main():
     ]
     for command in commands:
         print(f"Run Command:{' '.join(command)} ...", end="")
+        sys.stdout.flush()
         subprocess.run(
             command,
             check=True,
@@ -39,6 +40,7 @@ def main():
         print("Ok!")
     #
     print("zip-files ...", end="")
+    sys.stdout.flush()
     zip_files.main()
     print("Ok!")
     print("-" * 10)
