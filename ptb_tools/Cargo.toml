@@ -33,3 +33,9 @@ path = "src/about/about_show_full_license.rs"
 [[bin]]
 name = "eazy_updater"
 path = "src/eazy_updater.rs"
+
+[build-dependencies]
+cargo_metadata = "0.19"
+serde = { version = "1.0", features = ["derive"] }
+heck = "0.5"
+positive_tool_rs = { git = "https://github.com/TW0hank0/positive_tool_rs" }

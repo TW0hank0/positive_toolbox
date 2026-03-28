@@ -2991,16 +2991,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "positive_toolbox"
-version = "0.1.0"
-dependencies = [
- "cargo_metadata",
- "heck",
- "positive_tool_rs",
- "serde",
-]
-
-[[package]]
 name = "powerfmt"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3075,7 +3065,10 @@ version = "0.1.0"
 name = "ptb_tools"
 version = "0.1.0"
 dependencies = [
+ "cargo_metadata",
+ "heck",
  "iced",
+ "positive_tool_rs",
  "quick-xml",
  "serde",
  "serde_json",
