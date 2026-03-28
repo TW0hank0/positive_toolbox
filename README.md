@@ -10,11 +10,23 @@
 
 使用rust和iced製作，面向使用者的工具。
 
-### 編譯與執行
+### 編譯
 
-見[INSTALL.md](./INSTALL.md)
+執行：
 
+```
+uv venv
+uv sync --all-extras
+uv run build_script.py
+```
 
+#### WASM (實驗性功能) (開發中)
+
+需要：wasm-pack
+
+```
+wasm-pack build --target web --out-dir ./pkg
+```
 
 ### 協議
 

@@ -2,7 +2,6 @@ target/
 
 # krita temp
 *.kra~
-*~
 
 # workflow make
 positive_toolbox_*.zip
@@ -10,8 +9,9 @@ positive_toolbox_*.zip
 # build.rs make temp licenses file
 #src/licenses.rs
 
-# (python) venv
-.venv
+# python
+**/.venv
+**/__pycache__
 
 # (python) pyinstaller make
 build/
