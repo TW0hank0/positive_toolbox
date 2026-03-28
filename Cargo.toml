@@ -24,6 +24,7 @@
 # repository = "https://github.com/TW0hank0/positive_toolbox"
 
 [workspace.dependencies]
+positive_toolbox = { path = "." }
 ptb_shared = { path = "ptb_shared" }
 serde = "1.0.228"
 serde_json = "1.0.149"

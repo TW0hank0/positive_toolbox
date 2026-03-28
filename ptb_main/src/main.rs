@@ -23,8 +23,8 @@ use iced::widget::{Column, Row, button, container, scrollable, text};
 
 use log;
 
-use positive_toolbox;
-use positive_toolbox::shared;
+//use positive_toolbox;
+use pmj_shared::shared;
 use positive_toolbox::shared::FONT_NOTO_SANS_REG;
 
 #[cfg(target_arch = "wasm32")]

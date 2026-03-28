@@ -11,6 +11,8 @@ rust-version.workspace = true
 iced = { workspace = true }
 time = { workspace = true }
 time-macros = { workspace = true }
+log = { workspace = true }
+ptb_shared = { workspace = true }
 
 [[bin]]
 name = "positive_toolbox"

@@ -22,16 +22,34 @@ import zip_files
 
 def main():
     start_time = time.time()
-    print("-" * 10, "cargo build", "-" * 10)
-    subprocess.run(
+    # print("-" * 10, "cargo build", "-" * 10)
+    # subprocess.run(
+    #     ["cargo", "build", "--workspace", "--release"],
+    #     check=True,
+    #     stdout=sys.stdout,
+    #     stdin=sys.stdin,
+    #     stderr=sys.stderr,
+    # )
+    #
+    commands = [
         ["cargo", "build", "--workspace", "--release"],
-        check=True,
-        stdout=sys.stdout,
-        stdin=sys.stdin,
-        stderr=sys.stderr,
-    )
-    print("-" * 10, "zip-files", "-" * 10)
+        ["uv", "run", "pyinstaller", "ptb_launcher", "ptb_launcher.spec"],
+    ]
+    for command in commands:
+        print(f"Run Command:{' '.join(command)} ...", end="")
+        subprocess.run(
+            command,
+            check=True,
+            stdout=sys.stdout,
+            stdin=sys.stdin,
+            stderr=sys.stderr,
+        )
+        print("Ok!")
+    #
+    print("zip-files ...", end="")
     zip_files.main()
+    print("Ok!")
+    print("-" * 10)
     print("finish in", time.time() - start_time)
 
 

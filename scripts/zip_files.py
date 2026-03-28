@@ -45,23 +45,23 @@ def main():
                         len(file.split(".")) > 1
                     ):
                         include_files.append(full_file_path)
-    #
-    # launcher_path = os.path.abspath(
-    #     os.path.join(
-    #         os.path.dirname(os.path.dirname(__file__)),
-    #         "dist",
-    #         "ptb_launcher",
-    #     )
-    # )
+
+    launcher_path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "dist",
+            "ptb_launcher",
+        )
+    )
     match platform.system():
         case "Linux":
             pf = "linux"
         case "Windows":
             pf = "windows"
-            # launcher_path = launcher_path + ".exe"
+            launcher_path = launcher_path + ".exe"
         case _:
             pf = "unknown"
-    # include_files.append(launcher_path)
+    include_files.append(launcher_path)
     zip_file_name = f"positive_toolbox_v{version}_{pf}.zip"
     with zipfile.ZipFile(
         os.path.join(

@@ -22,15 +22,17 @@ use iced;
 
 use image;
 
+use log;
+
 #[cfg(not(target_arch = "wasm32"))]
 use positive_tool_rs::pt;
 
 #[cfg(target_arch = "wasm32")]
 use console_log;
 
-pub const ICON_PNG: &[u8] = include_bytes!("../icon.png");
+pub const ICON_PNG: &[u8] = include_bytes!("../../assets/icon.png");
 const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
-    include_bytes!("../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
+    include_bytes!("../../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
 pub const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
 pub const FONT_NOTO_SANS_BOLD: iced::font::Font = iced::font::Font {

@@ -87,7 +87,7 @@ def main():
             "pip-licenses",
             "--format=html",
             "--output-file",
-            "ThirdPartyLicense-Python.html",
+            "auto_generated/ThirdPartyLicense-Python.html",
             "--from=mixed",
             "--with-urls",
         ],
@@ -111,7 +111,10 @@ def main():
     )
     piplicense_data = json.loads(piplicense_output.stdout)
     license_file_path = os.path.join(
-        os.path.dirname(__file__), "src", "licenses_python.rs"
+        os.path.dirname(os.path.dirname(__file__)),
+        "ptb_tools",
+        "src",
+        "licenses_python.rs",
     )
     piplicense_conversioned_data = """
 #[derive(Debug)]
