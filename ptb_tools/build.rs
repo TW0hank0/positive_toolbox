@@ -16,7 +16,7 @@
 //! build.rs
 
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use cargo_metadata::MetadataCommand;
 
@@ -27,14 +27,11 @@ fn main() {
     /* let out_dir = positive_tool_rs::pt::find_project_path(env!("CARGO_PKG_NAME"), None)
     .unwrap()
     .join("src"); */
-    let mut out_dir = PathBuf::from(std::env::var("OUT_DIR").unwrap())
-        .join("..")
-        .join("..");
-    if !(out_dir.file_name().unwrap().to_str().unwrap() == "positive_toolbox") {
-        out_dir = out_dir.join("..");
-    }
-    let dest_path = Path::new(&out_dir).join("licenses_rust.rs");
-
+    let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..");
+    let dest_path = PathBuf::from(&manifest_dir)
+        .join("ptb_shared")
+        .join("src")
+        .join("licenses_rust.rs");
     let metadata = MetadataCommand::new()
         .exec()
         .expect("Failed to get cargo metadata");
@@ -66,21 +63,6 @@ fn main() {
 
     let content = generate_rust_code(&licenses);
     fs::write(dest_path, content).expect("Failed to write licenses.rs");
-    //
-    /* let status = std::process::Command::new("cargo-about")
-        .args(vec![
-            "generate",
-            "--output-file",
-            "ThirdPartyLicense-Rust.html",
-            "about.hbs",
-            "--threshold",
-            "1.0",
-        ])
-        .status()
-        .unwrap();
-    if !status.success() {
-        panic!("error: cargo-about")
-    } */
 }
 
 #[derive(Debug)]

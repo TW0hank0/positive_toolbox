@@ -1,6 +1,6 @@
 # positive_toolbox
 
-![icon](./icon.png)
+![icon](./assets/icon.png)
 
 **中文** | [English](./READMEs/README_en.md)
 
