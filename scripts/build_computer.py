@@ -16,6 +16,7 @@
 import subprocess
 import sys
 import time
+import os
 
 import zip_files
 
@@ -25,23 +26,29 @@ def main():
     #
     commands = [
         ["cargo", "build", "--workspace", "--release"],
-        ["uv", "run", "pyinstaller", "ptb_launcher", "ptb_launcher.spec"],
+        [
+            "uv",
+            "run",
+            "pyinstaller",
+            os.path.join("ptb_launcher", "ptb_launcher.spec"),
+        ],
     ]
     for command in commands:
         print(f"Run Command:{' '.join(command)} ...", end="")
         sys.stdout.flush()
         process = subprocess.run(
             command,
-            stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
+            stdout=sys.stdout,
+            stdin=sys.stdin,
             stderr=sys.stderr,
         )
         if process.returncode != 0:
             print("Error!")
             print("--- stdout ---")
-            print(process.stdout)
+            print(process.stdout.decode())
             print("--- stderr ---")
-            print(process.stderr)
+            print(process.stderr.decode())
+            sys.exit(1)
         print("Ok!")
     #
     print("zip-files ...", end="")
