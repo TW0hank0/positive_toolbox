@@ -23,9 +23,8 @@ use iced::widget::{Column, Row, button, scrollable, text};
 use log;
 //use log::{debug, error, info, trace, warn};
 
-use positive_toolbox;
-use positive_toolbox::shared;
-use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared;
+use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about";
@@ -146,7 +145,7 @@ impl About {
         let mut layout_third_party = Column::new().padding(15);
         layout_third_party =
             layout_third_party.push(button("開啟完整內容").on_press(AboutMsg::OpenLicense));
-        let third_party_license_infos_rust = positive_toolbox::licenses_rust::get_licenses();
+        let third_party_license_infos_rust = ptb_shared::licenses_rust::get_licenses();
         for license_info in third_party_license_infos_rust {
             let mut authors = Vec::new();
             for author in license_info.authors {
@@ -159,7 +158,7 @@ impl About {
                 license_info.version,
             ));
         }
-        let third_party_license_infos_python = positive_toolbox::licenses_python::get_licenses();
+        let third_party_license_infos_python = ptb_shared::licenses_python::get_licenses();
         for license_info in third_party_license_infos_python {
             let mut authors = Vec::new();
             for author in license_info.authors {

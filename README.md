@@ -1,6 +1,6 @@
 # positive_toolbox
 
-![icon](./icon.png)
+![icon](./assets/icon.png)
 
 **中文** | [English](./READMEs/README_en.md)
 
@@ -36,6 +36,8 @@ wasm-pack build --target web --out-dir ./pkg
 
 第三方專案授權見：
 
-- [ThirdPartyLicense-Rust.html](./ThirdPartyLicense-Rust.html)
+- [ThirdPartyLicense-Rust.html](./auto_generated/ThirdPartyLicense-Rust.html)
 
 - [ThirdPartyLicense-Python.html](./ThirdPartyLicense-Python.html)
+
+- [ThirdPartyLicense-Rust.md](./auto_generated/ThirdPartyLicense-Rust.md)

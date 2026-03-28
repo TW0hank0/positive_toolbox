@@ -23,8 +23,8 @@ use quick_xml;
 use log;
 //use log::{debug, error, info, trace, warn};
 
-use positive_toolbox::shared;
-use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared;
+use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "code_indenter";

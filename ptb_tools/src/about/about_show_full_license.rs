@@ -21,14 +21,14 @@ use log;
 #[cfg(not(target_arch = "wasm32"))]
 use open;
 
-use positive_toolbox::shared;
-use positive_toolbox::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared;
+use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about_show_full_license";
 
-const LICENSE_RUST: &str = include_str!("../../ThirdPartyLicense-Rust.html");
-const LICENSE_PYTHON: &str = include_str!("../../ThirdPartyLicense-Python.html");
+const LICENSE_RUST: &str = include_str!("../../../auto_generated/ThirdPartyLicense-Rust.html");
+const LICENSE_PYTHON: &str = include_str!("../../../auto_generated/ThirdPartyLicense-Python.html");
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();

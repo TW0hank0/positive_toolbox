@@ -37,6 +37,7 @@ pub fn wasm_start() -> iced::Result {
 }
 
 pub fn main() -> iced::Result {
+    //
     let (icon,) = shared::init();
     log::info!("已設定logger。");
     //

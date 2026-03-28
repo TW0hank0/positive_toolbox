@@ -12,3 +12,7 @@
 - 主頁UI排版
 - 檔案結構 (Members 獨立)
 - INSTALL.md 移至README內
+
+### 修復
+
+- 第三方授權聲明

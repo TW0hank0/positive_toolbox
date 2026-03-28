@@ -34,12 +34,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      # - name: Install Rust Toolchain
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: stable
-      #     override: true
-
       - name: install rustup (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -77,24 +71,21 @@ jobs:
       - name: sync dep
         run: uv sync --all-extras
 
-      # - name: build
-      #   run: cargo build --release
-
       - name: use build script
-        run: uv run build_script.py
+        run: uv run scripts/build_script.py
 
       - name: zip files (Linux)
         id: zip_files_linux
         if: runner.os == 'Linux'
         run: |
-          file=$(uv run ci/zip_files.py)
+          file=$(uv run scripts/ci/zip_files.py)
           echo "zip_path=$file" >> $GITHUB_OUTPUT
 
       - name: zip files (Windows)
         id: zip_files_windows
         if: runner.os == 'Windows'
         run: |
-          $file = (uv run ci/zip_files.py)
+          $file = (uv run scripts/ci/zip_files.py)
           echo "zip_path=$file" >> $env:GITHUB_OUTPUT
 
       - name: Upload exe artifact (Linux)
@@ -123,11 +114,11 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: Prepare CI Venv
-        run: |
-          cd ci
-          uv venv --python cpython-3.13
-          cd ..
+      # - name: Prepare CI Venv
+      #   run: |
+      #     cd ci
+      #     uv venv --python cpython-3.13
+      #     cd ..
 
       - name: Download all artifacts
         uses: actions/download-artifact@v8
@@ -137,17 +128,13 @@ jobs:
       - name: Get datetime
         id: get_datetime
         run: |
-          cd ci
-          datetime=$(uv run get_datetime.py)
+          datetime=$(uv run scripts/ci/get_datetime.py)
           echo "datetime=$datetime" >> $GITHUB_OUTPUT
-          cd ..
 
       - name: Get package get_version
         id: get_version
         run: |
-          cd ci
-          version=$(uv run get_version.py)
-          cd ..
+          version=$(uv run scripts/ci/get_version.py)
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: List Dir (for debug)

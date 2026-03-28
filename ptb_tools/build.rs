@@ -13,25 +13,25 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-// build.rs
-//use std::collections::HashMap;
+//! build.rs
+
 use std::fs;
-use std::path::Path;
+use std::path::PathBuf;
 
 use cargo_metadata::MetadataCommand;
-
-use positive_tool_rs;
 
 fn main() {
     // 告訴 Cargo 重新執行 build.rs 當 Cargo.lock 變動
     println!("cargo:rerun-if-changed=Cargo.lock");
 
-    let out_dir = positive_tool_rs::pt::find_project_path(env!("CARGO_PKG_NAME"), None)
-        .unwrap()
-        .join("src");
-    //let out_dir = std::env::var("OUT_DIR").unwrap();
-    let dest_path = Path::new(&out_dir).join("licenses_rust.rs");
-
+    /* let out_dir = positive_tool_rs::pt::find_project_path(env!("CARGO_PKG_NAME"), None)
+    .unwrap()
+    .join("src"); */
+    let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..");
+    let dest_path = PathBuf::from(&manifest_dir)
+        .join("ptb_shared")
+        .join("src")
+        .join("licenses_rust.rs");
     let metadata = MetadataCommand::new()
         .exec()
         .expect("Failed to get cargo metadata");
@@ -63,21 +63,6 @@ fn main() {
 
     let content = generate_rust_code(&licenses);
     fs::write(dest_path, content).expect("Failed to write licenses.rs");
-    //
-    /* let status = std::process::Command::new("cargo-about")
-        .args(vec![
-            "generate",
-            "--output-file",
-            "ThirdPartyLicense-Rust.html",
-            "about.hbs",
-            "--threshold",
-            "1.0",
-        ])
-        .status()
-        .unwrap();
-    if !status.success() {
-        panic!("error: cargo-about")
-    } */
 }
 
 #[derive(Debug)]

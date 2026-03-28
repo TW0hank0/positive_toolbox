@@ -3,7 +3,7 @@
 import os
 
 a = Analysis(
-    [os.path.join('src', 'launcher', 'main.py')],
+    ['main.py'],
     pathex=[],
     binaries=[],
     datas=[],
