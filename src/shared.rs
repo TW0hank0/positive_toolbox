@@ -118,6 +118,10 @@ pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'
     return layout_title;
 }
 
-pub fn text_normal(text: Into<String>) -> iced::widget::text {
-    iced::widget::text(text.into())
+pub fn text_normal(text: iced::widget::Text) -> iced::widget::Text {
+    text.size(iced::Pixels::from(26)).font(FONT_NOTO_SANS_REG)
+}
+
+pub fn text_title(text: iced::widget::Text) -> iced::widget::Text {
+    text.size(iced::Pixels::from(40)).font(FONT_NOTO_SANS_BOLD)
 }
