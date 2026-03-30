@@ -21,6 +21,8 @@ on:
       - "README.md"
       - "READMEs/**"
       - ".vscode/**"
+    branches:
+      - main
 
 jobs:
   build:
@@ -72,7 +74,7 @@ jobs:
         run: uv sync --all-extras
 
       - name: use build script
-        run: uv run scripts/build_script.py
+        run: uv run scripts/build_computer.py
 
       - name: zip files (Linux)
         id: zip_files_linux
