@@ -13,6 +13,8 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
+//! 主程式，使用者界面入口
+
 use std;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -23,6 +25,7 @@ use iced::widget::{Column, Row, button, container, scrollable, text};
 
 use log;
 
+use ptb_shared;
 use ptb_shared::shared;
 use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
@@ -67,6 +70,7 @@ struct Toolbox {
     tool_paths: HashMap<String, PathBuf>,
     tools_ordered: HashMap<usize, Tool>,
     language: ptb_shared::languages::base_struct::LangStruct,
+    text_size_system: shared::TextSizeSystem,
 }
 
 #[derive(Debug, Clone)]
@@ -99,6 +103,8 @@ struct Tool {
 impl Toolbox {
     pub fn new() -> Self {
         let language = Toolbox::language_system();
+        //
+        let text_size_system = shared::TextSizeSystem::default();
         //
         let mut all_tool: Vec<Tool> = Vec::new();
         all_tool.push(Tool {
@@ -143,18 +149,23 @@ impl Toolbox {
         let exec_path = env::current_exe().unwrap().parent().unwrap().to_path_buf();
         let mut tool_paths = HashMap::new();
         for tool in all_tool.clone() {
+            let mut tool_file_name = String::new();
             let tool_path: PathBuf;
             #[cfg(target_os = "linux")]
             {
-                tool_path = exec_path.clone().join(tool.file_name);
+                tool_file_name.push_str(tool.file_name);
+                // tool_path = exec_path.clone().join(tool.file_name);
             }
             #[cfg(target_os = "windows")]
             {
-                tool_path = PathBuf::from(format!(
-                    "{}.exe",
-                    exec_path.clone().join(tool.file_name).to_str().unwrap()
-                ));
+                tool_file_name.push_str(tool.file_name);
+                tool_file_name.push_str(".exe");
+                // tool_path = PathBuf::from(format!(
+                //     "{}.exe",
+                //     exec_path.clone().join(tool.file_name).to_str().unwrap()
+                // ));
             }
+            tool_path = exec_path.clone().join(tool.file_name);
             tool_paths.insert(String::from(tool.file_name), tool_path);
         }
         //
@@ -162,6 +173,7 @@ impl Toolbox {
             tool_paths: tool_paths,
             tools_ordered: tools_ordered,
             language: language,
+            text_size_system: text_size_system,
         }
     }
 
@@ -171,6 +183,7 @@ impl Toolbox {
     }
 
     pub fn update(&mut self, message: ToolboxMsg) {
+        //TODO
         let file_name = format!("{}", message);
         process::Command::new(self.tool_paths.get(&file_name).unwrap().clone())
             .spawn()
@@ -188,7 +201,8 @@ impl Toolbox {
         );
         layout_title = layout_title.push(
             text(shared::PROJECT_NAME)
-                .size(iced::Pixels::from(50))
+                .size(iced::Pixels::from(self.text_size_system.tool_name))
+                //.size(iced::Pixels::from(50))
                 .font(shared::FONT_NOTO_SANS_BOLD),
         );
         layout = layout.push(layout_title).spacing(40);

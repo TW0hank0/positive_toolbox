@@ -92,16 +92,18 @@ impl About {
     pub fn update(&mut self, message: AboutMsg) {
         match message {
             AboutMsg::OpenLicense => {
-                let mut tool_path = std::env::current_exe()
+                let mut tool_file_name = String::new();
+                //
+                tool_file_name.push_str("about_show_full_license");
+                #[cfg(target_os = "windows")]
+                {
+                    tool_file_name.push_str(".exe");
+                }
+                let tool_path = std::env::current_exe()
                     .unwrap()
                     .parent()
                     .unwrap()
-                    .join("about_show_full_license");
-                #[cfg(target_os = "windows")]
-                {
-                    tool_path =
-                        std::path::PathBuf::from(format!("{}.exe", tool_path.to_str().unwrap()));
-                }
+                    .join(tool_file_name);
                 let _ = std::process::Command::new(tool_path).spawn();
             }
         }

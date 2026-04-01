@@ -120,10 +120,31 @@ pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'
     return layout_title;
 }
 
-pub fn text_normal(text: iced::widget::Text) -> iced::widget::Text {
-    text.size(iced::Pixels::from(26)).font(FONT_NOTO_SANS_REG)
+pub struct TextSizeSystem {
+    pub normal: u32,
+    pub subtitle: u32,
+    pub title: u32,
+    pub tool_name: u32,
 }
 
-pub fn text_title(text: iced::widget::Text) -> iced::widget::Text {
-    text.size(iced::Pixels::from(40)).font(FONT_NOTO_SANS_BOLD)
+impl Default for TextSizeSystem {
+    fn default() -> Self {
+        Self {
+            normal: 26,
+            subtitle: 35,
+            title: 40,
+            tool_name: 50,
+        }
+    }
+}
+
+impl TextSizeSystem {
+    pub fn new(normal: u32, subtitle: u32, title: u32, tool_name: u32) -> Self {
+        Self {
+            normal,
+            subtitle,
+            title,
+            tool_name,
+        }
+    }
 }
