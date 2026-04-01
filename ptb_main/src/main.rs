@@ -19,7 +19,7 @@ use std::path::PathBuf;
 use std::{env, process};
 
 use iced;
-use iced::widget::{Column, Row, button, container, scrollable, text};
+use iced::widget::{button, container, scrollable, text, Column, Row};
 
 use log;
 
