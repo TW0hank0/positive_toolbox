@@ -14,6 +14,21 @@ time-macros = { workspace = true }
 log = { workspace = true }
 ptb_shared = { workspace = true }
 
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1.7"
+iced = { version = "0.14.0", default-features = false, features = [
+    "thread-pool",
+    "advanced",
+    "webgl",
+    "wgpu",
+    "web-colors",
+    "crisp",
+    "image",
+] }
+getrandom = { version = "0.3.4", features = ["wasm_js"] }
+console_log = { version = "1.0.0", features = ["wasm-bindgen"] }
+wasm-bindgen = "0.2.108"
+
 [[bin]]
 name = "positive_toolbox"
 path = "src/main.rs"
