@@ -13,16 +13,6 @@
 # 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 # 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-# [package]
-# name = "positive_toolbox"
-# version = "0.1.0"
-# edition = "2024"
-# default-run = "positive_toolbox"
-# license = "AGPL-3.0-only"
-# description = "面向使用者的工具"
-# authors = ["TW0hank0"]
-# repository = "https://github.com/TW0hank0/positive_toolbox"
-
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
@@ -35,7 +25,7 @@ rust-version = "1.94"
 [workspace.dependencies]
 positive_toolbox = { path = "." }
 ptb_shared = { path = "ptb_shared" }
-serde = "1.0.228"
+serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 image = "0.25.9"
 log = "0.4.28"
@@ -58,7 +48,7 @@ open = "5.3.3"
 
 [workspace]
 resolver = "3"
-members = ["ptb_main", "ptb_shared", "ptb_tools"]
+members = ["ptb_main", "ptb_shared", "ptb_tools/*"]
 
 
 # [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -86,6 +76,8 @@ members = ["ptb_main", "ptb_shared", "ptb_tools"]
 [profile.release]
 opt-level = 3
 lto = true
+debug = 0
 
 [profile.dev]
 debug = 2
+lto = false

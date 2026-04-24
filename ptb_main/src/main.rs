@@ -17,13 +17,14 @@
 
 use std;
 use std::collections::HashMap;
-use std::path::PathBuf;
-use std::{env, process};
+use std::{env, fs, path::PathBuf, process};
 
 use iced;
 use iced::widget::{Column, Row, button, container, scrollable, text};
 
 use log;
+
+use serde_json;
 
 use ptb_shared;
 use ptb_shared::shared;
@@ -69,7 +70,7 @@ pub fn main() -> iced::Result {
 struct Toolbox {
     tool_paths: HashMap<String, PathBuf>,
     tools_ordered: HashMap<usize, Tool>,
-    language: ptb_shared::languages::base_struct::LangStruct,
+    language: ptb_shared::languages::base::LangStruct,
     text_size_system: shared::TextSizeSystem,
 }
 
@@ -177,9 +178,27 @@ impl Toolbox {
         }
     }
 
-    pub fn language_system() -> ptb_shared::languages::base_struct::LangStruct {
+    pub fn language_system() -> ptb_shared::languages::base::LangStruct {
         //TODO:等待製作使用者設定
-        ptb_shared::languages::chinese::get_lang()
+        ptb_shared::languages::chinese::LANG
+    }
+
+    fn load_setting() -> ptb_shared::settings::PTBSettings {
+        let file_path = env::current_exe()
+            .unwrap()
+            .parent()
+            .unwrap()
+            .join(ptb_shared::settings::SETTING_FILE_NAME);
+        let setting: ptb_shared::settings::PTBSettings = if fs::exists(&file_path).unwrap_or(false)
+        {
+            let settings_string = fs::read_to_string(&file_path).unwrap_or(String::new());
+            let value: ptb_shared::settings::PTBSettings = serde_json::from_str(&settings_string)
+                .unwrap_or(ptb_shared::settings::PTBSettings::default());
+            value
+        } else {
+            ptb_shared::settings::PTBSettings::default()
+        };
+        setting
     }
 
     pub fn update(&mut self, message: ToolboxMsg) {

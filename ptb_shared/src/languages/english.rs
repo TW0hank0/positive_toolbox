@@ -13,14 +13,18 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-use crate::languages::base_struct;
+use crate::languages::base::LangStruct;
 
-pub fn get_lang() -> base_struct::LangStruct {
-    base_struct::LangStruct {
-        tool_name_code_indenter: Some("code_indenter"),
-        tool_name_system_info: Some("system_info"),
-        tool_name_about: Some("about"),
-        main_ui_no_describe: Some("No describe @_@"),
-        ..Default::default()
-    }
+pub const LANG: LangStruct = LangStruct {
+    tool_name_code_indenter: None,
+    tool_describe_code_indenter: None,
+    tool_name_system_info: None,
+    tool_describe_system_info: None,
+    tool_name_about: None,
+    tool_describe_about: None,
+    main_ui_no_describe: None,
+};
+
+pub fn get_lang() -> LangStruct {
+    LANG
 }

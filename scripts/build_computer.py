@@ -13,10 +13,12 @@
 # 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 # 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
+import os
 import subprocess
 import sys
 import time
 
+import util
 import zip_files
 
 
@@ -25,31 +27,42 @@ def main():
     #
     commands = [
         ["cargo", "build", "--workspace", "--release"],
-        ["uv", "run", "pyinstaller", "ptb_launcher", "ptb_launcher.spec"],
+        [
+            "uv",
+            "run",
+            "pyinstaller",
+            os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                "ptb_launcher",
+                "ptb_launcher.spec",
+            ),
+        ],
     ]
     for command in commands:
-        print(f"Run Command:{' '.join(command)} ...", end="")
-        sys.stdout.flush()
-        process = subprocess.run(
-            command,
-            stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            stderr=sys.stderr,
-        )
-        if process.returncode != 0:
-            print("Error!")
-            print("--- stdout ---")
-            print(process.stdout)
-            print("--- stderr ---")
-            print(process.stderr)
-        print("Ok!")
+        util.print_and_run(command)
+    # for command in commands:
+    #     print(f"Run Command:{' '.join(command)} ...", end="")
+    #     sys.stdout.flush()
+    #     process = subprocess.run(
+    #         command,
+    #         stdout=subprocess.PIPE,
+    #         stdin=subprocess.PIPE,
+    #         stderr=sys.stderr,
+    #     )
+    #     if process.returncode != 0:
+    #         print("Error!")
+    #         print("--- stdout ---")
+    #         print(process.stdout)
+    #         print("--- stderr ---")
+    #         print(process.stderr)
+    #     print("Ok!")
     #
     print("zip-files ...", end="")
     sys.stdout.flush()
     zip_files.main()
     print("Ok!")
     print("-" * 10)
-    print("finish in", time.time() - start_time)
+    print("Finish in", time.time() - start_time, "secs.")
 
 
 if __name__ == "__main__":

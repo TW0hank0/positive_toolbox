@@ -13,13 +13,31 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-use std;
+use std::{self, fmt::Display};
 
 use serde;
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, Clone, Copy, serde::Deserialize, serde::Serialize)]
+pub enum SupportedLanguages {
+    Chinese,
+    English,
+}
+
+impl Display for SupportedLanguages {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::English => "English",
+                Self::Chinese => "中文",
+            }
+        )
+    }
+}
+
+#[derive(Debug, Clone, Copy, serde::Deserialize, serde::Serialize)]
 pub struct LangStruct {
-    ///工具名 -> 程式碼縮排
     pub tool_name_code_indenter: Option<&'static str>,
     pub tool_describe_code_indenter: Option<&'static str>,
     pub tool_name_system_info: Option<&'static str>,

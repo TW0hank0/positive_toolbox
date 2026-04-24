@@ -1,0 +1,19 @@
+[package]
+name = "system_info"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+iced = { workspace=true}
+serde_json = { workspace = true }
+log = {workspace = true }
+sysinfo = {workspace=true}
+ptb_shared = { workspace = true }
+
+[[bin]]
+name = "system_info"
+path = "src/system_info.rs"

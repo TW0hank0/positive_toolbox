@@ -13,11 +13,13 @@
 # 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 # 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
+import json
 import os
 import subprocess
 import sys
-import json
 import time
+
+import util
 
 
 def main():
@@ -104,37 +106,67 @@ def main():
         check=True,
         capture_output=True,
     )
-    piplicense_data = json.loads(piplicense_output.stdout)
-    license_file_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        "ptb_tools",
-        "src",
-        "licenses_python.rs",
-    )
-    piplicense_conversioned_data = """
-#[derive(Debug)]
-pub struct LicenseInfo {
-    pub name: &'static str,
-    pub version: &'static str,
-    pub license: &'static str,
-    pub authors: Vec<&'static str>,
-}
+    piplicense_data: dict = json.loads(piplicense_output.stdout)
+    #     license_file_path = os.path.join(
+    #         os.path.dirname(os.path.dirname(__file__)),
+    #         "ptb_tools",
+    #         "src",
+    #         "licenses_python.rs",
+    #     )
+    #     piplicense_conversioned_data = """
+    # #[derive(Debug)]
+    # pub struct LicenseInfo {
+    #     pub name: &'static str,
+    #     pub version: &'static str,
+    #     pub license: &'static str,
+    #     pub authors: Vec<&'static str>,
+    # }
 
-pub fn get_licenses() -> Vec<LicenseInfo> { \nreturn vec!["""
+    # pub fn get_licenses() -> Vec<LicenseInfo> { \nreturn vec!["""
+    #     for license_data in piplicense_data:
+    #         tmp_str = f"""
+    # LicenseInfo {{
+    #     name: \"{license_data["Name"]}\",
+    #     version: \"{license_data["Version"]}\",
+    #     license: \"{license_data["License"]}\",
+    #     authors: vec![],
+    # }},"""
+    #         piplicense_conversioned_data = piplicense_conversioned_data + "\n" + tmp_str
+    #     piplicense_conversioned_data = piplicense_conversioned_data + "];}"
+    #     with open(license_file_path, "w", encoding="utf-8") as f:
+    #         f.write(piplicense_conversioned_data)
+    formatted_license_data_json: dict[str, list[dict]] = {}
+    new_json_content: list[dict[str, str | list[dict[str, str]]]] = []
     for license_data in piplicense_data:
-        tmp_str = f"""
-LicenseInfo {{
-    name: \"{license_data["Name"]}\",
-    version: \"{license_data["Version"]}\",
-    license: \"{license_data["License"]}\",
-    authors: vec![],
-}},"""
-        piplicense_conversioned_data = (
-            piplicense_conversioned_data + "\n" + tmp_str
+        if license_data["License"] in formatted_license_data_json:
+            formatted_license_data_json[license_data["License"]].append(
+                {"name": license_data["Name"], "version": license_data["Version"]}
+            )
+        else:
+            formatted_license_data_json[license_data["License"]] = [
+                {"name": license_data["Name"], "version": license_data["Version"]}
+            ]
+    for each_license in formatted_license_data_json.keys():
+        new_json_content.append(
+            {
+                "license_id": each_license,
+                "used_by": formatted_license_data_json[each_license],
+                "license_text": "",
+            }
         )
-    piplicense_conversioned_data = piplicense_conversioned_data + "];}"
-    with open(license_file_path, "w", encoding="utf-8") as f:
-        f.write(piplicense_conversioned_data)
+    new_json_filepath = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "auto_generated",
+        "ThirdPartyLicense-Python.json",
+    )
+    with open(new_json_filepath, "w", encoding="utf-8") as f:
+        json.dump(
+            {"dependencies": new_json_content},
+            f,
+            ensure_ascii=False,
+            sort_keys=True,
+            indent=4,
+        )
     print("Ok!")
     #
     end_time = time.time()

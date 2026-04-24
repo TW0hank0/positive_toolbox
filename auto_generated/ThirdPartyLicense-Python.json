@@ -1,0 +1,44 @@
+{
+    "dependencies": [
+        {
+            "license_id": "MIT License",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "altgraph",
+                    "version": "0.17.5"
+                }
+            ]
+        },
+        {
+            "license_id": "Apache-2.0 OR BSD-2-Clause",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "packaging",
+                    "version": "26.0"
+                }
+            ]
+        },
+        {
+            "license_id": "GNU General Public License v2 (GPLv2)",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "pyinstaller",
+                    "version": "6.19.0"
+                }
+            ]
+        },
+        {
+            "license_id": "Apache Software License; GNU General Public License v2 (GPLv2)",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "pyinstaller-hooks-contrib",
+                    "version": "2026.0"
+                }
+            ]
+        }
+    ]
+}

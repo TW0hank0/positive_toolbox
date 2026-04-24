@@ -15,7 +15,7 @@
 
 //! positive_toolbox 的語言包
 
-pub mod base_struct;
+pub mod base;
 
 pub mod chinese;
 pub mod english;

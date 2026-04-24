@@ -1,0 +1,40 @@
+# positive_toolbox 更改紀錄
+
+紀錄Release間的變更。
+
+Format:
+
+```plaintext
+## [{version}] - {published? {日期} : "未發布"}
+
+{Release Highlight}
+
+### 開發紀錄
+
+**{data}**
+{dev content}
+```
+
+---
+
+## [0.2.0] - 未發布
+
+- 新增設定
+- 新增：工具簡介
+- 新增：啟動器 (實驗性功能)
+- 新增：主頁標題圖片
+- 新增：Github Issue 模板
+- 更改：主頁UI排版
+- 更改：檔案結構 (Members 獨立)
+- 更改：INSTALL.md 移至README內
+- 修復：第三方授權聲明
+
+### 開發紀錄
+
+**2026-04-21**
+
+- 獨立Members成員
+
+**2026-04-13**
+
+- 新增：CHANGELOG.md

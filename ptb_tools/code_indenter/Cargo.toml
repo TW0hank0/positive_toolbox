@@ -1,0 +1,19 @@
+[package]
+name = "code_indenter"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+iced = { workspace=true}
+serde_json = { workspace = true }
+log = {workspace = true }
+quick-xml = {workspace=true}
+ptb_shared = { workspace = true }
+
+[[bin]]
+name = "code_indenter"
+path = "src/code_indenter.rs"

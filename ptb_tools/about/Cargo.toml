@@ -1,0 +1,24 @@
+[package]
+name = "about"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+iced = { workspace=true}
+serde_json = { workspace = true }
+serde = {workspace = true}
+log = { workspace = true }
+ptb_shared = { workspace = true }
+open = { workspace = true }
+
+[[bin]]
+name = "about"
+path = "src/about.rs"
+
+[[bin]]
+name = "about_show_full_license"
+path = "src/about_show_full_license.rs"

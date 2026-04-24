@@ -1,17 +1,18 @@
 target/
 
 # krita temp
-*.kra~
+**/*.kra~
 
 # workflow make
-positive_toolbox_*.zip
+positive_*_*.zip
 
-# build.rs make temp licenses file
-#src/licenses.rs
+# old build.rs make temp licenses file
+# src/licenses.rs
 
 # python
-**/.venv
-**/__pycache__
+**/.venv/**
+**/__pycache__/**
+**/__pypy_cache__/**
 
 # (python) pyinstaller make
 build/
@@ -19,3 +20,6 @@ dist/
 
 # (rust) wasm-pack make
 pkg/
+
+# python: tool cache
+**/.ruff_cache/**

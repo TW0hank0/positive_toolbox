@@ -42,7 +42,7 @@ pub const FONT_NOTO_SANS_BOLD: iced::font::Font = iced::font::Font {
     style: iced::font::Style::Normal,
 };
 
-pub const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
+pub const PROJECT_NAME: &str = "positive_toolbox";
 pub const PROJECT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub fn init() -> (Option<iced::window::Icon>,) {

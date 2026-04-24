@@ -22,9 +22,8 @@ use log;
 use open;
 
 use ptb_shared::shared;
-use ptb_shared::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared::{FONT_NOTO_SANS_REG, PROJECT_NAME};
 
-const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about_show_full_license";
 
 const LICENSE_RUST: &str = include_str!("../../../auto_generated/ThirdPartyLicense-Rust.html");
