@@ -14,7 +14,6 @@
 # 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
 import os
-import subprocess
 import sys
 import time
 
@@ -26,7 +25,14 @@ def main():
     start_time = time.time()
     #
     commands = [
-        ["cargo", "build", "--workspace", "--release"],
+        ["cargo", "build", "--workspace", "--release"]
+        if os.name == "nt"
+        else [
+            "cargo",
+            "build",
+            "--workspace",
+            "--release",
+        ],
         [
             "uv",
             "run",
@@ -40,23 +46,6 @@ def main():
     ]
     for command in commands:
         util.print_and_run(command)
-    # for command in commands:
-    #     print(f"Run Command:{' '.join(command)} ...", end="")
-    #     sys.stdout.flush()
-    #     process = subprocess.run(
-    #         command,
-    #         stdout=subprocess.PIPE,
-    #         stdin=subprocess.PIPE,
-    #         stderr=sys.stderr,
-    #     )
-    #     if process.returncode != 0:
-    #         print("Error!")
-    #         print("--- stdout ---")
-    #         print(process.stdout)
-    #         print("--- stderr ---")
-    #         print(process.stderr)
-    #     print("Ok!")
-    #
     print("zip-files ...", end="")
     sys.stdout.flush()
     zip_files.main()

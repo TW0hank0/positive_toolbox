@@ -28,7 +28,7 @@ dependencies = []
 Homepage = "https://github.com/TW0hank0/positive_toolbox/"
 "Source Code" = "https://github.com/TW0hank0/positive_toolbox/"
 "Bug Tracker" = "https://github.com/TW0hank0/positive_toolbox/issues/"
-Changelog = "https://github.com/TW0hank0/positive_toolbox/change_logs/"
+Changelog = "https://github.com/TW0hank0/positive_toolbox/CHANGELOG.md"
 
 [project.optional-dependencies]
-build = ["pyinstaller>=6.19.0", "pip-licenses"]
+build = ["pyinstaller>=6.19.0", "pip-licenses", "colorama"]

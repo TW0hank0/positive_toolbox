@@ -60,3 +60,14 @@ impl std::default::Default for LangStruct {
         }
     }
 }
+
+#[macro_export]
+macro_rules! lang_get {
+    ($lang:expr, $field:ident) => {{
+        use ptb_shared::languages;
+        $lang
+            .$field
+            .as_ref()
+            .unwrap_or(languages::chinese::LANG.$field.as_ref().unwrap())
+    }};
+}

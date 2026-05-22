@@ -13,26 +13,22 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-use iced;
-use iced::widget::{Column, Row, button, combo_box, scrollable, text, text_editor};
+use iced::{
+    self,
+    widget::{Column, Row, button, combo_box, scrollable, text, text_editor},
+};
 
 use serde_json;
 
 use quick_xml;
 
 use log;
-//use log::{debug, error, info, trace, warn};
 
-use ptb_shared::shared;
-use ptb_shared::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared::{self, CodeIndenterMsg, PROJECT_NAME, ProgramLanguages, ToolBoxMsg};
 
-const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "code_indenter";
 
-//const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] = include_bytes!("../../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
-//const FONT_NOTO_SANS_REG: iced::font::Font = iced::font::Font::with_name("Noto Sans TC");
-
-fn main() -> iced::Result {
+/*fn main() -> iced::Result {
     let (icon,) = shared::init();
     //
     /* const ICON_PNG: &[u8] = include_bytes!("../../icon.png");
@@ -61,9 +57,9 @@ fn main() -> iced::Result {
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
         .run()
-}
+}*/
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct CodeIndenter {
     orig_code_text_editor_content: iced::widget::text_editor::Content,
     indented_code: String,
@@ -72,17 +68,6 @@ pub struct CodeIndenter {
     combo_box_langs: combo_box::State<ProgramLanguages>,
     window_width: u32,
     window_height: u32,
-}
-
-#[derive(Debug, Clone)]
-pub enum CodeIndenterMsg {
-    OrigCodeChange(iced::widget::text_editor::Action),
-    UnitConversion,
-    CodeIndenter,
-    IndentCodeNow,
-    IndentedCodeChange(iced::widget::text_editor::Action),
-    LangSelected(ProgramLanguages),
-    WindowResized { width: u32, height: u32 },
 }
 
 impl CodeIndenter {
@@ -169,7 +154,7 @@ impl CodeIndenter {
         }
     }
 
-    pub fn view(&self) -> Column<'_, CodeIndenterMsg> {
+    pub fn view(&self) -> Column<'_, ToolBoxMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
@@ -203,7 +188,7 @@ impl CodeIndenter {
                 &self.combo_box_langs,
                 "選擇一種語言",
                 self.selected_program_lang.as_ref(),
-                CodeIndenterMsg::LangSelected,
+                |lang| ToolBoxMsg::CodeIndenterMsg(CodeIndenterMsg::LangSelected(lang)),
             )
             .width(180)
             .line_height(iced::widget::text::LineHeight::Absolute(
@@ -238,14 +223,18 @@ impl CodeIndenter {
         let mut layout_code_blocks = Row::new();
         layout_code_blocks = layout_code_blocks.push(
             text_editor(&self.orig_code_text_editor_content)
-                .on_action(CodeIndenterMsg::OrigCodeChange)
+                .on_action(|action| {
+                    ToolBoxMsg::CodeIndenterMsg(CodeIndenterMsg::OrigCodeChange(action))
+                })
                 .placeholder("code here...")
                 .size(26),
         );
         layout_code_blocks = layout_code_blocks.spacing(30);
         layout_code_blocks = layout_code_blocks.push(
             text_editor(&self.indented_code_text_editor_content)
-                .on_action(CodeIndenterMsg::IndentedCodeChange)
+                .on_action(|action| {
+                    ToolBoxMsg::CodeIndenterMsg(CodeIndenterMsg::IndentedCodeChange(action))
+                })
                 .placeholder("縮排後的程式碼輸出...")
                 .size(26),
         );
@@ -259,57 +248,11 @@ impl CodeIndenter {
                 .align_y(iced::alignment::Vertical::Center)
                 .align_x(iced::alignment::Horizontal::Center),
         )
-        .on_press(CodeIndenterMsg::IndentCodeNow)
+        .on_press(ToolBoxMsg::CodeIndenterMsg(CodeIndenterMsg::IndentCodeNow))
         .width(150)
         .height(50);
         layout = layout.push(submit_btn).spacing(10);
         return layout;
-    }
-
-    pub fn title(&self) -> String {
-        return String::from(format!("{} — {}", TOOL_NAME, PROJECT_NAME));
-    }
-
-    pub fn theme(&self) -> Option<iced::Theme> {
-        Some(iced::Theme::Dark)
-    }
-
-    pub fn subscription(&self) -> iced::Subscription<CodeIndenterMsg> {
-        return iced::event::listen_with(|event, _status, _id| match event {
-            iced::Event::Window(wevent) => match wevent {
-                iced::window::Event::Resized(size) => Some(CodeIndenterMsg::WindowResized {
-                    width: size.width as u32,
-                    height: size.height as u32,
-                }),
-                _ => {
-                    return None;
-                }
-            },
-            _ => {
-                return None;
-            }
-        });
-    }
-}
-
-#[derive(Clone, Debug)]
-pub enum ProgramLanguages {
-    Json,
-    Xml,
-}
-
-impl ProgramLanguages {
-    pub fn all() -> Vec<ProgramLanguages> {
-        vec![ProgramLanguages::Json, ProgramLanguages::Xml]
-    }
-}
-
-impl std::fmt::Display for ProgramLanguages {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(match self {
-            Self::Json => "json",
-            Self::Xml => "xml (開發中)",
-        })
     }
 }
 

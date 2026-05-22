@@ -1,25 +1,23 @@
+# --- Rust ---
+
 target/
+# wasm-pack make
+pkg/
 
-# krita temp
-**/*.kra~
+# --- Python ---
 
-# workflow make
-positive_*_*.zip
-
-# old build.rs make temp licenses file
-# src/licenses.rs
-
-# python
+# env
 **/.venv/**
+# cache
 **/__pycache__/**
 **/__pypy_cache__/**
-
-# (python) pyinstaller make
+**/.ruff_cache/**
+# pyinstaller make
 build/
 dist/
 
-# (rust) wasm-pack make
-pkg/
-
-# python: tool cache
-**/.ruff_cache/**
+# --- Other ---
+# krita temp
+**/*.kra~
+# build computer script make
+positive_*_*.zip

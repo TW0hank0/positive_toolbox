@@ -1,5 +1,5 @@
 [package]
-name = "about"
+name = "ptb_tools"
 version.workspace = true
 edition.workspace = true
 repository.workspace = true
@@ -14,11 +14,10 @@ serde = {workspace = true}
 log = { workspace = true }
 ptb_shared = { workspace = true }
 open = { workspace = true }
-
-[[bin]]
-name = "about"
-path = "src/about.rs"
-
-[[bin]]
-name = "about_show_full_license"
-path = "src/about_show_full_license.rs"
+quick-xml = {workspace=true}
+sysinfo = {workspace=true}
+# --- platform: wasm ---
+console_log = { workspace = true }
+console_error_panic_hook = { workspace = true }
+getrandom = { workspace = true }
+wasm-bindgen = { workspace = true }

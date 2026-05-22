@@ -24,6 +24,8 @@ use image;
 
 use log;
 
+use serde;
+
 #[cfg(not(target_arch = "wasm32"))]
 use positive_tool_rs::pt;
 
@@ -61,7 +63,7 @@ pub fn init() -> (Option<iced::window::Icon>,) {
 
 #[cfg(target_arch = "wasm32")]
 pub fn setup_logger() {
-    console_log::init_with_level(log::Level::Trace).ok(); //.expect("初始化日誌失敗");
+    console_log::init_with_level(log::Level::Trace).ok();
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -90,20 +92,20 @@ pub fn setup_logger() {
     pt::build_logger(log_file_path, Some(log::LevelFilter::Info)).ok();
 }
 
-pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'static, Message> {
+/* pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'static, Message> {
     let mut layout_title = iced::widget::Row::new()
         .padding(10)
         .align_y(iced::alignment::Vertical::Bottom)
         .height(90);
     layout_title = layout_title.push(
         iced::widget::image(iced::widget::image::Handle::from_bytes(ICON_PNG))
-            .width(70)
-            .height(70)
+            .width(60)
+            .height(60)
             .filter_method(iced::widget::image::FilterMethod::Linear),
     );
     layout_title = layout_title.push(
         iced::widget::text(tool_name.into())
-            .size(50)
+            .size(40)
             .align_x(iced::alignment::Horizontal::Left)
             .align_y(iced::alignment::Vertical::Bottom)
             .height(90)
@@ -118,33 +120,104 @@ pub fn view_title<Message, T: Into<String>>(tool_name: T) -> iced::widget::Row<'
             .height(90),
     );
     return layout_title;
+} */
+
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct StyleControlSystem {
+    pub text: TextSizeControler,
+    pub radius: RadiusControler,
 }
 
-pub struct TextSizeSystem {
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct RadiusControler {
+    normal: u32,
+    strong: u32,
+}
+
+impl Default for RadiusControler {
+    fn default() -> Self {
+        Self {
+            normal: 12,
+            strong: 18,
+        }
+    }
+}
+
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
+pub struct TextSizeControler {
     pub normal: u32,
     pub subtitle: u32,
     pub title: u32,
-    pub tool_name: u32,
 }
 
-impl Default for TextSizeSystem {
+impl Default for TextSizeControler {
     fn default() -> Self {
         Self {
             normal: 26,
             subtitle: 35,
             title: 40,
-            tool_name: 50,
         }
     }
 }
 
-impl TextSizeSystem {
-    pub fn new(normal: u32, subtitle: u32, title: u32, tool_name: u32) -> Self {
+impl TextSizeControler {
+    pub fn new(normal: u32, subtitle: u32, title: u32) -> Self {
         Self {
             normal,
             subtitle,
             title,
-            tool_name,
         }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub enum ToolBoxMsg {
+    HomePageMsg(HomePageMsg),
+    CodeIndenterMsg(CodeIndenterMsg),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Tools {
+    CodeIndenter,
+    SystemInfo,
+    About,
+    EazyUpdater,
+    HomePage,
+}
+
+#[derive(Debug, Clone)]
+pub enum CodeIndenterMsg {
+    OrigCodeChange(iced::widget::text_editor::Action),
+    UnitConversion,
+    CodeIndenter,
+    IndentCodeNow,
+    IndentedCodeChange(iced::widget::text_editor::Action),
+    LangSelected(ProgramLanguages),
+    WindowResized { width: u32, height: u32 },
+}
+
+#[derive(Debug, Clone)]
+pub enum HomePageMsg {
+    OpenTool(Tools),
+}
+
+#[derive(Clone, Debug)]
+pub enum ProgramLanguages {
+    Json,
+    Xml,
+}
+
+impl ProgramLanguages {
+    pub fn all() -> Vec<ProgramLanguages> {
+        vec![ProgramLanguages::Json, ProgramLanguages::Xml]
+    }
+}
+
+impl std::fmt::Display for ProgramLanguages {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Self::Json => "json",
+            Self::Xml => "xml",
+        })
     }
 }

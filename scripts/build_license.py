@@ -16,7 +16,6 @@
 import json
 import os
 import subprocess
-import sys
 import time
 
 import util
@@ -67,15 +66,7 @@ def main():
     ]
     #
     for command in all_commands:
-        print(f"Run Command: {' '.join(command)} ...", end="")
-        subprocess.run(
-            command,
-            check=True,
-            stdout=sys.stdout,
-            stdin=sys.stdin,
-            stderr=sys.stderr,
-        )
-        print("Ok!")
+        util.print_and_run(command)
     #
     print("Indenting json file...", end="")
     json_file_path = os.path.abspath(
@@ -91,9 +82,8 @@ def main():
         json_data = json.load(f)
     with open(json_file_path, "w", encoding="utf-8") as f:
         json.dump(json_data, f, ensure_ascii=False, sort_keys=True, indent=4)
-    print("Ok!")
+    print(" Ok!")
     #
-    print("Making licenses_python.rs ...", end="")
     piplicense_output = subprocess.run(
         [
             "uv",
@@ -140,11 +130,19 @@ def main():
     for license_data in piplicense_data:
         if license_data["License"] in formatted_license_data_json:
             formatted_license_data_json[license_data["License"]].append(
-                {"name": license_data["Name"], "version": license_data["Version"]}
+                {
+                    "name": license_data["Name"],
+                    "version": license_data["Version"],
+                    "repository": "unknown",
+                }
             )
         else:
             formatted_license_data_json[license_data["License"]] = [
-                {"name": license_data["Name"], "version": license_data["Version"]}
+                {
+                    "name": license_data["Name"],
+                    "version": license_data["Version"],
+                    "repository": "unknown",
+                }
             ]
     for each_license in formatted_license_data_json.keys():
         new_json_content.append(

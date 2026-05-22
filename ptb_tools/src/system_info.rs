@@ -21,12 +21,11 @@ use log;
 use sysinfo;
 
 use ptb_shared::shared;
-use ptb_shared::shared::FONT_NOTO_SANS_REG;
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "系統資訊";
 
-fn main() -> iced::Result {
+/*fn main() -> iced::Result {
     let (icon,) = shared::init();
     //
     let mut window_settings = iced::window::Settings::default();
@@ -47,7 +46,7 @@ fn main() -> iced::Result {
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
         .run()
-}
+}*/
 
 #[derive(Default)]
 pub struct SystemInfo {
@@ -58,8 +57,6 @@ pub struct SystemInfo {
 pub struct SystemInfoData {
     system: SysInfoDataSystem,
     memory: SysInfoDataMemory,
-    //disk: SysInfoDataDisk,
-    //network: SysInfoDataNetwork,
 }
 
 #[derive(Default)]
@@ -78,16 +75,6 @@ pub struct SysInfoDataMemory {
     total_swap: u64,
     used_swap: u64,
 }
-
-/* #[derive(Default, Clone)]
-pub struct SysInfoDataDisk {
-    disks: sysinfo::Disks,
-} */
-
-/* #[derive(Default)]
-pub struct SysInfoDataNetwork {
-    networks: sysinfo::Networks,
-} */
 
 #[derive(Debug, Clone)]
 pub enum SystemInfoMsg {
@@ -150,22 +137,9 @@ impl SystemInfo {
             used_swap: used_swap,
         };
         //
-        //let disks = sysinfo::Disks::new_with_refreshed_list();
-        //let data_disk = SysInfoDataDisk { disks: disks };
-        //
-        //let networks = sysinfo::Networks::new_with_refreshed_list();
-        //let data_network = SysInfoDataNetwork { networks: networks };
-        //
-        /* let processes = sys.processes();
-        let data_process = SysInfoDataProcess {
-            processes: processes,
-        }; */
-        //
         let system_info_data = SystemInfoData {
             system: data_system,
             memory: data_memory,
-            //disk: data_disk,
-            //network: data_network,
         };
         return system_info_data;
     }
@@ -175,8 +149,6 @@ impl SystemInfo {
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
-        //
-        layout = layout.push(shared::view_title(String::from(TOOL_NAME)));
         //
         layout = layout.push(button(text("重新整理")).on_press(SystemInfoMsg::SyncSysInfo));
         //
@@ -241,7 +213,6 @@ impl SystemInfo {
                 .size(iced::Pixels::from(40)),
         );
         let disks = sysinfo::Disks::new_with_refreshed_list();
-        //layout_system_info = layout_system_info.push(text("所有硬碟"));
         for disk in &disks {
             layout_system_info = layout_system_info.push(
                 text(format!("{}", disk.name().to_str().unwrap_or("未知")))

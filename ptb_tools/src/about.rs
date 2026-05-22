@@ -18,10 +18,9 @@ use std::{self, process};
 use iced;
 use iced::widget::{Column, Row, button, scrollable, text};
 
-//use image;
+use serde;
 
 use log;
-//use log::{debug, error, info, trace, warn};
 
 use ptb_shared::shared;
 use ptb_shared::shared::{FONT_NOTO_SANS_REG, PROJECT_NAME};
@@ -29,11 +28,11 @@ use ptb_shared::shared::{FONT_NOTO_SANS_REG, PROJECT_NAME};
 const TOOL_NAME: &str = "about";
 
 const THIRD_PARTY_LICENSE_RUST: &str =
-    include_str!("../../../auto_generated/ThirdPartyLicense-Rust.json");
+    include_str!("../../auto_generated/ThirdPartyLicense-Rust.json");
 const THIRD_PARTY_LICENSE_PYTHON: &str =
-    include_str!("../../../auto_generated/ThirdPartyLicense-Python.json");
+    include_str!("../../auto_generated/ThirdPartyLicense-Python.json");
 
-fn main() -> iced::Result {
+/*fn main() -> iced::Result {
     let (icon,) = shared::init();
     //
     let mut window_settings = iced::window::Settings::default();
@@ -54,7 +53,7 @@ fn main() -> iced::Result {
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
         .run()
-}
+}*/
 
 #[derive(Debug, Clone)]
 pub enum AboutMsg {
@@ -85,21 +84,23 @@ impl std::fmt::Display for Licenses {
 }
 
 #[derive(Debug, Default, Clone, serde::Deserialize, serde::Serialize)]
-struct LicenseInfo {
+pub struct LicenseInfo {
     pub dependencies: Vec<LicenseDep>,
 }
 
 #[derive(Debug, Default, Clone, serde::Deserialize, serde::Serialize)]
-struct LicenseDep {
+pub struct LicenseDep {
     pub license_id: String,
     pub license_text: String,
     pub used_by: Vec<LicenseUsedBy>,
 }
 
 #[derive(Debug, Default, Clone, serde::Deserialize, serde::Serialize)]
-struct LicenseUsedBy {
+pub struct LicenseUsedBy {
     pub name: String,
+    #[serde(default)]
     pub version: String,
+    #[serde(default)]
     pub repository: String,
 }
 
@@ -119,7 +120,7 @@ impl About {
                 info_rust = info;
             }
             Err(e) => {
-                log::error!("Error:{}", e);
+                log::error!("Json Parse Error:{}", e);
                 process::exit(1);
             }
         }
@@ -131,7 +132,7 @@ impl About {
                 info_python = info;
             }
             Err(e) => {
-                log::error!("Error:{}", e);
+                log::error!("Json Parse Error:{}", e);
                 process::exit(1);
             }
         }
@@ -207,7 +208,7 @@ impl About {
                 layout_third_party = layout_third_party.push(create_license_info(
                     used_project.name,
                     vec![String::from("Unknown")],
-                    license_info.license_id,
+                    license_info.license_id.clone(),
                     &used_project.version,
                 ));
             }
@@ -219,7 +220,7 @@ impl About {
                 layout_third_party = layout_third_party.push(create_license_info(
                     used_project.name,
                     vec![String::from("Unknown")],
-                    license_info.license_id,
+                    license_info.license_id.clone(),
                     &used_project.version,
                 ));
             }

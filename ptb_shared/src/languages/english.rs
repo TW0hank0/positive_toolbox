@@ -15,7 +15,7 @@
 
 use crate::languages::base::LangStruct;
 
-pub const LANG: LangStruct = LangStruct {
+pub static LANG: LangStruct = LangStruct {
     tool_name_code_indenter: None,
     tool_describe_code_indenter: None,
     tool_name_system_info: None,

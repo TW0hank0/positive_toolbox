@@ -15,7 +15,7 @@
 
 use crate::languages::base::LangStruct;
 
-pub const LANG: LangStruct = LangStruct {
+pub static LANG: LangStruct = LangStruct {
     tool_name_code_indenter: Some("程式碼縮排"),
     tool_describe_code_indenter: Some("功能如其名"),
     tool_name_system_info: Some("系統資訊"),
