@@ -15,15 +15,14 @@
 
 use std::{self, process};
 
-use iced;
 use iced::widget::{Column, Row, button, scrollable, text};
+use iced::{self, Length, widget};
 
 use serde;
 
 use log;
 
-use ptb_shared::shared;
-use ptb_shared::shared::{FONT_NOTO_SANS_REG, PROJECT_NAME};
+use ptb_shared::shared::{self, AboutMsg, PROJECT_NAME, ToolBoxMsg};
 
 const TOOL_NAME: &str = "about";
 
@@ -54,11 +53,6 @@ const THIRD_PARTY_LICENSE_PYTHON: &str =
         .settings(app_settings)
         .run()
 }*/
-
-#[derive(Debug, Clone)]
-pub enum AboutMsg {
-    OpenLicense,
-}
 
 #[derive(Debug, Clone)]
 pub enum Licenses {
@@ -143,7 +137,7 @@ impl About {
         };
     }
 
-    pub fn update(&mut self, message: AboutMsg) {
+    pub fn update(&mut self, message: AboutMsg) -> iced::task::Task<ToolBoxMsg> {
         match message {
             AboutMsg::OpenLicense => {
                 let mut tool_file_name = String::new();
@@ -161,9 +155,10 @@ impl About {
                 let _ = std::process::Command::new(tool_path).spawn();
             }
         }
+        iced::task::Task::none()
     }
 
-    pub fn view(&self) -> Column<'_, AboutMsg> {
+    pub fn view(&self) -> Column<'_, ToolBoxMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
@@ -190,7 +185,7 @@ impl About {
         layout = layout.push(layout_title);
         layout = layout.spacing(60);
         //
-        let mut layout_license = Column::new().padding(15);
+        let mut layout_license = Column::new().width(Length::Fill).padding(15);
         layout_license = layout_license.push(create_license_info(
             String::from(PROJECT_NAME),
             vec![String::from("TW0hank0")],
@@ -199,8 +194,8 @@ impl About {
         ));
         //
         let mut layout_third_party = Column::new().padding(15);
-        layout_third_party =
-            layout_third_party.push(button("開啟完整內容").on_press(AboutMsg::OpenLicense));
+        layout_third_party = layout_third_party
+            .push(button("開啟完整內容").on_press(ToolBoxMsg::AboutMsg(AboutMsg::OpenLicense)));
         // Rust
         let third_party_license_infos_rust = self.license_info_rust.dependencies.clone();
         for license_info in third_party_license_infos_rust {
@@ -209,7 +204,7 @@ impl About {
                     used_project.name,
                     vec![String::from("Unknown")],
                     license_info.license_id.clone(),
-                    &used_project.version,
+                    used_project.version,
                 ));
             }
         }
@@ -221,7 +216,7 @@ impl About {
                     used_project.name,
                     vec![String::from("Unknown")],
                     license_info.license_id.clone(),
-                    &used_project.version,
+                    used_project.version,
                 ));
             }
         }
@@ -249,8 +244,8 @@ pub fn create_license_info(
     project_name: String,
     authors: Vec<String>,
     license_string: String,
-    version: &str,
-) -> Column<'static, AboutMsg> {
+    version: String,
+) -> iced::Element<'_, ToolBoxMsg> {
     let mut layout = Column::new().padding(10);
     layout = layout
         .push(
@@ -291,9 +286,15 @@ pub fn create_license_info(
     for license in licenses {
         licenses_texts.push(format!("{}", license));
     }
-    layout_license = layout_license.push(text(licenses_texts.join("、")));
-    //layout = layout.push(text(format!("license: {:?}", licenses)).size(20));
+    layout_license = layout_license.push(text(licenses_texts.join("、")).size(20));
     layout = layout.push(layout_license);
     //
-    return layout;
+    return widget::container(layout)
+        .style(|theme: &iced::Theme| {
+            let ex_palette = theme.extended_palette();
+            let mut style = widget::container::Style::default();
+            style = style.background(ex_palette.primary.weak.color);
+            style
+        })
+        .into();
 }

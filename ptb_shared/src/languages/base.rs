@@ -36,38 +36,53 @@ impl Display for SupportedLanguages {
     }
 }
 
-#[derive(Debug, Clone, Copy, serde::Deserialize, serde::Serialize)]
-pub struct LangStruct {
-    pub tool_name_code_indenter: Option<&'static str>,
-    pub tool_describe_code_indenter: Option<&'static str>,
-    pub tool_name_system_info: Option<&'static str>,
-    pub tool_describe_system_info: Option<&'static str>,
-    pub tool_name_about: Option<&'static str>,
-    pub tool_describe_about: Option<&'static str>,
-    pub main_ui_no_describe: Option<&'static str>,
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub struct PTBLanguages {
+    pub tool_info: LangTypeToolInfo,
+    pub home_page: LangTypeHomePage,
 }
 
-impl std::default::Default for LangStruct {
+impl std::default::Default for PTBLanguages {
     fn default() -> Self {
         Self {
-            tool_name_code_indenter: None,
-            tool_describe_code_indenter: None,
-            tool_name_system_info: None,
-            tool_describe_system_info: None,
-            tool_name_about: None,
-            tool_describe_about: None,
-            main_ui_no_describe: None,
+            tool_info: LangTypeToolInfo {
+                code_indenter_name: None,
+                code_indenter_describe: None,
+                system_info_name: None,
+                system_info_describe: None,
+                about_name: None,
+                about_describe: None,
+            },
+            home_page: LangTypeHomePage {
+                tool_no_describe: None,
+            },
         }
     }
 }
 
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub struct LangTypeToolInfo {
+    pub code_indenter_name: Option<String>,
+    pub code_indenter_describe: Option<String>,
+    pub system_info_name: Option<String>,
+    pub system_info_describe: Option<String>,
+    pub about_name: Option<String>,
+    pub about_describe: Option<String>,
+}
+
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub struct LangTypeHomePage {
+    pub tool_no_describe: Option<String>,
+}
+
 #[macro_export]
 macro_rules! lang_get {
-    ($lang:expr, $field:ident) => {{
+    ($lang:expr, $type:ident, $field:ident) => {{
         use ptb_shared::languages;
-        $lang
+        $lang.clone()
+            .$type
             .$field
-            .as_ref()
-            .unwrap_or(languages::chinese::LANG.$field.as_ref().unwrap())
+            //.as_ref()
+            .unwrap_or(languages::chinese::get_lang().$type.$field/*.as_ref()*/.unwrap()).clone()
     }};
 }

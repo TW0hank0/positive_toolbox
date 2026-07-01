@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1024mm"
+   height="1024mm"
+   viewBox="0 0 1024 1024"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.1767767"
+     inkscape:cx="3297.946"
+     inkscape:cy="1682.9141"
+     inkscape:window-width="1920"
+     inkscape:window-height="1020"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <rect
+       x="1131.3708"
+       y="2138.2909"
+       width="1431.1841"
+       height="774.98903"
+       id="rect16" />
+    <rect
+       x="1063.4886"
+       y="2036.4675"
+       width="1674.4289"
+       height="967.32208"
+       id="rect15" />
+    <rect
+       x="916.41039"
+       y="2019.497"
+       width="2138.2909"
+       height="1069.1455"
+       id="rect14" />
+    <linearGradient
+       id="swatch12"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop12" />
+    </linearGradient>
+    <linearGradient
+       id="swatch8"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       id="swatch7"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop7" />
+    </linearGradient>
+    <linearGradient
+       id="swatch6"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop6" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:label="圖層 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#8b53a1;stroke-width:10;stroke-dasharray:none;stroke-opacity:1"
+       id="rect13"
+       width="714.49023"
+       height="432.69775"
+       x="163.22406"
+       y="458.87518" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#c970eb;stroke-width:15;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 164.76391,461.95487 120.10828,-147.82556 461.95487,7.69927 123.18796,135.50675 z"
+       id="path13" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.40988045,0,0,0.45783628,-239.37204,-297.09199)"
+       id="text15"
+       style="font-style:normal;font-variant:normal;font-weight:100;font-stretch:normal;font-size:618.077px;line-height:0;font-family:'Noto Sans CJK TC';-inkscape-font-specification:'Noto Sans CJK TC, Thin';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:10px;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect16);display:inline;fill:#741feb;fill-opacity:1;stroke:#6c19c6;stroke-width:2.4899;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="715.59204"
+       y="0"
+       inkscape:label="text15"><tspan
+         x="1290.5829"
+         y="2373.1603"
+         id="tspan1">PTB</tspan></text>
+  </g>
+</svg>

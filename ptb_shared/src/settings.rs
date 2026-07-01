@@ -6,12 +6,12 @@ pub const SETTING_FILE_NAME: &str = "ptb_settings.json";
 
 #[derive(Debug, Clone, Copy, serde::Deserialize, serde::Serialize)]
 pub struct PTBSettings {
-    normal: NormalSettings,
+    pub normal: NormalSettings,
 }
 
 #[derive(Debug, Clone, Copy, serde::Deserialize, serde::Serialize)]
 pub struct NormalSettings {
-    language: SupportedLanguages,
+    pub language: SupportedLanguages,
 }
 
 impl Default for PTBSettings {

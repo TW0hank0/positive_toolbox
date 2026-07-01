@@ -1,3 +1,9 @@
 {
-  "project_name": "positive_toolbox"
+  "languages": {
+    "Python": {
+      "inlay_hints": {
+        "enabled": true,
+      },
+    },
+  },
 }

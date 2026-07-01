@@ -19,7 +19,10 @@ use iced::widget::{Column, button, scrollable, text};
 
 use log;
 
-use ptb_shared::{lang_get, shared};
+use ptb_shared::{
+    lang_get,
+    shared::{self, EazyUpdaterMsg, ToolBoxMsg},
+};
 
 const TOOL_NAME: &str = "輕鬆更新";
 
@@ -73,12 +76,6 @@ pub struct EazyUpdater {
     pub process_threads: Vec<thread::JoinHandle<ThreadProcessTypes>>,
 }
 
-#[derive(Debug, Clone, Copy)]
-pub enum ToolMsg {
-    UpdateInstalledPkgList,
-    UpdateThreadProcess,
-}
-
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub enum Scenes {
     Installled,
@@ -102,13 +99,13 @@ impl EazyUpdater {
             thread_msgs: Vec::new(),
             process_threads: Vec::new(),
         };
-        eu.update(ToolMsg::UpdateInstalledPkgList);
+        let _ = eu.update(EazyUpdaterMsg::UpdateInstalledPkgList);
         return eu;
     }
 
-    pub fn update(&mut self, message: ToolMsg) {
+    pub fn update(&mut self, message: EazyUpdaterMsg) -> iced::task::Task<ToolBoxMsg> {
         match message {
-            ToolMsg::UpdateInstalledPkgList => {
+            EazyUpdaterMsg::UpdateInstalledPkgList => {
                 let msg_channel = sync::Arc::new(sync::RwLock::new(ThreadProcessStatus {
                     is_error: false,
                     is_finish: false,
@@ -117,7 +114,7 @@ impl EazyUpdater {
                 let thread_msg_channel = msg_channel.clone();
                 let process_thread = thread::spawn(move || {
                     let mut dnf_process = process::Command::new("dnf")
-                        .args(["list", "--installed", "--color", "never", "--quiet"])
+                        .args(["list", "--installed", "--color=never", "--quiet"])
                         .spawn()
                         .unwrap();
                     let process_result = dnf_process.wait();
@@ -151,13 +148,14 @@ impl EazyUpdater {
                 self.process_threads.push(process_thread);
                 todo!("!!!")
             }
-            ToolMsg::UpdateThreadProcess => {
+            EazyUpdaterMsg::UpdateThreadProcess => {
                 todo!("ToolMsg::UpdateThreadProcess")
             }
         }
+        iced::task::Task::none()
     }
 
-    pub fn view(&self) -> Column<'_, ToolMsg> {
+    pub fn view(&self) -> Column<'_, ToolBoxMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)

@@ -20,7 +20,7 @@ use log;
 
 use sysinfo;
 
-use ptb_shared::shared;
+use ptb_shared::shared::{self, SystemInfoMsg, ToolBoxMsg};
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "系統資訊";
@@ -48,18 +48,18 @@ const TOOL_NAME: &str = "系統資訊";
         .run()
 }*/
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SystemInfo {
     system_info_data: SystemInfoData,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SystemInfoData {
     system: SysInfoDataSystem,
     memory: SysInfoDataMemory,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SysInfoDataSystem {
     name: String,
     kernel_version: String,
@@ -68,17 +68,12 @@ pub struct SysInfoDataSystem {
     cpus_count: usize,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SysInfoDataMemory {
     total_memory: u64,
     used_memory: u64,
     total_swap: u64,
     used_swap: u64,
-}
-
-#[derive(Debug, Clone)]
-pub enum SystemInfoMsg {
-    SyncSysInfo,
 }
 
 impl SystemInfo {
@@ -89,12 +84,13 @@ impl SystemInfo {
         };
     }
 
-    pub fn update(&mut self, message: SystemInfoMsg) {
+    pub fn update(&mut self, message: SystemInfoMsg) -> iced::task::Task<ToolBoxMsg> {
         match message {
             SystemInfoMsg::SyncSysInfo => {
                 self.system_info_data = SystemInfo::sync_sys_info();
             }
         }
+        iced::task::Task::none()
     }
 
     pub fn sync_sys_info() -> SystemInfoData {
@@ -144,13 +140,16 @@ impl SystemInfo {
         return system_info_data;
     }
 
-    pub fn view(&self) -> Column<'_, SystemInfoMsg> {
+    pub fn view(&self) -> Column<'_, ToolBoxMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
         //
-        layout = layout.push(button(text("重新整理")).on_press(SystemInfoMsg::SyncSysInfo));
+        layout = layout.push(
+            button(text("重新整理"))
+                .on_press(ToolBoxMsg::SystemInfoMsg(SystemInfoMsg::SyncSysInfo)),
+        );
         //
         let mut layout_system_info = Column::new();
         let mut sys = sysinfo::System::new_all();

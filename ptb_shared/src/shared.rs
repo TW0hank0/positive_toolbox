@@ -15,8 +15,7 @@
 
 use std::{env, fs};
 
-use time;
-use time::{OffsetDateTime, UtcOffset};
+use time::{self, OffsetDateTime, UtcOffset};
 
 use iced;
 
@@ -32,7 +31,7 @@ use positive_tool_rs::pt;
 #[cfg(target_arch = "wasm32")]
 use console_log;
 
-pub const ICON_PNG: &[u8] = include_bytes!("../../assets/icon.png");
+pub const ICON_PNG: &[u8] = include_bytes!("../../assets/icon/v1/icon.png");
 const FONT_NOTO_SANS_REGULAR_BYTES: &[u8] =
     include_bytes!("../../assets/fonts/Noto_Sans_TC/static/NotoSansTC-Regular.ttf");
 
@@ -49,15 +48,12 @@ pub const PROJECT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub fn init() -> (Option<iced::window::Icon>,) {
     let _ = iced::font::load(FONT_NOTO_SANS_REGULAR_BYTES);
-    //
     let img = image::load_from_memory_with_format(ICON_PNG, image::ImageFormat::Png)
         .unwrap()
         .into_rgba8();
     let (img_width, img_height) = img.dimensions();
     let icon = iced::window::icon::from_rgba(img.into_raw(), img_width, img_height).ok();
-    //
     setup_logger();
-    //
     return (icon,);
 }
 
@@ -172,8 +168,12 @@ impl TextSizeControler {
 
 #[derive(Debug, Clone)]
 pub enum ToolBoxMsg {
+    InitToolState(Tools),
     HomePageMsg(HomePageMsg),
     CodeIndenterMsg(CodeIndenterMsg),
+    SystemInfoMsg(SystemInfoMsg),
+    AboutMsg(AboutMsg),
+    EazyUpdaterMsg(EazyUpdaterMsg),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -199,6 +199,7 @@ pub enum CodeIndenterMsg {
 #[derive(Debug, Clone)]
 pub enum HomePageMsg {
     OpenTool(Tools),
+    CheckThreadInfo,
 }
 
 #[derive(Clone, Debug)]
@@ -220,4 +221,20 @@ impl std::fmt::Display for ProgramLanguages {
             Self::Xml => "xml",
         })
     }
+}
+
+#[derive(Debug, Clone)]
+pub enum SystemInfoMsg {
+    SyncSysInfo,
+}
+
+#[derive(Debug, Clone)]
+pub enum AboutMsg {
+    OpenLicense,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum EazyUpdaterMsg {
+    UpdateInstalledPkgList,
+    UpdateThreadProcess,
 }

@@ -84,7 +84,7 @@ impl CodeIndenter {
         };
     }
 
-    pub fn update(&mut self, message: CodeIndenterMsg) {
+    pub fn update(&mut self, message: CodeIndenterMsg) -> iced::task::Task<ToolBoxMsg> {
         match message {
             CodeIndenterMsg::UnitConversion => {
                 println!("UintConversion");
@@ -152,6 +152,7 @@ impl CodeIndenter {
                 self.window_height = height;
             }
         }
+        iced::task::Task::none()
     }
 
     pub fn view(&self) -> Column<'_, ToolBoxMsg> {

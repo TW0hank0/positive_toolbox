@@ -24,15 +24,8 @@ import zip_files
 def main():
     start_time = time.time()
     #
-    commands = [
-        ["cargo", "build", "--workspace", "--release"]
-        if os.name == "nt"
-        else [
-            "cargo",
-            "build",
-            "--workspace",
-            "--release",
-        ],
+    commands: list[list[str]] = [
+        ["cargo", "build", "--workspace", "--release", "--locked"],
         [
             "uv",
             "run",
