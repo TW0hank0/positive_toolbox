@@ -13,34 +13,34 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-use std;
+use std::{self, process};
 
-use iced;
 use iced::widget::{Column, Row, button, scrollable, text};
+use iced::{self, Length, widget};
 
-//use image;
+use serde;
 
 use log;
-//use log::{debug, error, info, trace, warn};
 
-use ptb_shared::shared;
-use ptb_shared::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared::{self, AboutMsg, PROJECT_NAME, ToolBoxMsg};
 
-const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about";
 
-//const LICENSE: &str = include_str!("../../LICENSE");
+const THIRD_PARTY_LICENSE_RUST: &str =
+    include_str!("../../auto_generated/ThirdPartyLicense-Rust.json");
+const THIRD_PARTY_LICENSE_PYTHON: &str =
+    include_str!("../../auto_generated/ThirdPartyLicense-Python.json");
 
-fn main() -> iced::Result {
+/*fn main() -> iced::Result {
     let (icon,) = shared::init();
     //
     let mut window_settings = iced::window::Settings::default();
     window_settings.maximized = true;
     window_settings.icon = icon;
-    window_settings.min_size = Some(iced::Size::new(540.0, 360.0));
+    window_settings.min_size = Some(iced::Size::new(1080.0, 720.0));
     //
     let mut app_settings = iced::Settings::default();
-    app_settings.id = Some(String::from(env!("CARGO_PKG_NAME")));
+    app_settings.id = Some(String::from(PROJECT_NAME));
     app_settings.default_text_size = iced::Pixels::from(26);
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
@@ -52,15 +52,7 @@ fn main() -> iced::Result {
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
         .run()
-}
-
-#[derive(Default)]
-pub struct About {}
-
-#[derive(Debug, Clone)]
-pub enum AboutMsg {
-    OpenLicense,
-}
+}*/
 
 #[derive(Debug, Clone)]
 pub enum Licenses {
@@ -84,30 +76,89 @@ impl std::fmt::Display for Licenses {
         })
     }
 }
+
+#[derive(Debug, Default, Clone, serde::Deserialize, serde::Serialize)]
+pub struct LicenseInfo {
+    pub dependencies: Vec<LicenseDep>,
+}
+
+#[derive(Debug, Default, Clone, serde::Deserialize, serde::Serialize)]
+pub struct LicenseDep {
+    pub license_id: String,
+    pub license_text: String,
+    pub used_by: Vec<LicenseUsedBy>,
+}
+
+#[derive(Debug, Default, Clone, serde::Deserialize, serde::Serialize)]
+pub struct LicenseUsedBy {
+    pub name: String,
+    #[serde(default)]
+    pub version: String,
+    #[serde(default)]
+    pub repository: String,
+}
+
+#[derive(Debug, Default)]
+pub struct About {
+    pub license_info_rust: LicenseInfo,
+    pub license_info_python: LicenseInfo,
+}
+
 impl About {
     pub fn new() -> Self {
-        return Self {};
+        //Rust
+        let info_result_rust = serde_json::from_str(THIRD_PARTY_LICENSE_RUST);
+        let info_rust: LicenseInfo;
+        match info_result_rust {
+            Ok(info) => {
+                info_rust = info;
+            }
+            Err(e) => {
+                log::error!("Json Parse Error:{}", e);
+                process::exit(1);
+            }
+        }
+        //Python
+        let info_result_python = serde_json::from_str(THIRD_PARTY_LICENSE_PYTHON);
+        let info_python: LicenseInfo;
+        match info_result_python {
+            Ok(info) => {
+                info_python = info;
+            }
+            Err(e) => {
+                log::error!("Json Parse Error:{}", e);
+                process::exit(1);
+            }
+        }
+        // State
+        return Self {
+            license_info_rust: info_rust,
+            license_info_python: info_python,
+        };
     }
 
-    pub fn update(&mut self, message: AboutMsg) {
+    pub fn update(&mut self, message: AboutMsg) -> iced::task::Task<ToolBoxMsg> {
         match message {
             AboutMsg::OpenLicense => {
-                let mut tool_path = std::env::current_exe()
+                let mut tool_file_name = String::new();
+                //
+                tool_file_name.push_str("about_show_full_license");
+                #[cfg(target_os = "windows")]
+                {
+                    tool_file_name.push_str(".exe");
+                }
+                let tool_path = std::env::current_exe()
                     .unwrap()
                     .parent()
                     .unwrap()
-                    .join("about_show_full_license");
-                #[cfg(target_os = "windows")]
-                {
-                    tool_path =
-                        std::path::PathBuf::from(format!("{}.exe", tool_path.to_str().unwrap()));
-                }
+                    .join(tool_file_name);
                 let _ = std::process::Command::new(tool_path).spawn();
             }
         }
+        iced::task::Task::none()
     }
 
-    pub fn view(&self) -> Column<'_, AboutMsg> {
+    pub fn view(&self) -> Column<'_, ToolBoxMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
@@ -134,43 +185,42 @@ impl About {
         layout = layout.push(layout_title);
         layout = layout.spacing(60);
         //
-        let mut layout_license = Column::new().padding(15);
+        let mut layout_license = Column::new().width(Length::Fill).padding(15);
         layout_license = layout_license.push(create_license_info(
-            String::from(shared::PROJECT_NAME),
+            String::from(PROJECT_NAME),
             vec![String::from("TW0hank0")],
             String::from("AGPL-3.0"),
             shared::PROJECT_VERSION,
         ));
         //
         let mut layout_third_party = Column::new().padding(15);
-        layout_third_party =
-            layout_third_party.push(button("開啟完整內容").on_press(AboutMsg::OpenLicense));
-        let third_party_license_infos_rust = ptb_shared::licenses_rust::get_licenses();
+        layout_third_party = layout_third_party
+            .push(button("開啟完整內容").on_press(ToolBoxMsg::AboutMsg(AboutMsg::OpenLicense)));
+        // Rust
+        let third_party_license_infos_rust = self.license_info_rust.dependencies.clone();
         for license_info in third_party_license_infos_rust {
-            let mut authors = Vec::new();
-            for author in license_info.authors {
-                authors.push(String::from(author));
+            for used_project in license_info.used_by {
+                layout_third_party = layout_third_party.push(create_license_info(
+                    used_project.name,
+                    vec![String::from("Unknown")],
+                    license_info.license_id.clone(),
+                    used_project.version,
+                ));
             }
-            layout_third_party = layout_third_party.push(create_license_info(
-                String::from(license_info.name),
-                authors,
-                String::from(license_info.license),
-                license_info.version,
-            ));
         }
-        let third_party_license_infos_python = ptb_shared::licenses_python::get_licenses();
+        // Python
+        let third_party_license_infos_python = self.license_info_python.dependencies.clone();
         for license_info in third_party_license_infos_python {
-            let mut authors = Vec::new();
-            for author in license_info.authors {
-                authors.push(String::from(author));
+            for used_project in license_info.used_by {
+                layout_third_party = layout_third_party.push(create_license_info(
+                    used_project.name,
+                    vec![String::from("Unknown")],
+                    license_info.license_id.clone(),
+                    used_project.version,
+                ));
             }
-            layout_third_party = layout_third_party.push(create_license_info(
-                String::from(license_info.name),
-                authors,
-                String::from(license_info.license),
-                license_info.version,
-            ));
         }
+        //layout
         layout_license = layout_license.push(layout_third_party);
         let scrollable_license = scrollable(layout_license);
         //let scrollable_third_party = scrollable(layout_third_party);
@@ -194,8 +244,8 @@ pub fn create_license_info(
     project_name: String,
     authors: Vec<String>,
     license_string: String,
-    version: &str,
-) -> Column<'static, AboutMsg> {
+    version: String,
+) -> iced::Element<'_, ToolBoxMsg> {
     let mut layout = Column::new().padding(10);
     layout = layout
         .push(
@@ -236,9 +286,15 @@ pub fn create_license_info(
     for license in licenses {
         licenses_texts.push(format!("{}", license));
     }
-    layout_license = layout_license.push(text(licenses_texts.join("、")));
-    //layout = layout.push(text(format!("license: {:?}", licenses)).size(20));
+    layout_license = layout_license.push(text(licenses_texts.join("、")).size(20));
     layout = layout.push(layout_license);
     //
-    return layout;
+    return widget::container(layout)
+        .style(|theme: &iced::Theme| {
+            let ex_palette = theme.extended_palette();
+            let mut style = widget::container::Style::default();
+            style = style.background(ex_palette.primary.weak.color);
+            style
+        })
+        .into();
 }

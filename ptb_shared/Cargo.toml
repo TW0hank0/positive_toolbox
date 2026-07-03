@@ -15,7 +15,12 @@ iced = { workspace = true }
 image = { workspace = true }
 positive_tool_rs = { workspace = true }
 log = { workspace = true }
+# --- platform: wasm ---
+console_log = { workspace = true }
+console_error_panic_hook = { workspace = true }
+getrandom = { workspace = true }
+wasm-bindgen = { workspace = true }
 
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-console_error_panic_hook = "0.1.7"
-console_log = { version = "1.0.0", features = ["wasm-bindgen"] }
+# [target.'cfg(target_arch = "wasm32")'.dependencies]
+# console_log = { workspace = true }
+# console_error_panic_hook = { workspace = true }

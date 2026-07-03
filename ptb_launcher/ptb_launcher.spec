@@ -3,7 +3,7 @@
 import os
 
 a = Analysis(
-    ['main.py'],
+    ["ptb_launcher/main.py"],
     pathex=[],
     binaries=[],
     datas=[],
@@ -23,7 +23,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='ptb_launcher',
+    name="ptb_launcher",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -36,5 +36,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=os.path.abspath(os.path.join('assets', 'icon.ico')),
+    icon="assets/v1/icon.ico",
 )

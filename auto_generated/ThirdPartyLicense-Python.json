@@ -1,0 +1,59 @@
+{
+    "dependencies": [
+        {
+            "license_id": "MIT License",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "altgraph",
+                    "repository": "unknown",
+                    "version": "0.17.5"
+                }
+            ]
+        },
+        {
+            "license_id": "BSD License",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "colorama",
+                    "repository": "unknown",
+                    "version": "0.4.6"
+                }
+            ]
+        },
+        {
+            "license_id": "Apache-2.0 OR BSD-2-Clause",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "packaging",
+                    "repository": "unknown",
+                    "version": "26.0"
+                }
+            ]
+        },
+        {
+            "license_id": "GNU General Public License v2 (GPLv2)",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "pyinstaller",
+                    "repository": "unknown",
+                    "version": "6.19.0"
+                }
+            ]
+        },
+        {
+            "license_id": "Apache Software License; GNU General Public License v2 (GPLv2)",
+            "license_text": "",
+            "used_by": [
+                {
+                    "name": "pyinstaller-hooks-contrib",
+                    "repository": "unknown",
+                    "version": "2026.0"
+                }
+            ]
+        }
+    ]
+}

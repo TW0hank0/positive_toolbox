@@ -13,6 +13,8 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
+use std::{fs, io::Write};
+
 use iced;
 use iced::widget::{Column, button, scrollable, text};
 
@@ -22,13 +24,12 @@ use log;
 use open;
 
 use ptb_shared::shared;
-use ptb_shared::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared::{FONT_NOTO_SANS_REG, PROJECT_NAME};
 
-const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "about_show_full_license";
 
-const LICENSE_RUST: &str = include_str!("../../../auto_generated/ThirdPartyLicense-Rust.html");
-const LICENSE_PYTHON: &str = include_str!("../../../auto_generated/ThirdPartyLicense-Python.html");
+const LICENSE_RUST: &str = include_str!("../../auto_generated/ThirdPartyLicense-Rust.md");
+const LICENSE_PYTHON: &str = include_str!("../../auto_generated/ThirdPartyLicense-Python.html");
 
 fn main() -> iced::Result {
     let (icon,) = shared::init();
@@ -44,25 +45,29 @@ fn main() -> iced::Result {
     app_settings.default_font = FONT_NOTO_SANS_REG;
     //
     log::info!("啟動iced");
-    iced::application(About::new, About::update, About::view)
-        .theme(About::theme)
-        .title(About::title)
-        .window(window_settings)
-        .default_font(FONT_NOTO_SANS_REG)
-        .settings(app_settings)
-        .run()
+    iced::application(
+        AboutShowFullLicense::new,
+        AboutShowFullLicense::update,
+        AboutShowFullLicense::view,
+    )
+    .theme(AboutShowFullLicense::theme)
+    .title(AboutShowFullLicense::title)
+    .window(window_settings)
+    .default_font(FONT_NOTO_SANS_REG)
+    .settings(app_settings)
+    .run()
 }
 
 #[derive(Default)]
-pub struct About {}
+pub struct AboutShowFullLicense {}
 
 #[derive(Debug, Clone)]
-pub enum AboutMsg {
+pub enum AboutShowFullLicenseMsg {
     OpenRustFile,
     OpenPythonFile,
 }
 
-impl About {
+impl AboutShowFullLicense {
     pub fn new() -> Self {
         std::fs::write(
             std::env::current_exe()
@@ -85,40 +90,55 @@ impl About {
         return Self {};
     }
 
-    pub fn update(&mut self, message: AboutMsg) {
+    pub fn update(&mut self, message: AboutShowFullLicenseMsg) {
         match message {
-            AboutMsg::OpenRustFile => {
+            AboutShowFullLicenseMsg::OpenRustFile => {
                 #[cfg(not(target_arch = "wasm32"))]
                 {
                     open::that_in_background(
-                        std::env::current_exe()
-                            .unwrap()
-                            .parent()
-                            .unwrap()
-                            .join("ThirdPartyLicense-Rust.html"),
+                        "https://github.com/TW0hank0/positive_toolbox/blob/main/auto_generated/ThirdPartyLicense-Rust.md",
                     );
                 }
                 #[cfg(target_arch = "wasm32")]
-                eprintln!("不支援WASM！");
+                log::error!("不支援WASM！");
+                todo!("desktop平台寫入File，wasm打開Github(gitlab) License連結");
+                /*#[cfg(not(target_arch = "wasm32"))]
+                {
+                    let file_path = std::env::current_exe()
+                        .unwrap()
+                        .parent()
+                        .unwrap()
+                        .join("ThirdPartyLicense-Rust.html");
+                    if !fs::exists(file_path).is_ok_and(|i: bool| i) {
+                        match fs::File::create(file_path.clone()) {
+                            Ok(mut fobj) => {
+                                let w_result = fobj.write_all(LICENSE_RUST.clone().as_bytes());
+                                if w_result.is_ok() {
+                                    open::that_in_background(file_path.clone());
+                                } else {
+                                    log::error!("第三方授權寫入失敗(Rust)")
+                                }
+                            }
+                        }
+                    }
+                }
+                #[cfg(target_arch = "wasm32")]
+                eprintln!("不支援WASM！");*/
             }
-            AboutMsg::OpenPythonFile => {
+            AboutShowFullLicenseMsg::OpenPythonFile => {
                 #[cfg(not(target_arch = "wasm32"))]
                 {
                     open::that_in_background(
-                        std::env::current_exe()
-                            .unwrap()
-                            .parent()
-                            .unwrap()
-                            .join("ThirdPartyLicense-Python.html"),
+                        "https://github.com/TW0hank0/positive_toolbox/blob/main/auto_generated/ThirdPartyLicense-Rust.md",
                     );
                 }
                 #[cfg(target_arch = "wasm32")]
-                eprintln!("不支援WASM！");
+                log::error!("不支援WASM！");
             }
         }
     }
 
-    pub fn view(&self) -> Column<'_, AboutMsg> {
+    pub fn view(&self) -> Column<'_, AboutShowFullLicenseMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
@@ -126,9 +146,13 @@ impl About {
         #[cfg(not(target_arch = "wasm32"))]
         {
             layout = layout
-                .push(button("開啟ThirdPartyLicense-Rust.html").on_press(AboutMsg::OpenRustFile))
                 .push(
-                    button("開啟ThirdPartyLicense-Python.html").on_press(AboutMsg::OpenPythonFile),
+                    button("開啟ThirdPartyLicense-Rust")
+                        .on_press(AboutShowFullLicenseMsg::OpenRustFile),
+                )
+                .push(
+                    button("開啟ThirdPartyLicense-Python")
+                        .on_press(AboutShowFullLicenseMsg::OpenPythonFile),
                 );
         }
         layout = layout.push(

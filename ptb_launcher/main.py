@@ -28,9 +28,7 @@ def main():
         file_base_path = os.path.dirname(sys.executable)
     else:
         print("WARNING：這是為打包後檔案結構設計的！", file=sys.stderr)
-        main_exec_path = os.path.join(
-            os.path.dirname(__file__), "positive_toolbox"
-        )
+        main_exec_path = os.path.join(os.path.dirname(__file__), "positive_toolbox")
         file_base_path = os.path.dirname(__file__)
     if os.name == "nt":
         main_exec_path = main_exec_path + ".exe"
@@ -55,7 +53,8 @@ def main():
         stdout=file_out,
         stdin=file_in,
         stderr=file_err,
-        creationflags=0x08000000,
+        # creationflags=0x08000000,
+        creationflags=subprocess.CREATE_NO_WINDOW,
     )
     if process.wait() != 0:
         print("發生錯誤", file=sys.stderr)
@@ -141,9 +140,7 @@ def show_error(stdout: str, stderr: str):
         pass
 
     app: CopyableTextWindow = CopyableTextWindow(root)
-    app.text_content = (
-        f"--- stdout --- \n{stdout} \n\n --- stderr --- \n {stderr}"
-    )
+    app.text_content = f"--- stdout --- \n{stdout} \n\n --- stderr --- \n {stderr}"
     root.mainloop()
 
 

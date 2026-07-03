@@ -13,6 +13,8 @@
 # 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 # 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
+# 為了 `ptb_launcher` 和 CI 建立
+
 [project]
 name = "positive-toolbox"
 version = "0.1.0"
@@ -26,7 +28,7 @@ dependencies = []
 Homepage = "https://github.com/TW0hank0/positive_toolbox/"
 "Source Code" = "https://github.com/TW0hank0/positive_toolbox/"
 "Bug Tracker" = "https://github.com/TW0hank0/positive_toolbox/issues/"
-Changelog = "https://github.com/TW0hank0/positive_toolbox/change_logs/"
+Changelog = "https://github.com/TW0hank0/positive_toolbox/CHANGELOG.md"
 
 [project.optional-dependencies]
-build = ["pyinstaller>=6.19.0", "pip-licenses"]
+build = ["pyinstaller>=6.19.0", "pip-licenses", "colorama"]

@@ -1,0 +1,9 @@
+{
+  "languages": {
+    "Python": {
+      "inlay_hints": {
+        "enabled": true,
+      },
+    },
+  },
+}

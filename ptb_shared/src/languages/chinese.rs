@@ -13,17 +13,34 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-use crate::languages::base_struct;
+use crate::languages::{self, base::PTBLanguages};
 
-pub fn get_lang() -> base_struct::LangStruct {
-    base_struct::LangStruct {
-        tool_name_code_indenter: Some("程式碼縮排"),
-        tool_describe_code_indenter: Some("功能如其名"),
-        tool_name_system_info: Some("系統資訊"),
-        tool_describe_system_info: Some("查看系統版本、記憶體等..."),
-        tool_name_about: Some("關於"),
-        tool_describe_about: Some("關於 positive_toolbox 及第三方專案"),
-        main_ui_no_describe: Some("沒有簡介 @_@"),
-        ..Default::default()
+/* pub const LANG: PTBLanguages = PTBLanguages {
+    tool_info: languages::base::LangTypeToolInfo {
+        code_indenter_name: Some(String::from("程式碼縮排")),
+        code_indenter_describe: Some(String::from("功能如其名")),
+        system_info_name: Some(String::from("系統資訊")),
+        system_info_describe: Some(String::from("查看系統版本、記憶體等...")),
+        about_name: Some(String::from("關於")),
+        about_describe: Some(String::from("關於 positive_toolbox 專案")),
+    },
+    home_page: languages::base::LangTypeHomePage {
+        tool_no_describe: Some(String::from("沒有簡介 @_@")),
+    },
+}; */
+
+pub fn get_lang() -> PTBLanguages {
+    PTBLanguages {
+        tool_info: languages::base::LangTypeToolInfo {
+            code_indenter_name: Some(String::from("程式碼縮排")),
+            code_indenter_describe: Some(String::from("功能如其名")),
+            system_info_name: Some(String::from("系統資訊")),
+            system_info_describe: Some(String::from("查看系統版本、記憶體等...")),
+            about_name: Some(String::from("關於")),
+            about_describe: Some(String::from("關於 positive_toolbox 專案")),
+        },
+        home_page: languages::base::LangTypeHomePage {
+            tool_no_describe: Some(String::from("沒有簡介 @_@")),
+        },
     }
 }

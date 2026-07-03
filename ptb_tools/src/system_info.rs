@@ -20,13 +20,12 @@ use log;
 
 use sysinfo;
 
-use ptb_shared::shared;
-use ptb_shared::shared::FONT_NOTO_SANS_REG;
+use ptb_shared::shared::{self, SystemInfoMsg, ToolBoxMsg};
 
 const PROJECT_NAME: &str = env!("CARGO_PKG_NAME");
 const TOOL_NAME: &str = "系統資訊";
 
-fn main() -> iced::Result {
+/*fn main() -> iced::Result {
     let (icon,) = shared::init();
     //
     let mut window_settings = iced::window::Settings::default();
@@ -47,22 +46,20 @@ fn main() -> iced::Result {
         .default_font(FONT_NOTO_SANS_REG)
         .settings(app_settings)
         .run()
-}
+}*/
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SystemInfo {
     system_info_data: SystemInfoData,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SystemInfoData {
     system: SysInfoDataSystem,
     memory: SysInfoDataMemory,
-    //disk: SysInfoDataDisk,
-    //network: SysInfoDataNetwork,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SysInfoDataSystem {
     name: String,
     kernel_version: String,
@@ -71,27 +68,12 @@ pub struct SysInfoDataSystem {
     cpus_count: usize,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct SysInfoDataMemory {
     total_memory: u64,
     used_memory: u64,
     total_swap: u64,
     used_swap: u64,
-}
-
-/* #[derive(Default, Clone)]
-pub struct SysInfoDataDisk {
-    disks: sysinfo::Disks,
-} */
-
-/* #[derive(Default)]
-pub struct SysInfoDataNetwork {
-    networks: sysinfo::Networks,
-} */
-
-#[derive(Debug, Clone)]
-pub enum SystemInfoMsg {
-    SyncSysInfo,
 }
 
 impl SystemInfo {
@@ -102,12 +84,13 @@ impl SystemInfo {
         };
     }
 
-    pub fn update(&mut self, message: SystemInfoMsg) {
+    pub fn update(&mut self, message: SystemInfoMsg) -> iced::task::Task<ToolBoxMsg> {
         match message {
             SystemInfoMsg::SyncSysInfo => {
                 self.system_info_data = SystemInfo::sync_sys_info();
             }
         }
+        iced::task::Task::none()
     }
 
     pub fn sync_sys_info() -> SystemInfoData {
@@ -150,35 +133,23 @@ impl SystemInfo {
             used_swap: used_swap,
         };
         //
-        //let disks = sysinfo::Disks::new_with_refreshed_list();
-        //let data_disk = SysInfoDataDisk { disks: disks };
-        //
-        //let networks = sysinfo::Networks::new_with_refreshed_list();
-        //let data_network = SysInfoDataNetwork { networks: networks };
-        //
-        /* let processes = sys.processes();
-        let data_process = SysInfoDataProcess {
-            processes: processes,
-        }; */
-        //
         let system_info_data = SystemInfoData {
             system: data_system,
             memory: data_memory,
-            //disk: data_disk,
-            //network: data_network,
         };
         return system_info_data;
     }
 
-    pub fn view(&self) -> Column<'_, SystemInfoMsg> {
+    pub fn view(&self) -> Column<'_, ToolBoxMsg> {
         let mut layout = Column::new()
             .padding(5)
             .align_x(iced::alignment::Horizontal::Left)
             .width(iced::Length::Fill);
         //
-        layout = layout.push(shared::view_title(String::from(TOOL_NAME)));
-        //
-        layout = layout.push(button(text("重新整理")).on_press(SystemInfoMsg::SyncSysInfo));
+        layout = layout.push(
+            button(text("重新整理"))
+                .on_press(ToolBoxMsg::SystemInfoMsg(SystemInfoMsg::SyncSysInfo)),
+        );
         //
         let mut layout_system_info = Column::new();
         let mut sys = sysinfo::System::new_all();
@@ -241,7 +212,6 @@ impl SystemInfo {
                 .size(iced::Pixels::from(40)),
         );
         let disks = sysinfo::Disks::new_with_refreshed_list();
-        //layout_system_info = layout_system_info.push(text("所有硬碟"));
         for disk in &disks {
             layout_system_info = layout_system_info.push(
                 text(format!("{}", disk.name().to_str().unwrap_or("未知")))

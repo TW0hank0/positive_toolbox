@@ -8,36 +8,16 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-iced = { workspace = true }
-quick-xml = { workspace = true }
-sysinfo = { workspace = true }
-serde = { workspace = true }
+iced = { workspace=true}
 serde_json = { workspace = true }
-ptb_shared = { workspace = true }
+serde = {workspace = true}
 log = { workspace = true }
+ptb_shared = { workspace = true }
 open = { workspace = true }
-
-[[bin]]
-name = "code_indenter"
-path = "src/code_indenter.rs"
-
-[[bin]]
-name = "system_info"
-path = "src/system_info.rs"
-
-[[bin]]
-name = "about"
-path = "src/about/about_main.rs"
-
-[[bin]]
-name = "about_show_full_license"
-path = "src/about/about_show_full_license.rs"
-
-[[bin]]
-name = "eazy_updater"
-path = "src/eazy_updater.rs"
-
-[build-dependencies]
-cargo_metadata = "0.19"
-serde = { version = "1.0", features = ["derive"] }
-heck = "0.5"
+quick-xml = {workspace=true}
+sysinfo = {workspace=true}
+# --- platform: wasm ---
+console_log = { workspace = true }
+console_error_panic_hook = { workspace = true }
+getrandom = { workspace = true }
+wasm-bindgen = { workspace = true }

@@ -13,14 +13,34 @@
 // 您應該已經收到一份 GNU Affero 通用公共授權條款副本。
 // 如果沒有，請參見 <https://www.gnu.org/licenses/>。
 
-use crate::languages::base_struct;
+use crate::languages::{self, base::PTBLanguages};
 
-pub fn get_lang() -> base_struct::LangStruct {
-    base_struct::LangStruct {
-        tool_name_code_indenter: Some("code_indenter"),
-        tool_name_system_info: Some("system_info"),
-        tool_name_about: Some("about"),
-        main_ui_no_describe: Some("No describe @_@"),
-        ..Default::default()
+/* pub const LANG: PTBLanguages = PTBLanguages {
+    tool_info: languages::base::LangTypeToolInfo {
+        code_indenter_name: None,
+        code_indenter_describe: None,
+        system_info_name: None,
+        system_info_describe: None,
+        about_name: None,
+        about_describe: None,
+    },
+    home_page: languages::base::LangTypeHomePage {
+        tool_no_describe: None,
+    },
+}; */
+
+pub fn get_lang() -> PTBLanguages {
+    PTBLanguages {
+        tool_info: languages::base::LangTypeToolInfo {
+            code_indenter_name: None,
+            code_indenter_describe: None,
+            system_info_name: None,
+            system_info_describe: None,
+            about_name: None,
+            about_describe: None,
+        },
+        home_page: languages::base::LangTypeHomePage {
+            tool_no_describe: None,
+        },
     }
 }

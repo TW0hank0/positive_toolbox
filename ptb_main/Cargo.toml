@@ -13,6 +13,14 @@ time = { workspace = true }
 time-macros = { workspace = true }
 log = { workspace = true }
 ptb_shared = { workspace = true }
+ptb_tools = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }
+# --- platform: wasm ---
+console_log = { workspace = true }
+console_error_panic_hook = { workspace = true }
+getrandom = { workspace = true }
+wasm-bindgen = { workspace = true }
 
 [[bin]]
 name = "positive_toolbox"
